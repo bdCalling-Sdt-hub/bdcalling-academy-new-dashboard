@@ -21,19 +21,19 @@
 
 @layer utilities {
   .start-start {
-    @apply flex justify-start items-start w-full 
+    @apply flex justify-start items-start w-full
   }
 
   .start-center {
-    @apply flex justify-start items-center w-full 
+    @apply flex justify-start items-center w-full
   }
 
   .center-center {
-    @apply flex justify-center items-center w-full 
+    @apply flex justify-center items-center w-full
   }
 
   .between-center {
-    @apply flex justify-between items-center w-full 
+    @apply flex justify-between items-center w-full
   }
 
   .grid-4 {
@@ -71,12 +71,38 @@
   .page-title {
     @apply text-[var(--primary-color)] text-2xl font-semibold py-6
   }
+
+  .section-title {
+    @apply text-[#222222] text-lg font-medium py-6
+  }
+
   .overview-title {
     @apply text-[var(--primary-color)] font-medium text-base
   }
+
   .overview-total {
     @apply text-[var(--primary-bg)] text-4xl font-semibold text-end mt-4
   }
+  .btn-primary {
+    @apply bg-[var(--primary-bg)] py-2 px-4 center-center gap-2 rounded-md text-[var(--third-color)] hover:scale-105 active:scale-95 transition-all
+  }
+}
+
+.Student-List .ant-table-thead .ant-table-cell {
+  background: var(--primary-bg);
+  color: var(--third-color);
+}
+
+.Student-List .ant-table-thead .ant-table-cell::before {
+  display: none;
+}
+
+.Student-List :where(.css-dev-only-do-not-override-17seli4).ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:first-child {
+  border-start-start-radius: 0px;
+}
+
+.Student-List :where(.css-dev-only-do-not-override-17seli4).ant-table-wrapper .ant-table-container table>thead>tr:first-child>*:last-child {
+  border-start-end-radius: 0px;
 }
 
 .card-shadow {

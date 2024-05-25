@@ -10,8 +10,8 @@ const Dashboard = () => {
             <div className="max-w-[400px] min-w-[260px] primary-bg third-color h-screen overflow-y-scroll card-shadow">
                 <Sideber />
             </div>
-            <div className="w-full relative pt-[100px]">
-                <div className="w-full absolute top-0 left-0">
+            <div className="w-full relative  h-screen overflow-y-scroll">
+                <div className="w-full sticky z-50 top-0 left-0">
                     <Navber />
                 </div>
                 <div className="px-10">
