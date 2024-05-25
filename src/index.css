@@ -21,19 +21,23 @@
 
 @layer utilities {
   .start-start {
-    @apply flex justify-start items-start w-full
+    @apply flex justify-start items-start w-full 
   }
 
   .start-center {
-    @apply flex justify-start items-center w-full
+    @apply flex justify-start items-center w-full 
   }
 
   .center-center {
-    @apply flex justify-center items-center w-full
+    @apply flex justify-center items-center w-full 
   }
 
   .between-center {
-    @apply flex justify-between items-center w-full
+    @apply flex justify-between items-center w-full 
+  }
+
+  .grid-4 {
+    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 xl:grid-cols-4 gap-4
   }
 
   .primary-bg {
@@ -63,9 +67,20 @@
   li:has(> .dropDown.active) {
     @apply bg-[var(--third-color)] text-[var(--primary-bg)]
   }
-  .page-title{
+
+  .page-title {
     @apply text-[var(--primary-color)] text-2xl font-semibold py-6
   }
+  .overview-title {
+    @apply text-[var(--primary-color)] font-medium text-base
+  }
+  .overview-total {
+    @apply text-[var(--primary-bg)] text-4xl font-semibold text-end mt-4
+  }
+}
+
+.card-shadow {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .accordionOpen {

@@ -11,13 +11,13 @@ const Sideber = () => {
     })
   return (
 <>
-<div className='w-full h-auto center-center bg-white px-9 py-6 mb-6'>
+<div className='w-full h-auto center-center bg-white px-9 py-[20px] mb-6'>
     <img className='w-full' src={academyLogo} alt="" />
 </div>
 <ul>
     {
         SideberLink?.map((item, index) => <div key={index}>
-            {!item?.dropDown ? <li className='my-3 font-medium'>
+            {!item?.dropDown ? <li className='my-2 font-medium'>
                 <NavLink className={`start-center gap-2 px-5 py-2 menu`} to={item?.link}>
                     <item.icon />
                     {item?.menu}
@@ -33,7 +33,7 @@ const Sideber = () => {
                             open: true, menu: item.menu
                         })
                     }
-                }} className='cursor-pointer between-center gap-2 px-5 py-2 my-3 font-medium'> <span className='start-center gap-2'><item.icon />{item?.menu}</span> <IoIosArrowDown className='text-2xl' /></li>
+                }} className='cursor-pointer between-center gap-2 px-5 py-2 my-2 font-medium'> <span className='start-center gap-2'><item.icon />{item?.menu}</span> <IoIosArrowDown className='text-2xl' /></li>
                 <div className={`${(openAccordion.open && openAccordion.menu === item?.menu) ? 'max-h-max accordionOpen' : ' max-h-0 accordionClose'} overflow-hidden -mt-3`}>
                     {item?.dropDown?.map(dropDown =>
                         <li key={dropDown?.menu}>
