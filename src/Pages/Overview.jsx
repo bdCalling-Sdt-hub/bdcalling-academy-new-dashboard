@@ -324,7 +324,7 @@ const Overview = () => {
             </div>
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
-                    <p className="section-title">Student List</p>
+                    <p className="section-title">Student List</p> <Link className="text-[#2492EB]" to={`/`}>See All</Link>
                 </div>
                 <Table pagination={false} dataSource={dataSource} columns={columns} />
             </div>
