@@ -1,5 +1,4 @@
 const UpdateInput = ({ lebel, type, placeholder, defaultValue, classNames, rules, status, handler }) => {
-    console.log(status)
     return (
         <div className="w-full relative">
             {lebel && <p className="pb-2">{lebel}</p>}
