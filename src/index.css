@@ -126,6 +126,21 @@
   animation: accordionOpen 1s;
 }
 
+#allStudent .ant-table-thead .ant-table-cell {
+  background-color: var(--primary-bg) !important;
+  border-radius: 0px;
+  color: var(--third-color) !important;
+}
+#allStudent .ant-table-cell::before {
+display: none;
+}
+#allStudent .ant-radio-group {
+padding: 0px 20px;
+}
+
+:where(.css-dev-only-do-not-override-djtmh8).ant-table-wrapper .ant-table-pagination-right {
+  justify-content: center !important;
+}
 @keyframes accordionOpen {
   from {
     max-height: 0px;

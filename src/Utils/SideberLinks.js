@@ -32,8 +32,8 @@ export const SideberLink = [
         link: false,
         dropDown: [
             {
-                menu: 'Create Super Admin',
-                link: '/create-super-admin'
+                menu: 'All Students',
+                link: '/all-students'
             },
             {
                 menu: 'Create Admin',

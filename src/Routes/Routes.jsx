@@ -4,6 +4,7 @@ import Overview from "../Pages/Overview";
 import CreateSuperAdmin from "../Pages/CreateSuperAdmin";
 import CreateAdmin from "../Pages/CreateAdmin";
 import CreateMentors from "../Pages/CreateMentors";
+import AllStudents from "../Pages/AllStudents";
 
 export const router = createBrowserRouter([
     {
@@ -22,10 +23,14 @@ export const router = createBrowserRouter([
                 path:'/create-admin',
                 element:<CreateAdmin/>
             },
-            {
+           {
                 path:'/create-mentors',
                 element:<CreateMentors/>
-            },
+            }, 
+           {
+                path:'/all-students',
+                element:<AllStudents/>
+            }, 
         ]
     },
 ])
