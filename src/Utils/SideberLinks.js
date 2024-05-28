@@ -1,5 +1,6 @@
 
 import { FaUserGroup } from "react-icons/fa6";
+import { IoBookOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 export const SideberLink = [
     {
@@ -36,13 +37,22 @@ export const SideberLink = [
                 link: '/all-students'
             },
             {
-                menu: 'Create Admin',
-                link: '/create-admin'
+                menu: 'Events Base Students',
+                link: '/events-base-students'
             },
             {
-                menu: 'Create Mentors',
-                link: '/create-mentors'
+                menu: 'Authenticate Students',
+                link: '/authenticate-students'
+            },
+            {
+                menu: 'Teacher Base Students',
+                link: '/teacher-base-students'
             },
         ]
+    },
+    {
+        menu: 'Admitted Students',
+        icon: IoBookOutline,
+        link: '/admitted-students'
     },
 ]

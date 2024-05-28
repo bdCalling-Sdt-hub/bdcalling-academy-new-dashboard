@@ -158,7 +158,7 @@ const rowSelection = {
     }),
 };
 
-const AllStudents = () => {
+const TeacherBaseStudents = () => {
     const [selectionType, setSelectionType] = useState('checkbox');
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
@@ -277,7 +277,7 @@ const AllStudents = () => {
         <>
             <div className='grid-2'>
                 <div className='w-full'>
-                    <PageHeading text={`All Students`} />
+                    <PageHeading text={`All Teacher base student Students`} />
                 </div>
                 <div className="flex justify-end items-center w-full gap-3">
                     <button className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
@@ -308,7 +308,7 @@ const AllStudents = () => {
 
 
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
-                <h3 className='section-title px-5'>Add Student List</h3>
+                <h3 className='section-title px-5'>All Teacher base Students List</h3>
                 <div>
                     <Radio.Group
                         onChange={({ target: { value } }) => {
@@ -701,4 +701,4 @@ const AllStudents = () => {
     )
 }
 
-export default AllStudents
+export default TeacherBaseStudents

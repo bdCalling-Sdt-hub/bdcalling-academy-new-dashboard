@@ -158,7 +158,7 @@ const rowSelection = {
     }),
 };
 
-const AllStudents = () => {
+const AuthenticateStudents = () => {
     const [selectionType, setSelectionType] = useState('checkbox');
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
@@ -247,7 +247,6 @@ const AllStudents = () => {
         },
     ];
     const handelFilterData = (id) => {
-        console.log(id)
         const newData = data.filter(item => item._id === id)
         setFilterData(newData[0])
     }
@@ -277,7 +276,7 @@ const AllStudents = () => {
         <>
             <div className='grid-2'>
                 <div className='w-full'>
-                    <PageHeading text={`All Students`} />
+                    <PageHeading text={`All Authenticate Students`} />
                 </div>
                 <div className="flex justify-end items-center w-full gap-3">
                     <button className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
@@ -295,11 +294,11 @@ const AllStudents = () => {
                 <div className='max-w-44 min-w-44'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
                 </div>
-                <select name='category' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
+                <select name='eventName' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
+                    <option value={`event name`}>Event Name</option>
+                    <option value={`event name`}>Event Name</option>
+                    <option value={`event name`}>Event Name</option>
+                    <option value={`event name`}>Event Name</option>
                 </select>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
@@ -308,7 +307,7 @@ const AllStudents = () => {
 
 
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
-                <h3 className='section-title px-5'>Add Student List</h3>
+                <h3 className='section-title px-5'>All Authenticate Students List</h3>
                 <div>
                     <Radio.Group
                         onChange={({ target: { value } }) => {
@@ -344,7 +343,7 @@ const AllStudents = () => {
                     <div className="center-center">
                         <div className={`h-28 w-28 rounded-full my-4  relative`}>
                             {
-                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
+                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.img ? <img className="h-full w-full rounded-full object-cover" src={filterData?.img} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
                             }
 
                             <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
@@ -356,48 +355,11 @@ const AllStudents = () => {
                     <div className="grid-2">
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number*`} rules={{ ...register("phone", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email*`} type={'email'} rules={{ ...register("email", { required: true }) }} placeholder={`Email*`} defaultValue={filterData.email} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Date of Birth*`} type={`date`} rules={{ ...register("date", { required: true }) }} placeholder={`Date of Birth*`} defaultValue={filterData.date} />
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Profession*`} type={'text'} rules={{ ...register("profession", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.profession} />
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Location*`} type={`text`} rules={{ ...register("location", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.location} />
 
-                        <lebel className='mt-3 block w-full relative'>
-                            Course Category
-                            <select {...register("category", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="category">Please Select a Category</option>
-                                <option value="category">category</option>
-                                <option value="category">category</option>
-                                <option value="category">category</option>
-                            </select>
-                            {
-                                errors?.category && <p className="absolute -bottom-4 text-red-600">category is requerd</p>
-                            }
-                        </lebel>
-                        <lebel className='mt-3 block w-full relative'>
-                            Gender*
-                            <select {...register("gender", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="gender">Gender</option>
-                                <option value="gender">gender</option>
-                                <option value="gender">gender</option>
-                                <option value="gender">gender</option>
-                            </select>
-                            {
-                                errors?.gender && <p className="absolute -bottom-4 text-red-600">gender is requerd</p>
-                            }
-                        </lebel>
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Blood Group*`} type={`text`} rules={{ ...register("blood", { required: true }) }} placeholder={`Blood Group*`} defaultValue={filterData?.blood} />
-                        <lebel className='mt-3 block w-full relative'>
-                            <p>Course Category</p>
-                            <select {...register("religion*", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="religion">religion</option>
-                                <option value="religion">religion</option>
-                                <option value="category">religion</option>
-                                <option value="religion">religion</option>
-                            </select>
-                            {
-                                errors?.category && <p className="absolute -bottom-4 text-red-600">religion is requerd</p>
-                            }
-                        </lebel>
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Course Category`} type={`text`} rules={{ ...register("courseCategory", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.courseCategory} />
                     </div>
-                    <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...register("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
                         <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
                     </div>
@@ -701,4 +663,4 @@ const AllStudents = () => {
     )
 }
 
-export default AllStudents
+export default AuthenticateStudents
