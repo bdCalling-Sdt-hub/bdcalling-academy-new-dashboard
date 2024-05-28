@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Modal } from "antd"
 import { useForm } from "react-hook-form"
 import UpdateInput from "../Components/UpdateInput"
+import { FaEdit } from "react-icons/fa"
 const AdminData = [
     {
         _id: '1',
@@ -273,6 +274,7 @@ const CreateAdmin = () => {
     } = useForm()
     const onSubmit = (data) => console.log(data)
     const handelEdit = (id) => {
+        setImage(null)
         const newData = AdminData.filter(item => item._id === id)
         setFilterdData(newData[0])
         setOpenAddModal(true)
@@ -280,12 +282,23 @@ const CreateAdmin = () => {
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
+    const [image, setImage] = useState(null);
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
     return (
         <>
             <div className="between-center gap-2">
                 <PageHeading text={`Admin List`} />
                 <div className="flex justify-end items-center">
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         setFilterdData({})
                         setOpenAddModal(true)
                     }} className="btn-primary"><FaPlus /> Add Admin</button>
@@ -319,6 +332,18 @@ const CreateAdmin = () => {
                 width={600}
             >
                 <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="center-center">
+                        <div className={`h-28 w-28 rounded-full my-4  relative`}>
+                            {
+                              image?<img className="h-full w-full rounded-full object-cover" src={image} alt="" />:  filterdData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterdData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
+                            }
+
+                            <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
+                                    <FaEdit />
+                            </label>
+                        </div>
+                    </div>
+                    <input id="profile" onChange={handleFileChange} className="hidden" name="profile" type="file" />
                     <div className="grid-2">
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name`} defaultValue={filterdData.name} />
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`User Name`} rules={{ ...register("userName", { required: true }) }} placeholder={`User Name`} defaultValue={filterdData.userName} />
