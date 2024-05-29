@@ -1,163 +1,191 @@
 import React, { useState } from 'react'
 import PageHeading from '../Components/PageHeading'
-import { FaPlus } from 'react-icons/fa6'
+import { FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa6'
 import { DatePicker, Divider, Modal, Radio, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
-import { BsInfoCircle } from 'react-icons/bs'
-import { FaEdit } from 'react-icons/fa'
 import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
-import UpdateInput from '../Components/UpdateInput'
+import { FiPrinter } from 'react-icons/fi'
+import { IoMdInformationCircleOutline } from 'react-icons/io'
+import { Link } from 'react-router-dom'
+import { SiMicrosoftword } from 'react-icons/si'
 const data = [
     {
         "_id": "1",
         "name": "Alice Smith",
+        "Batch no": "BAC-WP2024",
         "phone": "123-456-7890",
-        "email": "student1@example.com",
+        "studentID": "student1@example.com",
         "course": "Mathematics",
-        "date": "2024-01-15",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "2",
         "name": "Bob Johnson",
+        "Batch no": "BAC-WP2024",
         "phone": "234-567-8901",
-        "email": "student2@example.com",
+        "studentID": "student2@example.com",
         "course": "Physics",
-        "date": "2024-01-16",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "3",
         "name": "Charlie Brown",
+        "Batch no": "BAC-WP2024",
         "phone": "345-678-9012",
-        "email": "student3@example.com",
+        "studentID": "student3@example.com",
         "course": "Chemistry",
-        "date": "2024-01-17",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "4",
         "name": "David Wilson",
+        "Batch no": "BAC-WP2024",
         "phone": "456-789-0123",
-        "email": "student4@example.com",
+        "studentID": "student4@example.com",
         "course": "Biology",
-        "date": "2024-01-18",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "5",
         "name": "Eva Martinez",
+        "Batch no": "BAC-WP2024",
         "phone": "567-890-1234",
-        "email": "student5@example.com",
+        "studentID": "student5@example.com",
         "course": "English",
-        "date": "2024-01-19",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "6",
         "name": "Frank Garcia",
+        "Batch no": "BAC-WP2024",
         "phone": "678-901-2345",
-        "email": "student6@example.com",
+        "studentID": "student6@example.com",
         "course": "History",
-        "date": "2024-01-20",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "7",
         "name": "Grace Miller",
+        "Batch no": "BAC-WP2024",
         "phone": "789-012-3456",
-        "email": "student7@example.com",
+        "studentID": "student7@example.com",
         "course": "Geography",
-        "date": "2024-01-21",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "8",
         "name": "Hank Lee",
+        "Batch no": "BAC-WP2024",
         "phone": "890-123-4567",
-        "email": "student8@example.com",
+        "studentID": "student8@example.com",
         "course": "Economics",
-        "date": "2024-01-22",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "9",
         "name": "Ivy Harris",
+        "Batch no": "BAC-WP2024",
         "phone": "901-234-5678",
-        "email": "student9@example.com",
+        "studentID": "student9@example.com",
         "course": "Political Science",
-        "date": "2024-01-23",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "10",
         "name": "Jack Clark",
+        "Batch no": "BAC-WP2024",
         "phone": "012-345-6789",
-        "email": "student10@example.com",
+        "studentID": "student10@example.com",
         "course": "Sociology",
-        "date": "2024-01-24",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "11",
         "name": "Karen Lewis",
+        "Batch no": "BAC-WP2024",
         "phone": "123-456-7891",
-        "email": "student11@example.com",
+        "studentID": "student11@example.com",
         "course": "Philosophy",
-        "date": "2024-01-25",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "12",
         "name": "Leo Walker",
+        "Batch no": "BAC-WP2024",
         "phone": "234-567-8902",
-        "email": "student12@example.com",
+        "studentID": "student12@example.com",
         "course": "Art",
-        "date": "2024-01-26",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "13",
         "name": "Mona Hall",
+        "Batch no": "BAC-WP2024",
         "phone": "345-678-9013",
-        "email": "student13@example.com",
+        "studentID": "student13@example.com",
         "course": "Music",
-        "date": "2024-01-27",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "14",
         "name": "Nick Young",
+        "Batch no": "BAC-WP2024",
         "phone": "456-789-0124",
-        "email": "student14@example.com",
+        "studentID": "student14@example.com",
         "course": "Theater",
-        "date": "2024-01-28",
+        "Course type": "off line",
+        "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     },
     {
         "_id": "15",
         "name": "Olivia King",
+        "Batch no": "BAC-WP2024",
         "phone": "567-890-1235",
-        "email": "student15@example.com",
+        "studentID": "student15@example.com",
         "course": "Dance",
-        "date": "2024-01-29",
+        "Course type": "off line",
+        "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
     }
 ]
 
-const EventsBaseStudents = () => {
-    const [selectionType, setSelectionType] = useState('checkbox');
-    const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
-    const [openAdmitModal, setOpenAdmitModal] = useState(false)
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [filterData, setFilterData] = useState({})
-    const [image, setImage] = useState(null);
+const DropoutStudents = () => {
+    const [openExchangeUpModal, setopenExchangeUpModal] = useState(false)
+    const [openRefundModal, setopenRefundModal] = useState(false)
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
-    const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [filterData, setFilterData] = useState({})
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
@@ -181,57 +209,58 @@ const EventsBaseStudents = () => {
             key: 'phone'
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email'
+            title: 'Batch no',
+            dataIndex: 'Batch no',
+            key: 'Batch no'
         },
         {
-            title: 'Course Category',
+            title: 'Student ID',
+            dataIndex: 'studentID',
+            key: 'studentID'
+        },
+        {
+            title: 'Course Name',
             dataIndex: 'course',
             key: 'course'
         },
         {
-            title: 'Date Of admission',
-            dataIndex: 'date',
-            key: 'date'
+            title: 'Course type',
+            dataIndex: 'Course type',
+            key: 'Course type'
         },
         {
-            title: 'Set Follow Up',
-            dataIndex: '_id',
+            title: 'Payment status',
+            dataIndex: 'Payment status',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
                     handelFilterData(record._id)
-                    setOpenFollowUpModal(true)
-                }} className='btn-primary max-w-32'>
-                    <FaPlus /> Follow Up
-                </button>
-                <span className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
+                    setopenRefundModal(true)
+                }} disabled={record?.['Payment status'] != 'due'} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>Refund</button>
             </div>,
+            key: 'Payment status'
+        },
+        {
+            title: 'Course Exchange',
+            dataIndex: '_id',
+            render: (_, record) => <div style={{
+                '--primary-bg': '#2BA24C'
+            }} className='start-center gap-2' >
+                <button onClick={() => {
+                    handelFilterData(record._id)
+                    setopenExchangeUpModal(true)
+                }} className='btn-primary max-w-32'>
+                    Exchange
+                </button>
+            </div >,
             key: '_id'
         },
         {
             title: 'Actions',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
-                <button onClick={() => {
-                    handelFilterData(record._id)
-                    setImage(null)
-                    setOpenAdmitModal(true)
-                }} className='p-1 bg-[#FFC60B] rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
-                    Admit
-                </button>
-                <button onClick={() => {
-                    handelFilterData(record?._id)
-                    setImage(null)
-                    setOpenStudentAddModal(true)
-                }} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
-                    <MdEditSquare />
-                </button>
-                <button className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
-                    <RxCross2 />
-                </button>
+                <Link to={`/admitted-students/students-information/${record?._id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                    <IoMdInformationCircleOutline />
+                </Link>
             </div>,
             key: '_id'
         },
@@ -249,16 +278,6 @@ const EventsBaseStudents = () => {
             setColorType([...colorType, color])
         }
     }
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
@@ -266,15 +285,9 @@ const EventsBaseStudents = () => {
         <>
             <div className='grid-2'>
                 <div className='w-full'>
-                    <PageHeading text={`All Events Base Students`} />
+                    <PageHeading text={`All Dropout Students`} />
                 </div>
-                <div className="flex justify-end items-center w-full gap-3">
-                    <button className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
-                    <button onClick={() => {
-                        setImage(null)
-                        setOpenStudentAddModal(true)
-                    }} className="btn-primary max-w-44"><FaPlus /> Add Student</button>
-                </div>
+
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
                 <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
@@ -284,63 +297,165 @@ const EventsBaseStudents = () => {
                 <div className='max-w-44 min-w-44'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
                 </div>
-                <select name='eventName' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
-                    <option value={`event name`}>Event Name</option>
-                    <option value={`event name`}>Event Name</option>
-                    <option value={`event name`}>Event Name</option>
-                    <option value={`event name`}>Event Name</option>
+                <select name='category' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
+                    <option value={`category`}>select a category</option>
+                    <option value={`category`}>select a category</option>
+                    <option value={`category`}>select a category</option>
+                    <option value={`category`}>select a category</option>
                 </select>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
                 </button>
             </form>
-
-
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
-                <h3 className='section-title px-5'>All Events Register Base Students List</h3>
                 <div>
-
                     <Table
+
                         columns={columns}
                         dataSource={data}
                     />
                 </div>
             </div>
-            {/* create and update student  modal */}
+            {/* Refund modal  */}
             <Modal
                 centered
                 footer={false}
-                onCancel={() => setOpenStudentAddModal(false)}
-                open={openStudentAddModal}
-                width={600}
+                open={openRefundModal}
+                onCancel={() => setopenRefundModal(false)}
+                width={700}
             >
-                <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="center-center">
-                        <div className={`h-28 w-28 rounded-full my-4  relative`}>
-                            {
-                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.img ? <img className="h-full w-full rounded-full object-cover" src={filterData?.img} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
-                            }
-
-                            <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
-                                <FaEdit />
-                            </label>
+                <div>
+                    <div className='start-center gap-4'>
+                        <h4 className='text-[#333333] font-medium'>Student Refund </h4>
+                    </div>
+                    <>
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm'>Refund Date:</p>
+                            <p className='text-end text-sm'>04/05/2024</p>
                         </div>
-                    </div>
-                    <input id="profile" onChange={handleFileChange} className="hidden" name="profile" type="file" />
-                    <div className="grid-2">
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number*`} rules={{ ...register("phone", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Profession*`} type={'text'} rules={{ ...register("profession", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.profession} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Location*`} type={`text`} rules={{ ...register("location", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.location} />
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm'>Course Name:</p>
+                            <p className='text-end text-sm'>UX/UI Design</p>
+                        </div>
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm'>Course ID:</p>
+                            <p className='text-end text-sm'>202402</p>
+                        </div>
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm'>Student ID:</p>
+                            <p className='text-end text-sm'>BDA202415</p>
+                        </div>
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm'>Student Account:</p>
+                            <p className='text-end text-sm'>15000Tk</p>
+                        </div>
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm text-red-600'>Amount deducted:</p>
+                            <p className='text-end text-sm p-1 px-3 border rounded w-fit ml-auto text-gray-400 select-none'>tk 3000</p>
+                        </div>
+                        <hr className='w-full my-2 block' />
+                        <div className='grid-2 gap-2 my-4'>
+                            <p className=' text-sm font-semibold'>Total Paymet :</p>
+                            <p className='text-end text-sm font-semibold'>12000Tk</p>
+                        </div>
+                        <button onClick={()=>{
+                            setopenRefundModal(false)
+                        }} className='btn-primary max-w-32 mx-auto mt-7'>
+                            Confirm
+                        </button>
+                    </>
 
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Course Category`} type={`text`} rules={{ ...register("courseCategory", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.courseCategory} />
-
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Events Name*`} type={`text`} rules={{ ...register("eventsName", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.eventsName} />
+                </div>
+            </Modal>
+            {/* exchange up Modal  */}
+            <Modal
+                centered
+                footer={false}
+                open={openExchangeUpModal}
+                onCancel={() => setopenExchangeUpModal(false)}
+                width={700}
+            >
+                <div className=''>
+                    <h3 className='text-lg text-[var(--primary-bg)] -mt-5'>Dropped  Course</h3>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Course ID:</p>
+                        <p className='text-end text-sm'>202402</p>
                     </div>
-                    <div className="px-48 mt-8">
-                        <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Student ID:</p>
+                        <p className='text-end text-sm'>BDA202415</p>
                     </div>
-                </form>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Payable Amount Date:</p>
+                        <p className='text-end text-sm'>04/05/2024</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Batch no:</p>
+                        <p className='text-end text-sm'>24VFGTD</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Category:</p>
+                        <p className='text-end text-sm'>Graphic & Vacuolations</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Course Type :</p>
+                        <p className='text-end text-sm'>Online</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Course Name:</p>
+                        <p className='text-end text-sm'>UX/UI Design</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Course Fee:</p>
+                        <p className='text-end text-sm'>15000</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Total amount:</p>
+                        <p className='text-end text-sm'>15000</p>
+                    </div>
+                    <h3 className='text-lg text-[var(--primary-bg)] mt-5'>Exchange  Course</h3>
+                    <form onSubmit={handleSubmit(onSubmit)} className=''>
+                        <div className='md:grid md:grid-cols-2 lg:grid-cols-3 justify-start items-start md:items-center gap-3 flex flex-col'>
+                            <div className='w-full'>
+                                <p className='text-[#333333] my-1'>Course Name</p>
+                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`3Danimation`}  {...register("courseName")}  id="">
+                                    <option value="3Danimation">3Danimation</option>
+                                    <option value="3Danimation">3Danimation</option>
+                                    <option value="3Danimation">3Danimation</option>
+                                </select>
+                            </div>
+                            <div className='w-full'>
+                                <p className='text-[#333333] my-1'>Course Fee</p>
+                                <input placeholder='Tk20000' className='w-full p-2 border rounded-md outline-none ' type="text" {...register("courseFee")} id="" />
+                            </div>
+                            <div className='w-full'>
+                                <p className='text-[#333333] my-1'>Catagory</p>
+                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`Multimedia`} {...register("catagory")} id="">
+                                    <option value="Multimedia">Multimedia</option>
+                                    <option value="Multimedia">Multimedia</option>
+                                    <option value="Multimedia">Multimedia</option>
+                                </select>
+                            </div>
+                            <div className='w-full'>
+                                <p className='text-[#333333] my-1'>Course Type</p>
+                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`online`} {...register("courseType")} id="">
+                                    <option value="online">online</option>
+                                    <option value="off line">off line</option>
+                                </select>
+                            </div>
+                            <div className='w-full'>
+                                <p className='text-[#333333] my-1'>Batch no</p>
+                                <input placeholder='24ADFFG' className='w-full p-2 border rounded-md outline-none ' type="text" {...register("batch")} id="" />
+                            </div>
+                        </div>
+                        <button onClick={()=>{
+                            setopenExchangeUpModal(false)
+                            setOpenPaymentModal(true)
+                        }} className='btn-primary max-w-32 mx-auto mt-7'>
+                            Confirm
+                        </button>
+                    </form>
+                </div>
             </Modal>
             {/* payment modal  */}
             <Modal
@@ -354,7 +469,6 @@ const EventsBaseStudents = () => {
                     <div className='start-center gap-4'>
                         <MdOutlineArrowBackIosNew className='cursor-pointer' onClick={() => {
                             setOpenPaymentModal(false)
-                            setOpenAdmitModal(true)
                         }} /> <h4>Payment</h4>
                     </div>
                     <div className='start-center gap-2 my-2'>
@@ -412,7 +526,9 @@ const EventsBaseStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={()=>{
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </> : <>
@@ -511,7 +627,9 @@ const EventsBaseStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={()=>{
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </>
@@ -519,125 +637,8 @@ const EventsBaseStudents = () => {
 
                 </div>
             </Modal>
-            <Modal
-                centered
-                footer={false}
-                open={openAdmitModal}
-                onCancel={() => setOpenAdmitModal(false)}
-                width={700}
-            >
-                <div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="center-center">
-                            <div className={`h-28 w-28 rounded-full my-4  relative`}>
-                                {
-                                    image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.img ? <img className="h-full w-full rounded-full object-cover" src={filterData?.img} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
-                                }
-
-                                <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
-                                    <FaEdit />
-                                </label>
-                            </div>
-                        </div>
-                        <input onChange={(e) => handleFileChange(e)} id="profile" className="hidden" name='profile' type="file" />
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input classNames={`border rounded`} rules={{ ...register('name', { required: true }) }} lebel={`Full Name*`} status={errors} placeholder={`student name`} />
-                            <Input type={`number`} classNames={`border rounded`} rules={{ ...register('number', { required: true }) }} lebel={`Phone Number*`} status={errors} placeholder={`Phone Number`} />
-                        </div>
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input classNames={`border rounded`} rules={{ ...register('studentID', { required: true }) }} lebel={`Students ID*`} status={errors} placeholder={`*Required Field`} />
-                            <Input classNames={`border rounded`} rules={{ ...register('batchNo', { required: true }) }} lebel={`Batch No*`} status={errors} placeholder={`BAC-WP 2024`} />
-                        </div>
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input classNames={`border rounded`} rules={{ ...register('email', { required: true }) }} lebel={`Email*`} status={errors} placeholder={`student email`} />
-                            <div className='w-full relative'>
-                                <p className="pb-2">Course Type*</p>
-                                <select defaultValue={`off line`} className='w-full p-2 outline-none border rounded-md' {...register('courseType', { required: true })}>
-                                    <option value="off line">off line</option>
-                                    <option value="on line">on line</option>
-                                </select>
-                                {
-                                    errors?.courseType && <p className="absolute -bottom-4 text-red-600">courseType is requerd</p>
-                                }
-                            </div>
-                        </div>
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input classNames={`border rounded`} rules={{ ...register('courseName', { required: true }) }} lebel={`Course Name*`} status={errors} placeholder={`ux/Ui`} />
-                            <div className='w-full relative'>
-                                <p className="pb-2">Category*</p>
-                                <select defaultValue={`*Required Field`} className='w-full p-2 outline-none border rounded-md' {...register('category', { required: true })}>
-                                    <option value="*Required Field">off line</option>
-                                    <option value="*Required Field">on line</option>
-                                </select>
-                                {
-                                    errors?.category && <p className="absolute -bottom-4 text-red-600">category is requerd</p>
-                                }
-                            </div>
-                        </div>
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input type={`date`} classNames={`border rounded`} rules={{ ...register('date', { required: true }) }} lebel={`Date of Birth*`} status={errors} placeholder={`*Required Field`} />
-                            <div className='w-full relative'>
-                                <p className="pb-2">Gender*</p>
-                                <select defaultValue={`*Required Field`} className='w-full p-2 outline-none border rounded-md' {...register('gender', { required: true })}>
-                                    <option value="*Required Field">off line</option>
-                                    <option value="*Required Field">on line</option>
-                                </select>
-                                {
-                                    errors?.gender && <p className="absolute -bottom-4 text-red-600">gender is requerd</p>
-                                }
-                            </div>
-                        </div>
-                        <div className='grid-2 gap-2 mb-2'>
-                            <Input classNames={`border rounded`} rules={{ ...register('blood', { required: true }) }} lebel={`Blood Group*`} status={errors} placeholder={`*Required Field`} />
-                            <div className='w-full relative'>
-                                <p className="pb-2">Gender*</p>
-                                <select defaultValue={`*Required Field`} className='w-full p-2 outline-none border rounded-md' {...register('religion', { required: true })}>
-                                    <option value="*Required Field">off line</option>
-                                    <option value="*Required Field">on line</option>
-                                </select>
-                                {
-                                    errors?.religion && <p className="absolute -bottom-4 text-red-600">religion is requerd</p>
-                                }
-                            </div>
-                        </div>
-                        <Input classNames={`border rounded`} rules={{ ...register('address', { required: true }) }} lebel={`Address*`} status={errors} placeholder={`*Required Field`} />
-                        <button onClick={() => {
-                            setOpenPaymentModal(true)
-                            setOpenAdmitModal(false)
-                        }} className='btn-primary max-w-44 mx-auto mt-6'>
-                            Next
-                        </button>
-                    </form>
-                </div>
-            </Modal>
-            {/* Follow up Modal  */}
-            <Modal
-                centered
-                footer={false}
-                open={openFollowUpModal}
-                onCancel={() => setOpenFollowUpModal(false)}
-            >
-                <div className=''>
-                    <h3 className='section-title -mt-7'>Follow Up Comments</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} className='border border-[var(--primary-bg)] rounded-md p-2'>
-                        <div className='start-center gap-3'>
-                            <img src={filterData?.img} className='h-8 w-8 rounded-full' alt="" /> <p className='text-base font-semibold'>{filterData?.name}</p>
-                        </div>
-                        <textarea className='resize-none w-full border rounded-md outline-none mt-5 min-h-32 p-2' {...register('comment', { required: true })} />
-                        {errors.comment && <p className='text-red-500'>comment is required <sup className=''>*</sup></p>}
-                        <div className='between-center mt-2'>
-                            <div className='start-center gap-2'>
-                                <span onClick={() => colorHandeler('blue')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'blue') ? 'bg-[#2492EB]' : 'bg-transparent')} border-[#2492EB] border rounded-full`}></span>
-                                <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
-                                <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
-                            </div>
-                            <button className='btn-primary max-w-32'>Send Comment</button>
-                        </div>
-                    </form>
-                </div>
-            </Modal>
         </>
     )
 }
 
-export default EventsBaseStudents
+export default DropoutStudents

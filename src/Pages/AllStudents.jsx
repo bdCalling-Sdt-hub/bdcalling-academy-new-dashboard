@@ -148,15 +148,6 @@ const data = [
     }
 ]
 
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-        disabled: record.name === 'Disabled User',
-        name: record.name,
-    }),
-};
 
 const AllStudents = () => {
     const [selectionType, setSelectionType] = useState('checkbox');
@@ -310,23 +301,7 @@ const AllStudents = () => {
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>Add Student List</h3>
                 <div>
-                    <Radio.Group
-                        onChange={({ target: { value } }) => {
-                            setSelectionType(value);
-                        }}
-                        value={selectionType}
-                    >
-                        <Radio value="checkbox">Checkbox</Radio>
-                        <Radio value="radio">radio</Radio>
-                    </Radio.Group>
-
-                    <Divider />
-
                     <Table
-                        rowSelection={{
-                            type: selectionType,
-                            ...rowSelection,
-                        }}
                         columns={columns}
                         dataSource={data}
                     />
@@ -580,6 +555,7 @@ const AllStudents = () => {
 
                 </div>
             </Modal>
+            {/* admit modal  */}
             <Modal
                 centered
                 footer={false}

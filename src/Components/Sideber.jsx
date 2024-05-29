@@ -18,7 +18,7 @@ const Sideber = () => {
     {
         SideberLink?.map((item, index) => <div key={index}>
             {!item?.dropDown ? <li className='my-2 font-medium'>
-                <NavLink className={`start-center gap-2 px-5 py-2 menu`} to={item?.link}>
+                <NavLink className={`start-center gap-2 px-5 py-2 menu flex-row`} to={item?.link}>
                     <item.icon />
                     {item?.menu}
                 </NavLink>

@@ -1,5 +1,5 @@
 import { FaEye, FaEyeSlash, FaPlus } from "react-icons/fa6"
-import PageHeading from "../Components/PageHeading"
+    import PageHeading from "../Components/PageHeading"
 import AdminCard from "../Components/AdminCard"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
