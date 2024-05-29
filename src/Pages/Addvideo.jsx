@@ -9,6 +9,7 @@ function generateRandomNumber() {
     const randomNumber = Array.from({ length: 5 }, () => Math.floor(Math.random() * 10)).join('');
     return randomNumber;
 }
+
 const Addvideo = () => {
     const totalVideo = [
         { id: '34562', },
@@ -25,7 +26,7 @@ const Addvideo = () => {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='p-6 bg-white rounded-md my-3'>
                 <div className='grid-2'>
-                    <Input status={errors} lebel={`Course Name`} classNames={`border`} placeholder={`Certified graphics designer`} rules={{ ...register("courseName", { required: true }) }} />
+                    <Input status={errors} lebel={`Course Name`} classNames={`border`}  placeholder={`Certified graphics designer`} rules={{ ...register("courseName", { required: true }) }} />
                     <Input status={errors} lebel={`Module Name`} classNames={`border`} placeholder={`introduction & design theory`} rules={{ ...register("moduleName", { required: true }) }} />
                     {
                         totalVideos.map(item => <div className='col-span-2 grid-2' key={item?.id}>
