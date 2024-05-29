@@ -43,6 +43,9 @@
   .grid-2 {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center gap-4
   }
+  .grid-2-start {
+    @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start gap-4
+  }
 
   .primary-bg {
     @apply bg-[var(--primary-bg)]

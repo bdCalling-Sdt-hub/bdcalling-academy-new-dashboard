@@ -9,6 +9,12 @@ import EventsBaseStudents from "../Pages/EventsBaseStudents";
 import AuthenticateStudents from "../Pages/AuthenticateStudents";
 import TeacherBaseStudents from "../Pages/TeacherBaseStudents";
 import AdmittedStudents from "../Pages/AdmittedStudents";
+import StudentsInformation from "../Pages/StudentsInformation";
+import DropoutStudents from "../Pages/DropoutStudents";
+import AddCategory from "../Pages/AddCategory";
+import OfflineCourse from "../Pages/OfflineCourse";
+import CourseDetails from "../Pages/CourseDetails";
+import Addvideo from "../Pages/Addvideo";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +56,30 @@ export const router = createBrowserRouter([
             {
                 path: '/admitted-students',
                 element: <AdmittedStudents />
+            },
+            {
+                path: '/admitted-students/students-information/:id',
+                element: <StudentsInformation />
+            },
+            {
+                path: '/dropout-students',
+                element: <DropoutStudents />
+            },
+            {
+                path: '/add-category',
+                element: <AddCategory />
+            },
+            {
+                path: '/offline-course',
+                element: <OfflineCourse />
+            },
+            {
+                path: '/course-details/:id',
+                element: <CourseDetails />
+            },
+            {
+                path: '/add-video/:id',
+                element: <Addvideo />
             },
         ]
     },

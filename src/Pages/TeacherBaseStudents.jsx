@@ -148,18 +148,7 @@ const data = [
     }
 ]
 
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-        disabled: record.name === 'Disabled User',
-        name: record.name,
-    }),
-};
-
 const TeacherBaseStudents = () => {
-    const [selectionType, setSelectionType] = useState('checkbox');
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -310,23 +299,8 @@ const TeacherBaseStudents = () => {
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>All Teacher base Students List</h3>
                 <div>
-                    <Radio.Group
-                        onChange={({ target: { value } }) => {
-                            setSelectionType(value);
-                        }}
-                        value={selectionType}
-                    >
-                        <Radio value="checkbox">Checkbox</Radio>
-                        <Radio value="radio">radio</Radio>
-                    </Radio.Group>
-
-                    <Divider />
 
                     <Table
-                        rowSelection={{
-                            type: selectionType,
-                            ...rowSelection,
-                        }}
                         columns={columns}
                         dataSource={data}
                     />

@@ -1,5 +1,7 @@
 
-import { FaUserGroup } from "react-icons/fa6";
+import { BiCategoryAlt } from "react-icons/bi";
+import { BsCollection } from "react-icons/bs";
+import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { IoBookOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 export const SideberLink = [
@@ -54,5 +56,35 @@ export const SideberLink = [
         menu: 'Admitted Students',
         icon: IoBookOutline,
         link: '/admitted-students'
+    },
+    {
+        menu: 'Dropout Students',
+        icon: FaUserGraduate,
+        link: '/dropout-students'
+    },
+    {
+        menu: 'Add category',
+        icon: BiCategoryAlt,
+        link: '/add-category'
+    },
+    {
+        menu: 'Add Course',
+        icon: BsCollection,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Offline Course',
+                link: '/offline-course'
+            },
+            {
+                menu: 'Online Course',
+                link: '/online-course'
+            },
+            {
+                menu: 'Video Course',
+                link: '/video-course'
+            },
+          
+        ]
     },
 ]
