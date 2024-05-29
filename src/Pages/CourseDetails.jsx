@@ -5,6 +5,7 @@ import { RiEditBoxLine } from 'react-icons/ri'
 import { CiVideoOn } from 'react-icons/ci'
 import { IoVideocamOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
+import { FaPlus } from 'react-icons/fa'
 
 const CourseDetails = () => {
     return (
@@ -42,13 +43,23 @@ const CourseDetails = () => {
                                 </button>
                                 <button className='between-center gap-2 text-[var(--primary-bg)] p-2 z-50'>
                                     <span className='start-center gap-2'>
-                                    <IoVideocamOutline className='text-xl' /> <p className='text-sm'>Introduction to Dart & Dart Cheatsheet</p> <span className='text-sm text-[#ADADAD]'>(Afran Kazi Rana)</span>
+                                        <IoVideocamOutline className='text-xl' /> <p className='text-sm'>Introduction to Dart & Dart Cheatsheet</p> <span className='text-sm text-[#ADADAD]'>(Afran Kazi Rana)</span>
                                     </span> <p className=' mr-8 underline text-[#FA1131] text-sm whitespace-nowrap'>Lock Class</p>
                                 </button>
                             </div>
                         </div>)
                     }
-
+                    <div className="collapse">
+                        <input type="radio" name="my-accordion-2" defaultChecked />
+                        <div className="collapse-title font-medium ">
+                            <div className='border rounded-none py-4 between-center'>
+                                <h3 className='start-center gap-2 text-[#6B6B6B] text-base '><MdKeyboardArrowRight className='text-2xl' /></h3>
+                                <Link to={`/add-video/1`} className="text-white bg-[green] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 mr-2">
+                                    <FaPlus />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
