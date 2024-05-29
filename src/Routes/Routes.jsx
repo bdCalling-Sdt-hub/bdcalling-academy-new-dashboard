@@ -15,6 +15,7 @@ import AddCategory from "../Pages/AddCategory";
 import OfflineCourse from "../Pages/OfflineCourse";
 import CourseDetails from "../Pages/CourseDetails";
 import Addvideo from "../Pages/Addvideo";
+import AddCourse from "../Pages/AddCourse";
 
 export const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
             {
                 path: '/add-video/:id',
                 element: <Addvideo />
+            },
+            {
+                path: '/add-course',
+                element: <AddCourse />
             },
         ]
     },
