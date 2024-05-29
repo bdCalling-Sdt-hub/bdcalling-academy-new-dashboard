@@ -228,10 +228,8 @@ const OfflineCourse = () => {
             <div className="between-center gap-2">
                 <PageHeading text={`Overview`} />
                 <div className="flex justify-end items-center">
-                    <button onClick={() => {
-                        setFilterdData({})
-
-                    }} className="btn-primary"><FaPlus /> Add Course</button>
+                    <Link to={`/add-course`} onClick={() => {
+                    }} className="btn-primary"><FaPlus /> Add Course</Link>
                 </div>
             </div>
             <div className="grid-4">
