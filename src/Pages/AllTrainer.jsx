@@ -17,7 +17,6 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-
         category: 'super admin',
     },
     {
@@ -255,8 +254,8 @@ const AdminData = [
         category: 'super admin',
     },
 ]
-const CategoryOptions = ['Admin', 'Super Admin','Mentor']
-const CreateAdmin = () => {
+const CategoryOptions = ['Admin', 'Super Admin', 'Mentor']
+const AllTrainer = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = AdminData.length
     const [itemPerPage, setItemPerPage] = useState(8)
@@ -283,12 +282,20 @@ const CreateAdmin = () => {
     return (
         <>
             <div className="between-center gap-2">
-                <PageHeading text={`Admin List`} />
-                <div className="flex justify-end items-center">
+                <div className="start-center gap-4 cursor-pointer">
+                    <PageHeading text={`All Trainer List`} />
+                    <select className="w-[200px] p-2 border outline-none" name="">
+                        <option value="all Trainer">All Trainer</option>
+                        <option value="all Trainer">All Trainer</option>
+                        <option value="all Trainer">All Trainer</option>
+                        <option value="all Trainer">All Trainer</option>
+                    </select>
+                </div>
+                <div className="flex justify-end items-center w-fit">
                     <button onClick={() => {
                         setFilterdData({})
                         setOpenAddModal(true)
-                    }} className="btn-primary"><FaPlus /> Add Admin</button>
+                    }} className="btn-primary min-w-[150px]"><FaPlus /> Add Trainer</button>
                 </div>
             </div>
             <div className="grid-4">
@@ -325,4 +332,5 @@ const CreateAdmin = () => {
     )
 }
 
-export default CreateAdmin
+
+export default AllTrainer

@@ -51,7 +51,6 @@ const CourseAddForm = ({ formFor }) => {
     };
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>
-
             <div className='start-center gap-2 '>
                 <PageHeading text={`All Course`} /> <MdOutlineKeyboardArrowRight className='text-2xl' /> <PageHeading text={`Add Course`} />
             </div>
@@ -86,7 +85,6 @@ const CourseAddForm = ({ formFor }) => {
                     formFor === 'video' && <>
                         <Input lebel={`Enter Total Sections`} classNames={`border`} type={`number`} status={errors} placeholder={`12`} rules={{ ...register("sections", { required: true }) }} />
                         <Input lebel={`Enter Total Lectures`} classNames={`border`} type={`number`} status={errors} placeholder={`25`} rules={{ ...register("lectures", { required: true }) }} />
-
                     </>
                 }
             </div>
@@ -98,11 +96,8 @@ const CourseAddForm = ({ formFor }) => {
             </div>
             <div className='grid-4 mt-4'>
                 <InputPlus setFields={setCarrierFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={CarrierFields} valueName={'name'} lebel={`Enter Carrier Opportunity`} classNames={`border `} status={errors} placeholder={`Training by Expert Trainers from bdCalling.`} inputFor={'carrier'} />
-
                 <InputPlus setFields={setcarriculumFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={carriculumFields} valueName={'name'} lebel={`Enter carriculum`} classNames={`border `} status={errors} placeholder={`Introduction to Development with Flutter`} inputFor={'carriculum'} />
-
                 <InputPlus setFields={setjobPositionsFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={jobPositionsFields} valueName={'name'} lebel={`Enter job positions`} classNames={`border `} status={errors} placeholder={`App developer`} inputFor={'jobPositions'} />
-
                 <InputPlus setFields={setsoftwaresFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={softwaresFields} valueName={'name'} lebel={`Enter Softwares`} classNames={`border `} status={errors} placeholder={`vs Code`} inputFor={'jobPositions'} />
             </div>
             <div className='flex justify-end items-center gap-4 my-8'>

@@ -7,13 +7,14 @@ import { Modal } from "antd"
 import { useForm } from "react-hook-form"
 import UpdateInput from "../Components/Input/UpdateInput"
 import { FaEdit } from "react-icons/fa"
+import CreateUsersForm from "../Components/Forms/CreateUsersForm"
 const AdminData = [
     {
         _id: '1',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -25,8 +26,8 @@ const AdminData = [
         _id: '2',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -38,8 +39,8 @@ const AdminData = [
         _id: '3',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -51,8 +52,8 @@ const AdminData = [
         _id: '4',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -64,8 +65,8 @@ const AdminData = [
         _id: '5',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -77,8 +78,8 @@ const AdminData = [
         _id: '6',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -90,8 +91,8 @@ const AdminData = [
         _id: '7',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -103,8 +104,8 @@ const AdminData = [
         _id: '8',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -116,8 +117,8 @@ const AdminData = [
         _id: '9',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -129,8 +130,8 @@ const AdminData = [
         _id: '10',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -142,8 +143,8 @@ const AdminData = [
         _id: '11',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -155,8 +156,8 @@ const AdminData = [
         _id: '12',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -168,8 +169,8 @@ const AdminData = [
         _id: '13',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -181,8 +182,8 @@ const AdminData = [
         _id: '14',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -194,8 +195,8 @@ const AdminData = [
         _id: '15',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -207,8 +208,8 @@ const AdminData = [
         _id: '16',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -220,8 +221,8 @@ const AdminData = [
         _id: '19',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -233,8 +234,8 @@ const AdminData = [
         _id: '20',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -246,8 +247,8 @@ const AdminData = [
         _id: '21',
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
-        dept: 'Department Head AGM',
-        designation: 'Certified Lead Generation-Data Entry Expert',
+        designation: 'Department Head AGM',
+        expert: 'Certified Lead Generation-Data Entry Expert',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
@@ -256,7 +257,7 @@ const AdminData = [
         category: 'super admin',
     },
 ]
-
+const CategoryOptions = ['Admin', 'Super Admin','Mentor']
 const CreateMentors = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = AdminData.length
@@ -265,8 +266,6 @@ const CreateMentors = () => {
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const [inputType, setInputType] = useState('password')
-    const [CinputType, setCInputType] = useState('password')
     const {
         register,
         handleSubmit,
@@ -283,16 +282,7 @@ const CreateMentors = () => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
     const [image, setImage] = useState(null);
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+
     return (
         <>
             <div className="between-center gap-2">
@@ -339,52 +329,8 @@ const CreateMentors = () => {
                 open={OpenAddModal}
                 width={600}
             >
-                <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
-                <div className="center-center">
-                        <div className={`h-28 w-28 rounded-full my-4  relative`}>
-                            {
-                               image?<img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterdData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterdData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
-                            }
-
-                            <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
-                                    <FaEdit />
-                            </label>
-                        </div>
-                    </div>
-                    <input id="profile" className="hidden" name="profile" onChange={handleFileChange} type="file" />
-                    <div className="grid-2">
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name`} defaultValue={filterdData.name} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`User Name`} rules={{ ...register("userName", { required: true }) }} placeholder={`User Name`} defaultValue={filterdData.userName} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number`} type={'number'} rules={{ ...register("number", { required: true }) }} placeholder={`Phone Number`} defaultValue={filterdData.number} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email`} type={`email`} rules={{ ...register("email", { required: true }) }} placeholder={`email`} defaultValue={filterdData.email} />
-                        <div className="relative mb-3">
-                            <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Password`} type={inputType} rules={{ ...register("password", { required: true }) }} placeholder={`Password`} defaultValue={filterdData.password} />
-                            {
-                                inputType === 'password' ? <FaEyeSlash onClick={() => setInputType('text')} className="text-xl absolute top-[42px] right-2 text-gray-500" /> : <FaEye onClick={() => setInputType('password')} className="text-xl absolute top-[42px] right-2 text-gray-500" />
-                            }
-                        </div>
-                        <div className="relative  mb-3">
-                            <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Confirm Password`} type={CinputType} rules={{ ...register("Cpassword", { required: true }) }} placeholder={`Confirm Password`} defaultValue={filterdData.Cpassword ? filterdData.Cpassword : ''} />
-                            {
-                                CinputType === 'password' ? <FaEyeSlash onClick={() => setCInputType('text')} className="text-xl absolute top-[42px] right-2 text-gray-500" /> : <FaEye onClick={() => setCInputType('password')} className="text-xl absolute top-[42px] right-2 text-gray-500" />
-                            }
-
-                        </div>
-                    </div>
-                    <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Designation`} rules={{ ...register("designation", { required: true }) }} placeholder={`Designation`} defaultValue={filterdData.designation} />
-                    <lebel className='mt-3 block '>
-                        Please Select a Category
-                        <select className="w-full outline-none border p-2 rounded-md" name="category" id="">
-                            <option value="category">Please Select a Category</option>
-                            <option value="category">category</option>
-                            <option value="category">category</option>
-                            <option value="category">category</option>
-                        </select>
-                    </lebel>
-                    <div className="px-48 mt-8">
-                        <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
-                    </div>
-                </form>
+                 <CreateUsersForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
+                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
             </Modal>
         </>
     )

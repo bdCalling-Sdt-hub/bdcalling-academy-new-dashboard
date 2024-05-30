@@ -21,6 +21,8 @@ import OnlineCourses from "../Pages/OnlineCourses";
 import VideoCourse from "../Pages/VideoCourse";
 import AddVideoCourse from "../Pages/AddVideoCourse";
 import AddOnlineCourse from "../Pages/AddOnlineCourse";
+import AllTrainer from "../Pages/AllTrainer";
+import RequestTrainer from "../Pages/RequestTrainer";
 
 export const router = createBrowserRouter([
     {
@@ -110,6 +112,14 @@ export const router = createBrowserRouter([
             {
                 path: '/video-course',
                 element: <VideoCourse />
+            },
+            {
+                path: '/all-trainer',
+                element: <AllTrainer />
+            },
+            {
+                path: '/request-trainer',
+                element: <RequestTrainer />
             },
         ]
     },
