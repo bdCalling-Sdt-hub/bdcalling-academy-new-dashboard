@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import PageHeading from '../Components/PageHeading'
+import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { useForm } from 'react-hook-form';
-import Input from '../Components/Input';
+import Input from '../Components/Input/Input';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 function generateRandomNumber() {
@@ -15,7 +15,7 @@ const Addvideo = () => {
         { id: '34562', },
         { id: '34587', },
     ]
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit,  formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
     const [totalVideos, settotalVideos] = useState(totalVideo)
     return (

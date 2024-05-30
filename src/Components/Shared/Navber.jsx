@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import Input from "./Input";
+import Input from "../Input/Input";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineNotificationsActive } from "react-icons/md";
-import flag from '../assets/flag.png'
+import flag from '../../assets/flag.png'
 const Navber = () => {
     const { register } = useForm();
     const inputHandeler = (e) => {

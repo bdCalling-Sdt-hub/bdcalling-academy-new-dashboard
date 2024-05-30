@@ -1,6 +1,6 @@
 import { FaPlus } from "react-icons/fa"
-import PageHeading from "../Components/PageHeading"
-import CoursesCard from "../Components/CoursesCard"
+import PageHeading from '../Components/Shared/PageHeading'
+import CoursesCard from "../Components/Cards/CoursesCard"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 const data = [

@@ -1,9 +1,9 @@
 
 
 import { useState } from 'react';
-import { SideberLink } from '../Utils/SideberLinks';
+import { SideberLink } from '../../Utils/SideberLinks';
 import { NavLink } from 'react-router-dom';
-import academyLogo from '../assets/academyLogo.png'
+import academyLogo from '../../assets/academyLogo.png'
 import { IoIosArrowDown } from 'react-icons/io';
 const Sideber = () => {
     const [openAccordion, setOpenAccrodion] = useState({

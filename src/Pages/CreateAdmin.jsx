@@ -1,11 +1,11 @@
 import { FaEye, FaEyeSlash, FaPlus } from "react-icons/fa6"
-import PageHeading from "../Components/PageHeading"
-import AdminCard from "../Components/AdminCard"
+import PageHeading from "../Components/Shared/PageHeading"
+import AdminCard from "../Components/Cards/AdminCard"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Modal } from "antd"
 import { useForm } from "react-hook-form"
-import UpdateInput from "../Components/UpdateInput"
+import UpdateInput from "../Components/Input/UpdateInput"
 import { FaEdit } from "react-icons/fa"
 const AdminData = [
     {
@@ -18,7 +18,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -31,7 +31,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -44,7 +44,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -57,7 +57,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -70,7 +70,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -83,7 +83,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -96,7 +96,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -109,7 +109,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -122,7 +122,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -135,7 +135,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -148,7 +148,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -161,7 +161,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -174,7 +174,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -187,7 +187,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -200,7 +200,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -213,7 +213,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -226,7 +226,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -239,7 +239,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
     {
@@ -252,7 +252,7 @@ const AdminData = [
         number: +898236092374,
         email: 'bgcalling@gmail.com',
         password: '204iwef',
-        designation: 'web dev',
+
         category: 'super admin',
     },
 ]
@@ -335,11 +335,11 @@ const CreateAdmin = () => {
                     <div className="center-center">
                         <div className={`h-28 w-28 rounded-full my-4  relative`}>
                             {
-                              image?<img className="h-full w-full rounded-full object-cover" src={image} alt="" />:  filterdData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterdData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
+                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterdData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterdData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
                             }
 
                             <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
-                                    <FaEdit />
+                                <FaEdit />
                             </label>
                         </div>
                     </div>
