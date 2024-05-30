@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import { RxCross2 } from 'react-icons/rx'
 import { FaEdit } from 'react-icons/fa'
+import UpdateInput from '../Components/Input/UpdateInput'
 const data = [
     {
         "_id": "1",

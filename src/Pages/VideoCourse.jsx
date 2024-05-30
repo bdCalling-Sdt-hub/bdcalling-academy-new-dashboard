@@ -216,8 +216,7 @@ const data = [
     }
 ]
 
-
-const OfflineCourse = () => {
+const VideoCourse = () => {
     const [deleteModal, setDeleteNodal] = useState({ show: false, id: false })
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = data.length
@@ -257,4 +256,4 @@ const OfflineCourse = () => {
     )
 }
 
-export default OfflineCourse
+export default VideoCourse

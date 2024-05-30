@@ -4,7 +4,7 @@ import Input from './Input';
 import { FaPlus, FaXmark } from 'react-icons/fa6';
 import { addNewFields, removeNewFields } from '../../Utils/InputPlusActions';
 import { useForm } from 'react-hook-form';
-const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, rules, status, handler, valueName, fieldFor, actions, actionStyles, inputFor }) => {
+const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, status, handler, valueName, fieldFor, actions, actionStyles, inputFor }) => {
     const { register } = useForm();
     return (
         <>
