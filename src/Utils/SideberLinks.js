@@ -1,6 +1,7 @@
 
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
+import { FaRegUserCircle } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { IoBookOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
@@ -84,7 +85,25 @@ export const SideberLink = [
                 menu: 'Video Course',
                 link: '/video-course'
             },
-          
+        ]
+    },
+    {
+        menu: 'Request Trainer',
+        icon: FaRegUserCircle,
+        link: false,
+        dropDown: [
+            {
+                menu: 'All Trainer',
+                link: '/all-trainer'
+            },
+            {
+                menu: 'Request Trainer ',
+                link: '/request-trainer'
+            },
+            // {
+            //     menu: 'Video Course',
+            //     link: '/video-course'
+            // },
         ]
     },
 ]
