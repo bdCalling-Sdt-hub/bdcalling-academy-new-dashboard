@@ -1,6 +1,6 @@
 import { FaPlus } from "react-icons/fa"
-import PageHeading from "../Components/PageHeading"
-import CoursesCard from "../Components/CoursesCard"
+import PageHeading from '../Components/Shared/PageHeading'
+import CoursesCard from "../Components/Cards/CoursesCard"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 const data = [
@@ -215,7 +215,9 @@ const data = [
         banner: 'https://i.ibb.co/17zDbvT/Rectangle-138.png'
     }
 ]
+
 const OnlineCourses = () => {
+    const [deleteModal, setDeleteNodal] = useState({ show: false, id: false })
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = data.length
     const [itemPerPage, setItemPerPage] = useState(8)
@@ -226,14 +228,13 @@ const OnlineCourses = () => {
             <div className="between-center gap-2">
                 <PageHeading text={`Overview`} />
                 <div className="flex justify-end items-center">
-                    <button onClick={() => {
-                        setFilterdData({})
-                    }} className="btn-primary"><FaPlus /> Add Course</button>
+                    <Link to={`/add-online-course`} onClick={() => {
+                    }} className="btn-primary"><FaPlus /> Add Course</Link>
                 </div>
             </div>
             <div className="grid-4">
                 {
-                    data?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map(item => <CoursesCard key={item?._id} item={item} />)
+                    data?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map(item => <CoursesCard key={item?._id} item={item} deleteModal={deleteModal} setDeleteNodal={setDeleteNodal} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
@@ -253,6 +254,6 @@ const OnlineCourses = () => {
             </div>
         </>
     )
-}
+}   
 
 export default OnlineCourses

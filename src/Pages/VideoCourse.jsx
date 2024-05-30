@@ -216,8 +216,7 @@ const data = [
     }
 ]
 
-
-const OfflineCourse = () => {
+const VideoCourse = () => {
     const [deleteModal, setDeleteNodal] = useState({ show: false, id: false })
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = data.length
@@ -229,7 +228,7 @@ const OfflineCourse = () => {
             <div className="between-center gap-2">
                 <PageHeading text={`Overview`} />
                 <div className="flex justify-end items-center">
-                    <Link to={`/add-course`} onClick={() => {
+                    <Link to={`/add-video-course`} onClick={() => {
                     }} className="btn-primary"><FaPlus /> Add Course</Link>
                 </div>
             </div>
@@ -257,4 +256,4 @@ const OfflineCourse = () => {
     )
 }
 
-export default OfflineCourse
+export default VideoCourse

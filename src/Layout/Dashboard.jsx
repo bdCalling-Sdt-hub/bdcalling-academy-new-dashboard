@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
-import Navber from "../Components/Navber"
-import Sideber from "../Components/Sideber"
+import Navber from "../Components/Shared/Navber"
+import Sideber from "../Components/Shared/Sideber"
 
 const Dashboard = () => {
 

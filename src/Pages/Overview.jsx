@@ -1,5 +1,5 @@
-import OverviewCard from "../Components/OverviewCard"
-import PageHeading from "../Components/PageHeading"
+import OverviewCard from "../Components/Cards/OverviewCard"
+import PageHeading from "../Components/Shared/PageHeading"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space, Table } from 'antd';

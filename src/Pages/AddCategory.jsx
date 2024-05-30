@@ -1,18 +1,12 @@
 import React, { useState } from 'react'
-import PageHeading from '../Components/PageHeading'
-import { FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa6'
-import { DatePicker, Divider, Modal, Radio, Table } from 'antd'
+import PageHeading from '../Components/Shared/PageHeading'
+import {  FaPlus } from 'react-icons/fa6'
+import {  Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
-import Input from '../Components/Input'
-import { IoSearch } from 'react-icons/io5'
+
 import { RxCross2 } from 'react-icons/rx'
-import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
-import { FiPrinter } from 'react-icons/fi'
-import { IoMdInformationCircleOutline } from 'react-icons/io'
-import { Link } from 'react-router-dom'
-import { SiMicrosoftword } from 'react-icons/si'
 import { FaEdit } from 'react-icons/fa'
-import UpdateInput from '../Components/UpdateInput'
+import UpdateInput from '../Components/Input/UpdateInput'
 const data = [
     {
         "_id": "1",
