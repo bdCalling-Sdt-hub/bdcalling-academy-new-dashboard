@@ -19,6 +19,8 @@ import AddCourse from "../Pages/AddCourse";
 import UpdateCourse from "../Pages/UpdateCourse";
 import OnlineCourses from "../Pages/OnlineCourses";
 import VideoCourse from "../Pages/VideoCourse";
+import AddVideoCourse from "../Pages/AddVideoCourse";
+import AddOnlineCourse from "../Pages/AddOnlineCourse";
 
 export const router = createBrowserRouter([
     {
@@ -89,6 +91,14 @@ export const router = createBrowserRouter([
                 path: '/add-course',
                 element: <AddCourse />
             },
+            {
+                path: '/add-video-course',
+                element: <AddVideoCourse />
+            },  
+            {
+                path: '/add-online-course',
+                element: <AddOnlineCourse />
+            },  
             {
                 path: '/update-course/:id',
                 element: <UpdateCourse />

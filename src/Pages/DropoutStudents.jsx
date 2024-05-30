@@ -6,6 +6,7 @@ import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import {  MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { IoMdInformationCircleOutline } from 'react-icons/io'
 const data = [
     {
         "_id": "1",

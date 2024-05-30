@@ -1,12 +1,11 @@
 import React from 'react'
 import CourseAddForm from '../Components/Forms/CourseAddForm'
-
-const AddCourse = () => {
+const AddVideoCourse = () => {
     return (
         <>
-            <CourseAddForm formFor={`online`} />
+            <CourseAddForm formFor={`video`} />
         </>
     )
 }
 
-export default AddCourse
+export default AddVideoCourse

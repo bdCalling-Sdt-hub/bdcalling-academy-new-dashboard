@@ -228,7 +228,7 @@ const OnlineCourses = () => {
             <div className="between-center gap-2">
                 <PageHeading text={`Overview`} />
                 <div className="flex justify-end items-center">
-                    <Link to={`/add-course`} onClick={() => {
+                    <Link to={`/add-online-course`} onClick={() => {
                     }} className="btn-primary"><FaPlus /> Add Course</Link>
                 </div>
             </div>
