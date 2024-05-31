@@ -100,10 +100,10 @@ export const SideberLink = [
                 menu: 'Request Trainer ',
                 link: '/request-trainer'
             },
-            // {
-            //     menu: 'Video Course',
-            //     link: '/video-course'
-            // },
+            {
+                menu: 'Trainer Review',
+                link: '/trainer-review'
+            },
         ]
     },
 ]

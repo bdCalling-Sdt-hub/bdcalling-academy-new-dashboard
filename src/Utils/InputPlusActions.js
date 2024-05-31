@@ -9,3 +9,8 @@ export const removeNewFields = (field, setField, id) => {
     const newfields = field.filter((filterItem) => filterItem?._id !== id)
     setField(newfields)
 }
+export const removeNewFieldLastOne = (field, setField) => {
+    const newfields = [...field]
+    newfields.pop();
+    setField(newfields)
+}

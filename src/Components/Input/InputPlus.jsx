@@ -15,12 +15,16 @@ const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, st
                             <UpdateInput key={item?._id} lebel={lebel ? lebel : null} type={type ? type : 'text'} placeholder={placeholder ? placeholder : 'Enter your text here'} defaultValue={item[valueName] ? item[valueName] : ''} classNames={classNames ? classNames : ''} rules={{ ...register(`${inputFor}-${item?._id}`, { required: true }) }} status={status && status} handler={handler && handler} />
                             <div className='flex items-center justify-end w-fit gap-2'>
                                 {
-                                    actions?.plus && <button type='button' className={`bg-red-600 p-2 text-xl rounded-full text-white ${actionStyles}`}>
+                                    actions?.plus && <button onClick={() => {
+                                        removeNewFields(Fields, setFields, item?._id)
+                                    }} type='button' className={`bg-red-600 p-2 text-xl rounded-full text-white ${actionStyles}`}>
                                         <FaXmark />
                                     </button>
                                 }
                                 {
-                                    actions?.cross && <button type='button' className={`bg-green-600 p-2 rounded-full text-white text-xl`} >
+                                    actions?.cross && <button onClick={() => {
+                                        addNewFields(Fields, setFields)
+                                    }} type='button' className={`bg-green-600 p-2 rounded-full text-white text-xl`} >
                                         <FaPlus />
                                     </button>
                                 }

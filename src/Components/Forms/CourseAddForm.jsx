@@ -8,7 +8,9 @@ import InputPlus from '../Input/InputPlus';
 import { Link } from 'react-router-dom';
 import PageHeading from '../Shared/PageHeading';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaPlus } from 'react-icons/fa';
+import { FaXmark } from 'react-icons/fa6';
+import { addNewFields, removeNewFieldLastOne } from '../../Utils/InputPlusActions';
 const popularityOptions = ['good', 'very good']
 const CategoryOptions = ['App Development', 'web Development']
 const CourseTypeOptions = ['on Line', 'off Line']
@@ -94,11 +96,83 @@ const CourseAddForm = ({ formFor }) => {
             <div className='mt-4'>
                 <TextArea lebel={`Enter Address`} type={`text`} classNames={`border h-20`} status={errors} placeholder={`bdCalling IT Ltd - Corporate Office House - 14, Main Road, Block - A, Banasree, Rampura, Dhaka - 1219`} rules={{ ...register("address", { required: true }) }} />
             </div>
-            <div className='grid-4 mt-4'>
-                <InputPlus setFields={setCarrierFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={CarrierFields} valueName={'name'} lebel={`Enter Carrier Opportunity`} classNames={`border `} status={errors} placeholder={`Training by Expert Trainers from bdCalling.`} inputFor={'carrier'} />
-                <InputPlus setFields={setcarriculumFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={carriculumFields} valueName={'name'} lebel={`Enter carriculum`} classNames={`border `} status={errors} placeholder={`Introduction to Development with Flutter`} inputFor={'carriculum'} />
-                <InputPlus setFields={setjobPositionsFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={jobPositionsFields} valueName={'name'} lebel={`Enter job positions`} classNames={`border `} status={errors} placeholder={`App developer`} inputFor={'jobPositions'} />
-                <InputPlus setFields={setsoftwaresFields} actions={{ plus: true, cross: true }} fieldFor='create' Fields={softwaresFields} valueName={'name'} lebel={`Enter Softwares`} classNames={`border `} status={errors} placeholder={`vs Code`} inputFor={'jobPositions'} />
+            <div className='md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-start lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4'>
+                <div className='w-full flex justify-start items-start gap-2'>
+                    <div className='flex flex-col w-full gap-2'>
+                        <p>Enter Carrier Opportunity</p>
+                        <InputPlus actions={false} fieldFor='create' Fields={CarrierFields} valueName={'name'} classNames={`border `} status={errors} placeholder={`Training by Expert Trainers from bdCalling.`} inputFor={'carrier'} />
+                    </div>
+                    <div className='flex items-center justify-end w-fit gap-2'>
+                        <button onClick={() => {
+                            removeNewFieldLastOne(CarrierFields, setCarrierFields)
+                        }} type='button' className={`bg-red-600 p-1 text-lg rounded-full text-white `}>
+                            <FaXmark />
+                        </button>
+                        <button onClick={() => {
+                            addNewFields(CarrierFields, setCarrierFields)
+                        }} type='button' className={`bg-green-600 p-1 rounded-full text-white text-lg`} >
+                            <FaPlus />
+                        </button>
+                    </div>
+                </div>
+
+                <div className='w-full flex justify-start items-start gap-2'>
+                    <div className='flex flex-col w-full gap-2'>
+                        <p>Enter carriculum</p>
+                        <InputPlus actions={false} fieldFor='create' Fields={carriculumFields} valueName={'name'} classNames={`border `} status={errors} placeholder={`Introduction to Development with Flutter`} inputFor={'carriculum'} />
+                    </div>
+                    <div className='flex items-center justify-end w-fit gap-2'>
+                        <button onClick={() => {
+                            removeNewFieldLastOne(carriculumFields, setcarriculumFields)
+                        }} type='button' className={`bg-red-600 p-1 text-lg rounded-full text-white `}>
+                            <FaXmark />
+                        </button>
+                        <button onClick={() => {
+                            addNewFields(carriculumFields, setcarriculumFields)
+                        }} type='button' className={`bg-green-600 p-1 rounded-full text-white text-lg`} >
+                            <FaPlus />
+                        </button>
+                    </div>
+                </div>
+
+                <div className='w-full flex justify-start items-start gap-2'>
+                    <div className='flex flex-col w-full gap-2'>
+                        <p>Enter job positions</p>
+                        <InputPlus actions={false} fieldFor='create' Fields={jobPositionsFields} valueName={'name'} classNames={`border `} status={errors} placeholder={`App developer`} inputFor={'jobPositions'} />
+                    </div>
+                    <div className='flex items-center justify-end w-fit gap-2'>
+                        <button onClick={() => {
+                            removeNewFieldLastOne(jobPositionsFields, setjobPositionsFields)
+                        }} type='button' className={`bg-red-600 p-1 text-lg rounded-full text-white `}>
+                            <FaXmark />
+                        </button>
+                        <button onClick={() => {
+                            addNewFields(jobPositionsFields, setjobPositionsFields)
+                        }} type='button' className={`bg-green-600 p-1 rounded-full text-white text-lg`} >
+                            <FaPlus />
+                        </button>
+                    </div>
+                </div>
+
+                <div className='w-full flex justify-start items-start gap-2'>
+                    <div className='flex flex-col w-full gap-2'>
+                        <p>Enter Softwares</p>
+                        <InputPlus actions={false} fieldFor='create' Fields={softwaresFields} valueName={'name'} classNames={`border `} status={errors} placeholder={`vs Code`} inputFor={'jobPositions'} />
+                    </div>
+                    <div className='flex items-center justify-end w-fit gap-2'>
+                        <button onClick={() => {
+                            removeNewFieldLastOne(softwaresFields, setsoftwaresFields)
+                        }} type='button' className={`bg-red-600 p-1 text-lg rounded-full text-white `}>
+                            <FaXmark />
+                        </button>
+                        <button onClick={() => {
+                            addNewFields(softwaresFields, setsoftwaresFields)
+                        }} type='button' className={`bg-green-600 p-1 rounded-full text-white text-lg`} >
+                            <FaPlus />
+                        </button>
+                    </div>
+                </div>
+
             </div>
             <div className='flex justify-end items-center gap-4 my-8'>
                 <Link to={-1}>
