@@ -205,7 +205,11 @@ const AllStudents = () => {
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
-                <span className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
+                <div className='relative'>
+                    <span onMouseEnter={()=>{
+                        setFollowUp({_id:record._id})
+                    }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
+                </div>
                 <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
                 <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
             </div>,
@@ -263,6 +267,7 @@ const AllStudents = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
+    const [followUp, setFollowUp] = useState({ _id: false, open: false })
     return (
         <>
             <div className='grid-2'>

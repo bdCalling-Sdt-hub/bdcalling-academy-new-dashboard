@@ -17,10 +17,8 @@ const VideoCourseExamQuestion = () => {
     const [correctAnswers, setCorrectAnswer] = useState([{ 437834: 'answer1-437834' }])
     const handelCorrectAnswers = (ans, questionId) => {
         const newAnswers = correctAnswers.filter(item => !(item.hasOwnProperty(questionId)))
-        console.log(newAnswers)
         setCorrectAnswer([...newAnswers, { [questionId]: ans }])
     }
-console.log(totalQuestions)
     return (
         <>
             <PageHeading text={`Provide Class video `} />

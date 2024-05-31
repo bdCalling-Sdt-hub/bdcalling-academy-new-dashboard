@@ -16,7 +16,7 @@ const CourseDetails = () => {
                     {
                         [...Array(6).keys()].map(item => <div key={item} className="collapse">
                             <input type="radio" name="my-accordion-2" defaultChecked />
-                            <div className="collapse-title font-medium ">
+                            <div className="collapse-title font-medium p-1">
                                 <div className='border rounded-none py-4 between-center'>
                                     <h3 className='start-center gap-2 text-[#6B6B6B] text-base '><MdKeyboardArrowRight className='text-2xl' /> 0. Introductioon</h3>
                                     <Link to={`/add-video/${item}`} className="text-white bg-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 mr-2">
@@ -50,7 +50,7 @@ const CourseDetails = () => {
                     }
                     <div className="collapse">
                         <input type="radio" name="my-accordion-2" defaultChecked />
-                        <div className="collapse-title font-medium ">
+                        <div className="collapse-title font-medium p-1">
                             <div className='border rounded-none py-4 between-center'>
                                 <h3 className='start-center gap-2 text-[#6B6B6B] text-base '><MdKeyboardArrowRight className='text-2xl' /></h3>
                                 <Link to={`/add-video/1`} className="text-white bg-[green] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 mr-2">

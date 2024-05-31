@@ -5,8 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import TextArea from '../Input/TextArea'
 
 const LeaveForm = ({ image, setImage, filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit, CategoryOptions }) => {
-    console.log(filterdData)
+    handleSubmit, errors, onSubmit }) => {
     const [inputType, setInputType] = useState('password')
     const [CinputType, setCInputType] = useState('password')
     const handleFileChange = (e) => {
