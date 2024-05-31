@@ -37,11 +37,9 @@ const LeaveForm = ({ image, setImage, filterdData, inputHandeler, register,
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Leave Type*`} rules={{ ...register("Leave", { required: true }) }} placeholder={`User Name`} defaultValue={filterdData.Leave} />
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number`} type={'number'} rules={{ ...register("Phone", { required: true }) }} placeholder={`Phone Number`} defaultValue={filterdData.Phone} />
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email`} type={`email`} rules={{ ...register("Email", { required: true }) }} placeholder={`email`} defaultValue={filterdData.Email} />
-
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Designation`} rules={{ ...register("Designation", { required: true }) }} placeholder={`Designation`} defaultValue={filterdData.Designation} />
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Expert`} rules={{ ...register("Expert", { required: true }) }} placeholder={`Designation`} defaultValue={filterdData.Expert} />
             </div>
-
             <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32`} lebel={`Reason`} rules={{ ...register("Reason", { required: true }) }} placeholder={`Reason`} defaultValue={filterdData.Reason} />
             <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Comments`} rules={{ ...register("Comments", { required: true }) }} placeholder={`Comments`} defaultValue={filterdData.Comments} />
             <div className='between-center gap-3 py-8 pb-0'>
