@@ -264,11 +264,7 @@ const CreateSuperAdmin = () => {
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm()
+    const {register,handleSubmit,formState: { errors }} = useForm()
     const onSubmit = (data) => console.log(data)
     const handelEdit = (id) => {
         setImage(null)

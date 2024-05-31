@@ -23,6 +23,8 @@ import AddVideoCourse from "../Pages/AddVideoCourse";
 import AddOnlineCourse from "../Pages/AddOnlineCourse";
 import AllTrainer from "../Pages/AllTrainer";
 import RequestTrainer from "../Pages/RequestTrainer";
+import TrainerReview from "../Pages/TrainerReview";
+import VideoCourseExamQuestion from "../Pages/VideoCourseExamQuestion";
 
 export const router = createBrowserRouter([
     {
@@ -120,6 +122,14 @@ export const router = createBrowserRouter([
             {
                 path: '/request-trainer',
                 element: <RequestTrainer />
+            },
+            {
+                path: '/trainer-review',
+                element: <TrainerReview  />
+            },
+            {
+                path: '/video-course-exam-question/:id',
+                element: <VideoCourseExamQuestion  />
             },
         ]
     },
