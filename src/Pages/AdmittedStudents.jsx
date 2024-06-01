@@ -18,7 +18,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "123-456-7890",
         "studentID": "student1@example.com",
-        "course": "Mathematics",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -29,7 +29,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "234-567-8901",
         "studentID": "student2@example.com",
-        "course": "Physics",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -40,7 +40,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "345-678-9012",
         "studentID": "student3@example.com",
-        "course": "Chemistry",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -51,7 +51,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "456-789-0123",
         "studentID": "student4@example.com",
-        "course": "Biology",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -62,7 +62,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "567-890-1234",
         "studentID": "student5@example.com",
-        "course": "English",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -73,7 +73,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "678-901-2345",
         "studentID": "student6@example.com",
-        "course": "History",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -84,7 +84,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "789-012-3456",
         "studentID": "student7@example.com",
-        "course": "Geography",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -95,7 +95,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "890-123-4567",
         "studentID": "student8@example.com",
-        "course": "Economics",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -106,7 +106,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "901-234-5678",
         "studentID": "student9@example.com",
-        "course": "Political Science",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -117,7 +117,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "012-345-6789",
         "studentID": "student10@example.com",
-        "course": "Sociology",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -128,7 +128,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "123-456-7891",
         "studentID": "student11@example.com",
-        "course": "Philosophy",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -150,7 +150,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "345-678-9013",
         "studentID": "student13@example.com",
-        "course": "Music",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -161,7 +161,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "456-789-0124",
         "studentID": "student14@example.com",
-        "course": "Theater",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "paid",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
@@ -172,7 +172,7 @@ const data = [
         "Batch no": "BAC-WP2024",
         "phone": "567-890-1235",
         "studentID": "student15@example.com",
-        "course": "Dance",
+        "course": "UI/UX Design",
         "Course type": "off line",
         "Payment status": "due",
         "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"

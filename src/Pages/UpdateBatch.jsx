@@ -1,5 +1,5 @@
 import React from 'react'
-import BatchForm from '../Components/Cards/BatchForm'
+import BatchForm from '../Components/Forms/BatchForm'
 import { Link } from 'react-router-dom'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineArrowBackIos } from 'react-icons/md'

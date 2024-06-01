@@ -2,7 +2,7 @@ import React from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineArrowBackIos } from 'react-icons/md'
 import { Link } from 'react-router-dom'
-import BatchForm from '../Components/Cards/BatchForm'
+import BatchForm from '../Components/Forms/BatchForm'
 
 const AddNewBatch = () => {
     return (
