@@ -2,7 +2,7 @@ import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 
-const TrainerAddForm = ({ filterdData, image, setImage, }) => {
+const TrainerAddForm = ({ filterdData, image, setImage,setOpenAddModal }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -182,7 +182,9 @@ const TrainerAddForm = ({ filterdData, image, setImage, }) => {
             </div>
             <Form.Item >
                 <div className='center-center gap-4' >
-                    <button type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Save</button>
+                    <button onClick={()=>{
+                        setOpenAddModal(false)
+                    }} type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Save</button>
                 </div>
             </Form.Item>
         </Form>

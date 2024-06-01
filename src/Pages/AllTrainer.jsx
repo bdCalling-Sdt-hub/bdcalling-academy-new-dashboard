@@ -304,7 +304,6 @@ const paymentHistory = [
     }
 ]
 
-const CategoryOptions = ['Admin', 'Super Admin', 'Mentor']
 const AllTrainer = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const totalData = AdminData.length
@@ -422,7 +421,7 @@ const AllTrainer = () => {
                 open={OpenAddModal}
                 width={900}
             >
-                <TrainerAddForm filterdData={filterdData} image={image} setImage={setImage} />
+                <TrainerAddForm filterdData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
             </Modal>
             <Modal
                 centered

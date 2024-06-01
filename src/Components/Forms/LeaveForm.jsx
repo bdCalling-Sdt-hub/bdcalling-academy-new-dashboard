@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import TextArea from '../Input/TextArea'
 
 const LeaveForm = ({ image, setImage, filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit }) => {
+    handleSubmit, errors, onSubmit ,setOpenLeaveModal}) => {
     const [inputType, setInputType] = useState('password')
     const [CinputType, setCInputType] = useState('password')
     const handleFileChange = (e) => {
@@ -43,9 +43,15 @@ const LeaveForm = ({ image, setImage, filterdData, inputHandeler, register,
             <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32`} lebel={`Reason`} rules={{ ...register("Reason", { required: true }) }} placeholder={`Reason`} defaultValue={filterdData.Reason} />
             <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Comments`} rules={{ ...register("Comments", { required: true }) }} placeholder={`Comments`} defaultValue={filterdData.Comments} />
             <div className='between-center gap-3 py-8 pb-0'>
-                    <button className='transition-all text-base font-medium px-10 py-3 bg-[#2BA24C] rounded-md text-white hover:scale-105 active:scale-95'>Approved</button>
-                    <button className='transition-all text-base font-medium px-10 py-3 text-[#FFC60B] border border-[#FFC60B] rounded-md hover:scale-105 active:scale-95'>Pending</button>
-                    <button className='transition-all text-base font-medium px-10 py-3 text-[#FA1131] border border-[#FA1131] rounded-md  hover:scale-105 active:scale-95'>Rejected</button>
+                    <button onClick={()=>{
+                        setOpenLeaveModal(false)
+                    }} className='transition-all text-base font-medium px-10 py-3 bg-[#2BA24C] rounded-md text-white hover:scale-105 active:scale-95'>Approved</button>
+                    <button onClick={()=>{
+                        setOpenLeaveModal(false)
+                    }} className='transition-all text-base font-medium px-10 py-3 text-[#FFC60B] border border-[#FFC60B] rounded-md hover:scale-105 active:scale-95'>Pending</button>
+                    <button onClick={()=>{
+                        setOpenLeaveModal(false)
+                    }} className='transition-all text-base font-medium px-10 py-3 text-[#FA1131] border border-[#FA1131] rounded-md  hover:scale-105 active:scale-95'>Rejected</button>
                 </div>
         </form>
     )
