@@ -329,16 +329,7 @@ const AllTrainer = () => {
         setOpenAddModal(false)
         setopenPaymentModal(true)
     }
-    const inputHandeler = (e, name) => {
-        setFilterdData({ ...filterdData, [name]: e.target.value })
-    }
     const [image, setImage] = useState(null);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm()
-    const onSubmit = (data) => console.log(data)
     const columns = [
         {
             title: 'S.no',

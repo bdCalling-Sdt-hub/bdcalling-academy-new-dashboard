@@ -4,7 +4,7 @@ import { FaEdit } from "react-icons/fa"
 import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import SelectInput from '../Input/SelectInput'
 const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit ,CategoryOptions}) => {
+    handleSubmit, errors, onSubmit ,CategoryOptions ,setOpenAddModal}) => {
     const [inputType, setInputType] = useState('password')
     const [CinputType, setCInputType] = useState('password')
     const handleFileChange = (e) => {
@@ -47,7 +47,7 @@ const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register
             </div>
             <SelectInput lebel={`Select Category`} classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...register("category", { required: true }) }} />
             <div className="px-48 mt-8">
-                <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                <input onClick={()=>setOpenAddModal(false)} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
             </div>
         </form>
     )

@@ -149,7 +149,6 @@ const data = [
 
 
 const AllStudents = () => {
-    const [selectionType, setSelectionType] = useState('checkbox');
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -158,6 +157,7 @@ const AllStudents = () => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
+    const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
@@ -198,23 +198,28 @@ const AllStudents = () => {
         {
             title: 'Set Follow Up',
             dataIndex: '_id',
-            render: (_, record) => <div className='start-center gap-2'>
+            render: (_, record) => <div className='start-center gap-2 relative'>
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
-                <div className='relative'>
-                    <span onMouseEnter={()=>{
-                        setFollowUp({_id:record._id})
-                    }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
-                </div>
-                <span onMouseEnter={()=>{
-                        setFollowUp({_id:record._id})
-                    }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
+                {
+                    [...Array(3).keys()].map(item => <span key={item} onMouseLeave={() => {
+                        setFollowUp({ _id: false, index: false })
+                    }} onMouseEnter={() => {
+                        setFollowUp({ _id: record._id, index: item })
+                    }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
+                }
+                {
+                    [...Array(3).keys()].map(item => <div key={item} className={`${(followUp?._id == record?._id && followUp?.index == item) ? 'block' : 'hidden'} ${item == 0 ? 'border-[#2492EB]' : item == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                        <p className='text-[#5C5C5C] '>Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment</p>
+                    </div>)
+                }
             </div>,
             key: '_id'
         },
@@ -270,7 +275,6 @@ const AllStudents = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
-    const [followUp, setFollowUp] = useState({ _id: false, open: false })
     return (
         <>
             <div className='grid-2'>

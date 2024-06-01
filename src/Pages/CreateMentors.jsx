@@ -329,7 +329,7 @@ const CreateMentors = () => {
                 open={OpenAddModal}
                 width={600}
             >
-                 <CreateUsersForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
+                 <CreateUsersForm setOpenAddModal={setOpenAddModal} image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
                     handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
             </Modal>
         </>
