@@ -27,7 +27,7 @@ const AdminData = [
         profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
         name: 'Md. Shamim Miah',
         designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
+        expert: 'UX/UI Design trainer',
         userName: 'john doe',
         number: +898236092374,
         email: 'bgcalling@gmail.com',
