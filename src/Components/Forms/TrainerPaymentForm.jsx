@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import PageHeading from '../Shared/PageHeading';
 import { FaEdit } from 'react-icons/fa';
 
-const TrainerPaymentForm = ({ image, setImage, filterdData, }) => {
+const TrainerPaymentForm = ({ filterdData, setopenPaymentModal, setopenPaymentHistoryModal }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -12,9 +12,7 @@ const TrainerPaymentForm = ({ image, setImage, filterdData, }) => {
         console.log('Failed:', errorInfo);
     };
 
-    const handleChange = (e) => {
-        setImage(e.target.files[0])
-    }
+
     const onChange = (field, date, dateString) => {
         // console.log(field, date, dateString);
     };
@@ -35,11 +33,7 @@ const TrainerPaymentForm = ({ image, setImage, filterdData, }) => {
                 <div className='between-center mb-6'>
                     <div className='start-center gap-2'>
                         <div className='w-28 h-28 relative'>
-                            <img className='w-fuh-full h-full object-cover rounded-full' src={image && URL.createObjectURL(image) || "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
-                            <label htmlFor='image' className='bg-[var(--primary-bg)] text-white p-2 rounded-full text-xl absolute right-0 bottom-0 cursor-pointer'><FaEdit /></label>
-                            <input onChange={handleChange} type="file" id='image' style={{
-                                display: 'none'
-                            }} />
+                            <img className='w-fuh-full h-full object-cover rounded-full' src={filterdData?.profile||"https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
                         </div>
                         <div>
                             <p className='text-2xl font-semibold text-[#333333] my-[2px]'>{filterdData?.name}</p>
@@ -48,7 +42,10 @@ const TrainerPaymentForm = ({ image, setImage, filterdData, }) => {
                             <p className='text-base font-normal text-[#333333] my-[2px]'>{filterdData?.email}</p>
                         </div>
                     </div>
-                    <button type='button' className='w-36 text-center py-2 px-2 bg-[#FFC60B] font-semibold rounded-md text-[#6B6B6B] hover:scale-105 active:scale-95 transition-all'>
+                    <button onClick={()=>{
+                        setopenPaymentModal(false)
+                        setopenPaymentHistoryModal(true)
+                    }} type='button' className='w-36 text-center py-2 px-2 bg-[#FFC60B] font-semibold rounded-md text-[#6B6B6B] hover:scale-105 active:scale-95 transition-all'>
                         Payment History
                     </button>
                 </div>
@@ -88,7 +85,7 @@ const TrainerPaymentForm = ({ image, setImage, filterdData, }) => {
                 </div>
                 <Form.Item >
                     <div className='flex justify-end items-end gap-4' >
-                        <button type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Confirm Payment</button>
+                        <button onClick={()=>setopenPaymentModal(false)} type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Confirm Payment</button>
                     </div>
                 </Form.Item>
             </Form>

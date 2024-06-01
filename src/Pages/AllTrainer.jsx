@@ -1,14 +1,13 @@
 import { FaPlus } from "react-icons/fa6"
 import PageHeading from "../Components/Shared/PageHeading"
-import AdminCard from "../Components/Cards/AdminCard"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Modal } from "antd"
 import { useForm } from "react-hook-form"
-import CreateUsersForm from "../Components/Forms/CreateUsersForm"
 import TrainerCard from "../Components/Cards/TrainerCard"
 import TrainerAddForm from "../Components/Forms/TrainerAddForm"
 import TrainerPaymentForm from "../Components/Forms/TrainerPaymentForm"
+import { AiOutlinePrinter, AiTwotonePrinter } from "react-icons/ai"
 const AdminData = [
     {
         _id: '1',
@@ -257,6 +256,54 @@ const AdminData = [
         category: 'super admin',
     },
 ]
+const paymentHistory = [
+    {
+        "_id": "1",
+        "category": "part time",
+        "paymentType": "per class",
+        "method": "bkash",
+        "amount": 500,
+        "date": "2024-05-01",
+        "totalPayment": 5000
+    },
+    {
+        "_id": "2",
+        "category": "part time",
+        "paymentType": "per class",
+        "method": "bkash",
+        "amount": 700,
+        "date": "2024-05-05",
+        "totalPayment": 7000
+    },
+    {
+        "_id": "3",
+        "category": "part time",
+        "paymentType": "per class",
+        "method": "bkash",
+        "amount": 600,
+        "date": "2024-05-10",
+        "totalPayment": 6000
+    },
+    {
+        "_id": "4",
+        "category": "part time",
+        "paymentType": "per class",
+        "method": "bkash",
+        "amount": 650,
+        "date": "2024-05-15",
+        "totalPayment": 6500
+    },
+    {
+        "_id": "5",
+        "category": "part time",
+        "paymentType": "per class",
+        "method": "bkash",
+        "amount": 550,
+        "date": "2024-05-20",
+        "totalPayment": 5500
+    }
+]
+
 const CategoryOptions = ['Admin', 'Super Admin', 'Mentor']
 const AllTrainer = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
@@ -266,6 +313,7 @@ const AllTrainer = () => {
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [openPaymentModal, setopenPaymentModal] = useState(false)
+    const [openPaymentHistoryModal, setopenPaymentHistoryModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
     const handelEdit = (id) => {
         setImage(null)
@@ -337,7 +385,7 @@ const AllTrainer = () => {
                 open={openPaymentModal}
                 width={900}
             >
-                <TrainerPaymentForm filterdData={filterdData} image={image} setImage={setImage}  />
+                <TrainerPaymentForm filterdData={filterdData} setopenPaymentModal={setopenPaymentModal} setopenPaymentHistoryModal={setopenPaymentHistoryModal} />
             </Modal>
             <Modal
                 centered
@@ -346,7 +394,33 @@ const AllTrainer = () => {
                 open={OpenAddModal}
                 width={900}
             >
-                <TrainerAddForm filterdData={filterdData} />
+                <TrainerAddForm filterdData={filterdData} image={image} setImage={setImage} />
+            </Modal>
+            <Modal
+                centered
+                footer={false}
+                onCancel={() => setopenPaymentHistoryModal(false)}
+                open={openPaymentHistoryModal}
+                width={900}
+            >
+                <div>
+                    <div className='flex justify-between items-end mb-6'>
+                        <div className='start-center gap-2'>
+                            <div className='w-28 h-28 relative'>
+                                <img className='w-fuh-full h-full object-cover rounded-full' src={filterdData?.profile || "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
+                            </div>
+                            <div>
+                                <p className='text-2xl font-semibold text-[#333333] my-[2px]'>{filterdData?.name}</p>
+                                <p className='text-base font-normal text-[#2BA24C] my-[2px]'>{filterdData?.expert}</p>
+                                <p className='text-base font-normal text-[#333333] my-[2px]'>{filterdData?.number}</p>
+                                <p className='text-base font-normal text-[#333333] my-[2px]'>{filterdData?.email}</p>
+                            </div>
+                        </div>
+                        <button type='button' className=' text-center text-[#2BA24C] text-2xl font-semibold rounded-md hover:scale-105 active:scale-95 transition-all'>
+                            <AiOutlinePrinter />
+                        </button>
+                    </div>
+                </div>
             </Modal>
         </>
     )

@@ -1,7 +1,8 @@
 import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
+import { FaEdit } from 'react-icons/fa';
 
-const TrainerAddForm = ({ filterdData, }) => {
+const TrainerAddForm = ({ filterdData, image, setImage, }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -9,7 +10,9 @@ const TrainerAddForm = ({ filterdData, }) => {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
+    const handleChange = (e) => {
+        setImage(e.target.files[0])
+    }
     useEffect(() => {
         if (filterdData) {
             form.setFieldValue(filterdData)
@@ -22,6 +25,13 @@ const TrainerAddForm = ({ filterdData, }) => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
         >
+            <div className='w-28 h-28 relative'>
+                <img className='w-fuh-full h-full object-cover rounded-full' src={image && URL.createObjectURL(image) || "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
+                <label htmlFor='image' className='bg-[var(--primary-bg)] text-white p-2 rounded-full text-xl absolute right-0 bottom-0 cursor-pointer'><FaEdit /></label>
+                <input onChange={handleChange} type="file" id='image' style={{
+                    display: 'none'
+                }} />
+            </div>
             <div className='grid-3 w-full'>
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">First Name*</span>}
