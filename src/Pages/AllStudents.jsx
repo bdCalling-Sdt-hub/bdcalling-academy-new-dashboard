@@ -385,7 +385,9 @@ const AllStudents = () => {
                     </div>
                     <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...register("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
-                        <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                        <input onClick={() => {
+                            setOpenStudentAddModal(false)
+                        }} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
                     </div>
                 </form>
             </Modal>
@@ -459,7 +461,9 @@ const AllStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </> : <>
@@ -558,7 +562,9 @@ const AllStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </>
@@ -679,7 +685,9 @@ const AllStudents = () => {
                                 <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
                             </div>
-                            <button className='btn-primary max-w-32'>Send Comment</button>
+                            <button onClick={()=>{
+                                setOpenFollowUpModal(false)
+                            }} className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>
