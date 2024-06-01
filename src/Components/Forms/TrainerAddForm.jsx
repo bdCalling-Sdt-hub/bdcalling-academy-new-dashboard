@@ -1,9 +1,7 @@
-import { DatePicker, Form, Input, Select } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Form, Input, Select } from 'antd';
+import { useEffect } from 'react';
 
-const TrainerAddForm = ({ image, setImage, filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit, CategoryOptions }) => {
+const TrainerAddForm = ({ filterdData, }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -12,12 +10,11 @@ const TrainerAddForm = ({ image, setImage, filterdData, inputHandeler, register,
         console.log('Failed:', errorInfo);
     };
 
-    const handleChange = (e) => {
-        setImage(e.target.files[0])
-    }
-    const onChange = (field, date, dateString) => {
-        // console.log(field, date, dateString);
-    };
+    useEffect(() => {
+        if (filterdData) {
+            form.setFieldValue(filterdData)
+        }
+    }, [filterdData, form])
     return (
         <Form
             layout={'vertical'}

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import CreateUsersForm from "../Components/Forms/CreateUsersForm"
 import TrainerCard from "../Components/Cards/TrainerCard"
 import TrainerAddForm from "../Components/Forms/TrainerAddForm"
+import TrainerPaymentForm from "../Components/Forms/TrainerPaymentForm"
 const AdminData = [
     {
         _id: '1',
@@ -332,22 +333,20 @@ const AllTrainer = () => {
             <Modal
                 centered
                 footer={false}
-                onCancel={() => setOpenAddModal(false)}
-                open={OpenAddModal}
-                width={600}
-            >
-                <CreateUsersForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
-                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
-            </Modal>
-            <Modal
-                centered
-                footer={false}
                 onCancel={() => setopenPaymentModal(false)}
                 open={openPaymentModal}
                 width={900}
             >
-                <TrainerAddForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
-                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
+                <TrainerPaymentForm filterdData={filterdData} image={image} setImage={setImage}  />
+            </Modal>
+            <Modal
+                centered
+                footer={false}
+                onCancel={() => setOpenAddModal(false)}
+                open={OpenAddModal}
+                width={900}
+            >
+                <TrainerAddForm filterdData={filterdData} />
             </Modal>
         </>
     )
