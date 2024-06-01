@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TrainerCard = ({ item, handelEdit }) => {
+const TrainerCard = ({ item, handelEdit ,handelPayment }) => {
     const { profile, name, expert, designation, _id } = item
     return (
         <div className="w-full h-full p-6 bg-white card-shadow rounded center-center gap-2 flex-col px-8">
@@ -13,7 +13,7 @@ const TrainerCard = ({ item, handelEdit }) => {
             <div className="between-center gap-2 mt-5">
                 <button onClick={() => handelEdit(_id)} className="btn-primary ">Edit</button>
                 <button className="btn-secondary ">Delete</button>
-                <button onClick={() => handelEdit(_id)} className="btn-primary ">payment</button>
+                <button onClick={() => handelPayment(_id)} className="btn-primary ">payment</button>
             </div>
         </div>
     )

@@ -27,12 +27,12 @@ const BatchForm = () => {
             >
                 <div className='grid-2 w-[70%]'>
                     <Form.Item
-                        label={<span className="text-lg font-bold text-[#333333]">Username</span>}
+                        label={<span className="text-lg font-bold text-[#333333]">Course name</span>}
                         name="CourseName"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your username!',
+                                message: 'Please input your Course name!',
                             },
                         ]}>
                         <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />

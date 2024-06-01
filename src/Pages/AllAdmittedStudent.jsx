@@ -4,8 +4,6 @@ import { Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
-import { RxCross2 } from 'react-icons/rx'
-
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import { MdArrowForwardIos } from 'react-icons/md'

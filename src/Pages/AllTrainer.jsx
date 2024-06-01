@@ -7,6 +7,7 @@ import { Modal } from "antd"
 import { useForm } from "react-hook-form"
 import CreateUsersForm from "../Components/Forms/CreateUsersForm"
 import TrainerCard from "../Components/Cards/TrainerCard"
+import TrainerAddForm from "../Components/Forms/TrainerAddForm"
 const AdminData = [
     {
         _id: '1',
@@ -263,12 +264,21 @@ const AllTrainer = () => {
     const totalPage = Math.ceil(totalData / itemPerPage)
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
+    const [openPaymentModal, setopenPaymentModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
     const handelEdit = (id) => {
         setImage(null)
         const newData = AdminData.filter(item => item._id === id)
         setFilterdData(newData[0])
         setOpenAddModal(true)
+        setopenPaymentModal(false)
+    }
+    const handelPayment = (id) => {
+        setImage(null)
+        const newData = AdminData.filter(item => item._id === id)
+        setFilterdData(newData[0])
+        setOpenAddModal(false)
+        setopenPaymentModal(true)
     }
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
@@ -301,7 +311,7 @@ const AllTrainer = () => {
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <TrainerCard key={index} item={item} handelEdit={handelEdit} />)
+                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <TrainerCard key={index} item={item} handelEdit={handelEdit} handelPayment={handelPayment} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
@@ -327,6 +337,16 @@ const AllTrainer = () => {
                 width={600}
             >
                 <CreateUsersForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
+                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
+            </Modal>
+            <Modal
+                centered
+                footer={false}
+                onCancel={() => setopenPaymentModal(false)}
+                open={openPaymentModal}
+                width={900}
+            >
+                <TrainerAddForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
                     handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
             </Modal>
         </>
