@@ -2,7 +2,7 @@ import { FaPlus } from "react-icons/fa6"
 import PageHeading from "../Components/Shared/PageHeading"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Modal } from "antd"
+import { Modal, Table } from "antd"
 import { useForm } from "react-hook-form"
 import TrainerCard from "../Components/Cards/TrainerCard"
 import TrainerAddForm from "../Components/Forms/TrainerAddForm"
@@ -339,6 +339,43 @@ const AllTrainer = () => {
         formState: { errors },
     } = useForm()
     const onSubmit = (data) => console.log(data)
+    const columns = [
+        {
+            title: 'S.no',
+            dataIndex: '_id',
+            key: '_id',
+        },
+        {
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+        },
+        {
+            title: 'payment Type',
+            dataIndex: 'paymentType',
+            key: 'paymentType',
+        },
+        {
+            title: 'Method',
+            dataIndex: 'method',
+            key: 'method',
+        },
+        {
+            title: 'Payment',
+            dataIndex: 'amount',
+            key: 'amount',
+        },
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
+            title: 'Total Payment',
+            dataIndex: 'totalPayment',
+            key: 'totalPayment',
+        },
+    ];
     return (
         <>
             <div className="between-center gap-2">
@@ -420,6 +457,7 @@ const AllTrainer = () => {
                             <AiOutlinePrinter />
                         </button>
                     </div>
+                    <Table dataSource={paymentHistory} columns={columns} />
                 </div>
             </Modal>
         </>
