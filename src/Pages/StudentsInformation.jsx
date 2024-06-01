@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { Link } from 'react-router-dom'
 import { IoIosArrowBack } from 'react-icons/io'
+import { Modal } from 'antd'
+import { MdOutlineArrowBackIosNew } from 'react-icons/md'
+import { useForm } from 'react-hook-form'
+import Input from '../Components/Input/Input'
 
 const StudentsInformation = () => {
+    const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    const [fullpaymentType, setFullPaymentType] = useState(true)
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = data => console.log(data);
     return (
         <>
             <div className='start-center gap-2'>
@@ -109,7 +117,9 @@ const StudentsInformation = () => {
                     </div>
                     <hr className='w-[80%] my-5' />
                     <div className='flex justify-end items-center pr-[140px]'>
-                        <button className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>payment</button>
+                        <button onClick={()=>{
+                            setOpenPaymentModal(true)
+                        }} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>payment</button>
                     </div>
                 </div>
             </div>

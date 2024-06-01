@@ -184,10 +184,10 @@ const AdmittedStudents = () => {
     const [openDropModal, setOpenDropModal] = useState(false)
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
-    const { register, handleSubmit, formState: { errors } } = useForm();
     const [filterData, setFilterData] = useState({})
     const [exportType, setExportType] = useState('pdf')
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
