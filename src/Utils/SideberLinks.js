@@ -3,6 +3,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
+import { HiOutlineIdentification } from "react-icons/hi";
 import { IoBookOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 export const SideberLink = [
@@ -104,15 +105,16 @@ export const SideberLink = [
                 menu: 'Trainer Review',
                 link: '/trainer-review'
             },
-            // {
-            //     menu: 'Trainer Per Class Payment',
-            //     link: '#'
-            // },
         ]
     },
     {
         menu: 'Add Batch',
         icon: IoBookOutline,
         link: '/add-batch'
+    },
+    {
+        menu: 'Add Batch',
+        icon: HiOutlineIdentification,
+        link: '/class-routine'
     },
 ]

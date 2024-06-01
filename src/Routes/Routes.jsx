@@ -30,6 +30,7 @@ import AddNewBatch from "../Pages/AddNewBatch";
 import UpdateBatch from "../Pages/UpdateBatch";
 import AllAdmittedStudent from "../Pages/AllAdmittedStudent";
 import AdmittedStudentDetails from "../Pages/AdmittedStudentDetails";
+import ClassRoutine from "../Pages/ClassRoutine";
 
 export const router = createBrowserRouter([
     {
@@ -155,6 +156,10 @@ export const router = createBrowserRouter([
             {
                 path: '/admitted-student-details/:id',
                 element: <AdmittedStudentDetails />
+            },
+            {
+                path: '/class-routine',
+                element: <ClassRoutine />
             },
         ]
     },
