@@ -210,6 +210,9 @@ const AllStudents = () => {
                         setFollowUp({_id:record._id})
                     }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
                 </div>
+                <span onMouseEnter={()=>{
+                        setFollowUp({_id:record._id})
+                    }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
                 <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
                 <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
             </div>,

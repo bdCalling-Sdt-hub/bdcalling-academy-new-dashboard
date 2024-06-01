@@ -104,6 +104,15 @@ export const SideberLink = [
                 menu: 'Trainer Review',
                 link: '/trainer-review'
             },
+            // {
+            //     menu: 'Trainer Per Class Payment',
+            //     link: '#'
+            // },
         ]
+    },
+    {
+        menu: 'Add Batch',
+        icon: IoBookOutline,
+        link: '/add-batch'
     },
 ]

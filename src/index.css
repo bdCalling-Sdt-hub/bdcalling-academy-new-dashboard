@@ -40,12 +40,15 @@
   .grid-4 {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 xl:grid-cols-4 gap-4
   }
+
   .grid-2 {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center gap-4
   }
+
   .grid-3 {
     @apply md:grid md:grid-cols-2 xl:grid-cols-3 flex flex-col justify-start items-start md:items-center gap-4
   }
+
   .grid-2-start {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start gap-4
   }
@@ -93,16 +96,20 @@
   .overview-total {
     @apply text-[var(--primary-bg)] text-4xl font-semibold text-end mt-4
   }
+
   .btn-primary {
     @apply bg-[var(--primary-bg)] py-2 px-4 center-center gap-2 rounded-sm text-[var(--third-color)] hover:scale-105 active:scale-95 transition-all
   }
+
   .btn-primary {
     @apply bg-[var(--primary-bg)] py-2 px-4 center-center gap-2 rounded-md text-[var(--third-color)] hover:scale-105 active:scale-95 transition-all
   }
+
   .btn-secondary {
     @apply text-[var(--primary-bg)] py-2 px-4 center-center gap-2 rounded-md bg-[var(--secondary-color)] hover:scale-105 active:scale-95 transition-all
   }
-  button:disabled{
+
+  button:disabled {
     @apply bg-[#C0C0C0]
   }
 }
@@ -137,16 +144,23 @@
   border-radius: 0px;
   color: var(--third-color) !important;
 }
+
 #allStudent .ant-table-cell::before {
-display: none;
+  display: none;
 }
+
 #allStudent .ant-radio-group {
-padding: 0px 20px;
+  padding: 0px 20px;
 }
 
 :where(.css-dev-only-do-not-override-djtmh8).ant-table-wrapper .ant-table-pagination-right {
   justify-content: center !important;
 }
+
+#addBatch :where(.css-dev-only-do-not-override-17seli4).ant-form-item .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  display: none;
+}
+
 @keyframes accordionOpen {
   from {
     max-height: 0px;
