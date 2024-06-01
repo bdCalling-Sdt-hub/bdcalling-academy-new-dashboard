@@ -4,20 +4,13 @@ import { FaEdit } from "react-icons/fa"
 import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import SelectInput from '../Input/SelectInput'
 const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit ,CategoryOptions}) => {
+    handleSubmit, errors, onSubmit ,CategoryOptions ,setOpenAddModal}) => {
     const [inputType, setInputType] = useState('password')
     const [CinputType, setCInputType] = useState('password')
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+        setImage(URL.createObjectURL(file));
     };
-
     return (
         <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
             <div className="center-center">
@@ -53,17 +46,8 @@ const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register
             <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Expert`} rules={{ ...register("expert", { required: true }) }} placeholder={`Designation`} defaultValue={filterdData.expert} />
             </div>
             <SelectInput lebel={`Select Category`} classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...register("category", { required: true }) }} />
-            {/* <lebel className='mt-3 block '>
-                Please Select a Category
-                <select className="w-full outline-none border p-2 rounded-md" name="category" id="">
-                    <option value="category">Please Select a Category</option>
-                    <option value="category">category</option>
-                    <option value="category">category</option>
-                    <option value="category">category</option>
-                </select>
-            </lebel> */}
             <div className="px-48 mt-8">
-                <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                <input onClick={()=>setOpenAddModal(false)} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
             </div>
         </form>
     )

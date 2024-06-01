@@ -140,8 +140,12 @@ const AddCategory = () => {
                 <div className=''>
                     <p className='text-2xl text-center mt-4 text-[#5C5C5C]'>want to dropout this Category ?</p>
                     <div className='between-center mt-6'>
-                        <button className='text-[#FFFFFF] bg-red-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Dropout</button>
-                        <button className='text-[#FFFFFF] bg-green-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Cancel</button>
+                        <button onClick={()=>{
+                            setOpenDropModal(false)
+                        }} className='text-[#FFFFFF] bg-red-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Dropout</button>
+                        <button onClick={()=>{
+                            setOpenDropModal(false)
+                        }} className='text-[#FFFFFF] bg-green-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Cancel</button>
                     </div>
                 </div>
             </Modal>

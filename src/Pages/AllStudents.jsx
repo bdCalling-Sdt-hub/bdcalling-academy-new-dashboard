@@ -149,7 +149,6 @@ const data = [
 
 
 const AllStudents = () => {
-    const [selectionType, setSelectionType] = useState('checkbox');
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -158,6 +157,7 @@ const AllStudents = () => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
+    const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
@@ -198,20 +198,28 @@ const AllStudents = () => {
         {
             title: 'Set Follow Up',
             dataIndex: '_id',
-            render: (_, record) => <div className='start-center gap-2'>
+            render: (_, record) => <div className='start-center gap-2 relative'>
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
-                <div className='relative'>
-                    <span onMouseEnter={()=>{
-                        setFollowUp({_id:record._id})
-                    }} className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
-                </div>
-                <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
+                {
+                    [...Array(3).keys()].map(item => <span key={item} onMouseLeave={() => {
+                        setFollowUp({ _id: false, index: false })
+                    }} onMouseEnter={() => {
+                        setFollowUp({ _id: record._id, index: item })
+                    }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
+                }
+                {
+                    [...Array(3).keys()].map(item => <div key={item} className={`${(followUp?._id == record?._id && followUp?.index == item) ? 'block' : 'hidden'} ${item == 0 ? 'border-[#2492EB]' : item == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                        <p className='text-[#5C5C5C] '>Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment</p>
+                    </div>)
+                }
             </div>,
             key: '_id'
         },
@@ -267,7 +275,6 @@ const AllStudents = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
-    const [followUp, setFollowUp] = useState({ _id: false, open: false })
     return (
         <>
             <div className='grid-2'>
@@ -378,7 +385,9 @@ const AllStudents = () => {
                     </div>
                     <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...register("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
-                        <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                        <input onClick={() => {
+                            setOpenStudentAddModal(false)
+                        }} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
                     </div>
                 </form>
             </Modal>
@@ -452,7 +461,9 @@ const AllStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </> : <>
@@ -551,7 +562,9 @@ const AllStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </>
@@ -672,7 +685,9 @@ const AllStudents = () => {
                                 <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
                             </div>
-                            <button className='btn-primary max-w-32'>Send Comment</button>
+                            <button onClick={()=>{
+                                setOpenFollowUpModal(false)
+                            }} className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>

@@ -3,7 +3,7 @@ import StarRatings from 'react-star-ratings';
 import UpdateInput from '../Input/UpdateInput';
 import TextArea from '../Input/TextArea';
 const TrainerFeedbackForm = ({ filterdData, inputHandeler, register,
-    handleSubmit, errors, onSubmit, rating, setrating }) => {
+    handleSubmit, errors, onSubmit, rating, setrating ,setOpenFeedbackModal }) => {
     return (
         <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
             <div className='text-center pt-8 pb-3'>
@@ -24,7 +24,9 @@ const TrainerFeedbackForm = ({ filterdData, inputHandeler, register,
             <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32`} lebel={`Review`} rules={{ ...register("Review", { required: true }) }} placeholder={`Review`} defaultValue={filterdData.review} />
             <UpdateInput status={errors} handler={inputHandeler} type={`date`} classNames={`w-full border`} lebel={`date`} rules={{ ...register("date", { required: true }) }} placeholder={`date`} defaultValue={filterdData.date} />
             <div className='text-center mt-4'>
-                <button className='transition-all text-base font-medium px-10 py-3 bg-[#2492EB] rounded-md text-white hover:scale-105 active:scale-95'>Save</button>
+                <button onClick={()=>{
+                    setOpenFeedbackModal(false)
+                }} className='transition-all text-base font-medium px-10 py-3 bg-[#2492EB] rounded-md text-white hover:scale-105 active:scale-95'>Save</button>
             </div>
         </form>
     )

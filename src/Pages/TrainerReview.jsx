@@ -169,7 +169,7 @@ const TrainerReview = () => {
                 onCancel={() => setOpenFeedbackModal(false)}
                 footer={false}
             >
-                <TrainerFeedbackForm filterdData={filterdData} inputHandeler={inputHandeler} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} setrating={setrating} rating={rating} />
+                <TrainerFeedbackForm setOpenFeedbackModal={setOpenFeedbackModal} filterdData={filterdData} inputHandeler={inputHandeler} register={register} errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} setrating={setrating} rating={rating} />
             </Modal>
         </>
     )

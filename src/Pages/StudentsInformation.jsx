@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { Link } from 'react-router-dom'
 import { IoIosArrowBack } from 'react-icons/io'
+import { Modal } from 'antd'
+import { MdOutlineArrowBackIosNew } from 'react-icons/md'
+import { useForm } from 'react-hook-form'
+import Input from '../Components/Input/Input'
 
 const StudentsInformation = () => {
+    const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    const [fullpaymentType, setFullPaymentType] = useState(true)
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = data => console.log(data);
     return (
         <>
             <div className='start-center gap-2'>
@@ -109,10 +117,191 @@ const StudentsInformation = () => {
                     </div>
                     <hr className='w-[80%] my-5' />
                     <div className='flex justify-end items-center pr-[140px]'>
-                    <button  className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>payment</button>
+                        <button onClick={()=>{
+                            setOpenPaymentModal(true)
+                        }} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>payment</button>
                     </div>
                 </div>
             </div>
+            <Modal
+                centered
+                footer={false}
+                open={openPaymentModal}
+                onCancel={() => setOpenPaymentModal(false)}
+                width={700}
+            >
+                <div>
+                    <div className='start-center gap-4'>
+                        <MdOutlineArrowBackIosNew className='cursor-pointer' onClick={() => {
+                            setOpenPaymentModal(false)
+                        }} /> <h4>Payment</h4>
+                    </div>
+                    <div className='start-center gap-2 my-2'>
+                        <input onClick={() => {
+                            setFullPaymentType(true)
+                        }} defaultChecked={fullpaymentType} className='cursor-pointer' type="radio" value="paymentType" name="paymentOption" id="fullPayment" />
+                        <label for="fullPayment">Full Payment</label>
+
+                        <input onClick={() => {
+                            setFullPaymentType(false)
+                        }} defaultChecked={!fullpaymentType} className='cursor-pointer' type="radio" value="instalmentpayment" name="paymentOption" id="instalmentPayment" />
+                        <label for="instalmentPayment">Instalment Payment</label>
+                    </div>
+                    {
+                        fullpaymentType ? <>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className='grid-2 gap-2 mb-2'>
+                                    <div className='w-full relative'>
+                                        <p className="pb-2">Discount</p>
+                                        <select defaultValue={`*Required Field`} className='w-full p-2 outline-none border rounded-md' {...register('discount', { required: false })}>
+                                            <option value="tk 2000">tk 2000</option>
+                                            <option value="tk 2000">tk 2000</option>
+                                        </select>
+
+                                    </div>
+                                    <Input classNames={`border rounded`} rules={{ ...register('reference', { required: false }) }} lebel={`Reference`} status={errors} placeholder={`CEO, Monir sir`} />
+                                </div>
+                            </form>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Payable Amount Date:</p>
+                                <p className='text-end text-sm'>04/05/2024</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course Name:</p>
+                                <p className='text-end text-sm'>UX/UI Design</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course ID:</p>
+                                <p className='text-end text-sm'>202402</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Student ID:</p>
+                                <p className='text-end text-sm'>BDA202415</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course Fee:</p>
+                                <p className='text-end text-sm'>15000Tk</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Due Amount:</p>
+                                <p className='text-end text-sm'>0</p>
+                            </div>
+                            <hr className='w-full my-2 block' />
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm font-semibold'>Total Paymet :</p>
+                                <p className='text-end text-sm font-semibold'>13000Tk</p>
+                            </div>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
+                                Confirm
+                            </button>
+                        </> : <>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className='grid-2 gap-2 mb-2'>
+                                    <div className='w-full relative'>
+                                        <p className="pb-2">Discount</p>
+                                        <select defaultValue={`tk 2000`} className='w-full p-2 outline-none border rounded-md' {...register('discount', { required: false })}>
+                                            <option value="tk 2000">tk 2000</option>
+                                            <option value="tk 2000">tk 2000</option>
+                                        </select>
+
+                                    </div>
+                                    <Input classNames={`border rounded`} rules={{ ...register('reference', { required: false }) }} lebel={`Reference`} status={errors} placeholder={`CEO, Monir sir`} />
+                                </div>
+                                <div className='border p-2 rounded'>
+                                    <div className='grid-2 gap-2 mb-2'>
+                                        <div className='w-full relative'>
+                                            <p className="pb-2">Installment Type</p>
+                                            <select defaultValue={`3 installment`} className='w-full p-2 outline-none border rounded-md' {...register('installmentType', { required: false })}>
+                                                <option value="3 installment">3 installment</option>
+                                                <option value="3 installment">3 installment</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
+                                        <div className='col-span-2'>
+                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`7000`} />
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input type={`date`} classNames={`border rounded text-gray-300`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
+                                        </div>
+                                        <div className='w-10 h-10 border rounded ml-auto border-green-500'>
+                                            <img className='w-10 h-10' src='https://i.ibb.co/4Zff45B/check-mark-1-1.png' alt="" />
+                                        </div>
+                                    </div>
+                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
+                                        <div className='col-span-2'>
+                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`3000`} />
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input type={`date`} classNames={`border rounded`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
+                                        </div>
+                                        <div className='w-10 h-10 border rounded ml-auto border-red-500'>
+
+                                        </div>
+                                    </div>
+                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
+                                        <div className='col-span-2'>
+                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`3000`} />
+                                        </div>
+                                        <div className='col-span-4 w-full'>
+                                            <Input type={`date`} classNames={`border rounded`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
+                                        </div>
+                                        <div className='w-10 h-10 border rounded ml-auto border-red-500'>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Payable Amount Date:</p>
+                                <p className='text-end text-sm'>04/05/2024</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course Name:</p>
+                                <p className='text-end text-sm'>UX/UI Design</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course ID:</p>
+                                <p className='text-end text-sm'>202402</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Student ID:</p>
+                                <p className='text-end text-sm'>BDA202415</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Course Fee:</p>
+                                <p className='text-end text-sm'>15000Tk</p>
+                            </div>
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm'>Due Amount:</p>
+                                <p className='text-end text-sm text-red-600'>6000</p>
+                            </div>
+                            <hr className='w-full my-2 block' />
+                            <div className='grid-2 gap-2 my-4'>
+                                <p className=' text-sm font-semibold'>Total Paymet :</p>
+                                <p className='text-end text-sm font-semibold'>13000Tk</p>
+                            </div>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
+                                Confirm
+                            </button>
+                        </>
+                    }
+
+                </div>
+            </Modal>
         </>
     )
 }

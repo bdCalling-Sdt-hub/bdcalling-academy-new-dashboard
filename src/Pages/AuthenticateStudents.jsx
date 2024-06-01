@@ -157,6 +157,7 @@ const AuthenticateStudents = () => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
+    const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
@@ -197,16 +198,28 @@ const AuthenticateStudents = () => {
         {
             title: 'Set Follow Up',
             dataIndex: '_id',
-            render: (_, record) => <div className='start-center gap-2'>
+            render: (_, record) => <div className='start-center gap-2 relative'>
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
-                <span className='w-5 h-5 bg-[#2492EB] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#2BA24C] rounded-full'></span>
-                <span className='w-5 h-5 bg-[#FFC60B] rounded-full'></span>
+                {
+                    [...Array(3).keys()].map(item => <span key={item} onMouseLeave={() => {
+                        setFollowUp({ _id: false, index: false })
+                    }} onMouseEnter={() => {
+                        setFollowUp({ _id: record._id, index: item })
+                    }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
+                }
+                {
+                    [...Array(3).keys()].map(item => <div key={item} className={`${(followUp?._id == record?._id && followUp?.index == item) ? 'block' : 'hidden'} ${item == 0 ? 'border-[#2492EB]' : item == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                        <p className='text-[#5C5C5C] '>Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
+                            Pleas pay your payment</p>
+                    </div>)
+                }
             </div>,
             key: '_id'
         },
@@ -317,7 +330,7 @@ const AuthenticateStudents = () => {
                     <div className="center-center">
                         <div className={`h-28 w-28 rounded-full my-4  relative`}>
                             {
-                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.img ? <img className="h-full w-full rounded-full object-cover" src={filterData?.img} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
+                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
                             }
 
                             <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
@@ -329,13 +342,52 @@ const AuthenticateStudents = () => {
                     <div className="grid-2">
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
                         <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number*`} rules={{ ...register("phone", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Profession*`} type={'text'} rules={{ ...register("profession", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.profession} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Location*`} type={`text`} rules={{ ...register("location", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData.location} />
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email*`} type={'email'} rules={{ ...register("email", { required: true }) }} placeholder={`Email*`} defaultValue={filterData.email} />
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Date of Birth*`} type={`date`} rules={{ ...register("date", { required: true }) }} placeholder={`Date of Birth*`} defaultValue={filterData.date} />
 
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Course Category`} type={`text`} rules={{ ...register("courseCategory", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.courseCategory} />
+                        <lebel className='mt-3 block w-full relative'>
+                            Course Category
+                            <select {...register("category", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
+                                <option value="category">Please Select a Category</option>
+                                <option value="category">category</option>
+                                <option value="category">category</option>
+                                <option value="category">category</option>
+                            </select>
+                            {
+                                errors?.category && <p className="absolute -bottom-4 text-red-600">category is requerd</p>
+                            }
+                        </lebel>
+                        <lebel className='mt-3 block w-full relative'>
+                            Gender*
+                            <select {...register("gender", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
+                                <option value="gender">Gender</option>
+                                <option value="gender">gender</option>
+                                <option value="gender">gender</option>
+                                <option value="gender">gender</option>
+                            </select>
+                            {
+                                errors?.gender && <p className="absolute -bottom-4 text-red-600">gender is requerd</p>
+                            }
+                        </lebel>
+                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Blood Group*`} type={`text`} rules={{ ...register("blood", { required: true }) }} placeholder={`Blood Group*`} defaultValue={filterData?.blood} />
+                        <lebel className='mt-3 block w-full relative'>
+                            <p>Course Category</p>
+                            <select {...register("religion*", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
+                                <option value="religion">religion</option>
+                                <option value="religion">religion</option>
+                                <option value="category">religion</option>
+                                <option value="religion">religion</option>
+                            </select>
+                            {
+                                errors?.category && <p className="absolute -bottom-4 text-red-600">religion is requerd</p>
+                            }
+                        </lebel>
                     </div>
+                    <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...register("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
-                        <input value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                        <input onClick={() => {
+                            setOpenStudentAddModal(false)
+                        }} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
                     </div>
                 </form>
             </Modal>
@@ -409,7 +461,9 @@ const AuthenticateStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </> : <>
@@ -508,7 +562,9 @@ const AuthenticateStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button className='btn-primary max-w-32 mx-auto mt-7'>
+                            <button onClick={() => {
+                                setOpenPaymentModal(false)
+                            }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
                             </button>
                         </>
@@ -516,6 +572,7 @@ const AuthenticateStudents = () => {
 
                 </div>
             </Modal>
+            {/* admit modal  */}
             <Modal
                 centered
                 footer={false}
@@ -628,7 +685,9 @@ const AuthenticateStudents = () => {
                                 <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
                             </div>
-                            <button className='btn-primary max-w-32'>Send Comment</button>
+                            <button onClick={()=>{
+                                setOpenFollowUpModal(false)
+                            }} className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>

@@ -10,7 +10,7 @@ import { RxCross1 } from 'react-icons/rx'
 import { FiEdit } from 'react-icons/fi'
 import LeaveForm from '../Components/Forms/LeaveForm'
 // import SelectInput from '../Components/Input/SelectInput'
-const requestList =[
+const requestList = [
     {
         "Name": "Alice Johnson",
         "Leave": "Maternity Leave",
@@ -235,7 +235,7 @@ const RequestTrainer = () => {
                 width={700}
             >
                 <LeaveForm image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
-                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} />
+                    handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} setOpenLeaveModal={setOpenLeaveModal} />
             </Modal>
         </>
     )

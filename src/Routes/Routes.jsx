@@ -25,6 +25,12 @@ import AllTrainer from "../Pages/AllTrainer";
 import RequestTrainer from "../Pages/RequestTrainer";
 import TrainerReview from "../Pages/TrainerReview";
 import VideoCourseExamQuestion from "../Pages/VideoCourseExamQuestion";
+import AddBatch from "../Pages/AddBatch";
+import AddNewBatch from "../Pages/AddNewBatch";
+import UpdateBatch from "../Pages/UpdateBatch";
+import AllAdmittedStudent from "../Pages/AllAdmittedStudent";
+import AdmittedStudentDetails from "../Pages/AdmittedStudentDetails";
+import ClassRoutine from "../Pages/ClassRoutine";
 
 export const router = createBrowserRouter([
     {
@@ -98,11 +104,11 @@ export const router = createBrowserRouter([
             {
                 path: '/add-video-course',
                 element: <AddVideoCourse />
-            },  
+            },
             {
                 path: '/add-online-course',
                 element: <AddOnlineCourse />
-            },  
+            },
             {
                 path: '/update-course/:id',
                 element: <UpdateCourse />
@@ -125,11 +131,35 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/trainer-review',
-                element: <TrainerReview  />
+                element: <TrainerReview />
             },
             {
                 path: '/video-course-exam-question/:id',
-                element: <VideoCourseExamQuestion  />
+                element: <VideoCourseExamQuestion />
+            },
+            {
+                path: '/add-batch',
+                element: <AddBatch />
+            },
+            {
+                path: '/add-batch/add',
+                element: <AddNewBatch />
+            },
+            {
+                path: '/add-batch/update',
+                element: <UpdateBatch />
+            },
+            {
+                path: '/all-admitted-student/:id',
+                element: <AllAdmittedStudent />
+            },
+            {
+                path: '/admitted-student-details/:id',
+                element: <AdmittedStudentDetails />
+            },
+            {
+                path: '/class-routine',
+                element: <ClassRoutine />
             },
         ]
     },
