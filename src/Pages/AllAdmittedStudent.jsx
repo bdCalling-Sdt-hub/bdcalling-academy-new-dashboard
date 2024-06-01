@@ -233,12 +233,9 @@ const AllAdmittedStudent = () => {
             title: 'Actions',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
-                <Link to={`/admitted-students/students-information/${record?._id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                <Link to={`/admitted-student-details/${record?._id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <IoMdInformationCircleOutline />
                 </Link>
-                <button className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
-                    <RxCross2 />
-                </button>
             </div>,
             key: '_id'
         },
