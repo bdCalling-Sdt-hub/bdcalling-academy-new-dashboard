@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Modal } from "antd"
 import { useForm } from "react-hook-form"
 import CreateUsersForm from "../Components/Forms/CreateUsersForm"
+import TrainerCard from "../Components/Cards/TrainerCard"
 const AdminData = [
     {
         _id: '1',
@@ -300,7 +301,7 @@ const AllTrainer = () => {
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <AdminCard key={index} item={item} handelEdit={handelEdit} />)
+                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <TrainerCard key={index} item={item} handelEdit={handelEdit} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
