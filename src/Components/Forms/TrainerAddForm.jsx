@@ -2,7 +2,7 @@ import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 
-const TrainerAddForm = ({ filterdData, image, setImage,setOpenAddModal }) => {
+const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -13,17 +13,20 @@ const TrainerAddForm = ({ filterdData, image, setImage,setOpenAddModal }) => {
     const handleChange = (e) => {
         setImage(e.target.files[0])
     }
+
+
     useEffect(() => {
-        if (filterdData) {
-            form.setFieldValue(filterdData)
+        if(filteredData){
+            form.setFieldsValue({...filteredData});
         }
-    }, [filterdData, form])
+    }, [filteredData, form]);
+
+
     return (
         <Form
             layout={'vertical'}
-            form={form}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+        onFinish={onFinish}
+        // onFinishFailed={onFinishFailed}
         >
             <div className='w-28 h-28 relative'>
                 <img className='w-fuh-full h-full object-cover rounded-full' src={image && URL.createObjectURL(image) || "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
@@ -41,7 +44,8 @@ const TrainerAddForm = ({ filterdData, image, setImage,setOpenAddModal }) => {
                             required: true,
                             message: 'Please Input your First Name!',
                         },
-                    ]}>
+                    ]}
+                >
                     <Input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
                 </Form.Item>
                 <Form.Item
@@ -182,7 +186,7 @@ const TrainerAddForm = ({ filterdData, image, setImage,setOpenAddModal }) => {
             </div>
             <Form.Item >
                 <div className='center-center gap-4' >
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         setOpenAddModal(false)
                     }} type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Save</button>
                 </div>

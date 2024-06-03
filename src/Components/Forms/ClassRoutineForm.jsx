@@ -1,4 +1,4 @@
-import { DatePicker, Form, Select } from 'antd';
+import { DatePicker, Form, Select, TimePicker } from 'antd';
 const ClassRoutineForm = () => {
     const [form] = Form.useForm();
     const onFinish = (values) => {
@@ -55,6 +55,11 @@ const ClassRoutineForm = () => {
                         },
                     ]}>
                     <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
+                </Form.Item>
+                <Form.Item
+                    label={<span className="text-base font-bold text-[#333333]">Select Time</span>}
+                    name="time">
+                    <TimePicker.RangePicker className='w-full h-[43px]' />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-base font-bold text-[#333333]">Select Date</span>}
