@@ -32,7 +32,7 @@ const Sideber = () => {
                                         open: true, menu: item.menu
                                     })
                                 }
-                            }} className='cursor-pointer between-center gap-2 px-5 py-2 my-2 font-medium'> <span className='start-center gap-2'><item.icon />{item?.menu}</span> <IoIosArrowDown className='text-2xl' /></li>
+                            }} className='cursor-pointer between-center gap-2 px-5 py-2 my-2 font-medium'> <span className='start-center gap-2'><item.icon className='text-2xl' />{item?.menu}</span> <IoIosArrowDown className='text-2xl' /></li>
                             <div className={`${(openAccordion.open && openAccordion.menu === item?.menu) ? 'max-h-max accordionOpen' : ' max-h-0 accordionClose'} bg-[var(--primary-bg)] overflow-hidden -mt-3`}>
                                 {item?.dropDown?.map(dropDown =>
                                     <li key={dropDown?.menu}>

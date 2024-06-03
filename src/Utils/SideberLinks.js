@@ -1,6 +1,7 @@
 
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
+import { CiCalendarDate } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
@@ -116,5 +117,10 @@ export const SideberLink = [
         menu: 'Add Batch',
         icon: HiOutlineIdentification,
         link: '/class-routine'
+    },
+    {
+        menu: 'Add Events',
+        icon: CiCalendarDate,
+        link: '/add-events'
     },
 ]
