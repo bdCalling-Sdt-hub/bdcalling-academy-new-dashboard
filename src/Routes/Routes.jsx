@@ -31,6 +31,8 @@ import UpdateBatch from "../Pages/UpdateBatch";
 import AllAdmittedStudent from "../Pages/AllAdmittedStudent";
 import AdmittedStudentDetails from "../Pages/AdmittedStudentDetails";
 import ClassRoutine from "../Pages/ClassRoutine";
+import AddEvents from "../Pages/AddEvents";
+import AddNewEvent from "../Pages/AddNewEvent";
 
 export const router = createBrowserRouter([
     {
@@ -160,6 +162,18 @@ export const router = createBrowserRouter([
             {
                 path: '/class-routine',
                 element: <ClassRoutine />
+            },
+            {
+                path: '/add-events',
+                element: <AddEvents />
+            },
+            {
+                path: '/add-new-event',
+                element: <AddNewEvent />
+            },
+            {
+                path: '/update-event/:id',
+                element: <AddNewEvent />
             },
         ]
     },

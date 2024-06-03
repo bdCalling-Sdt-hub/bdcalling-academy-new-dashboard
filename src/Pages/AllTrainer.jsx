@@ -421,7 +421,7 @@ const AllTrainer = () => {
                 open={OpenAddModal}
                 width={900}
             >
-                <TrainerAddForm filterdData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
+                <TrainerAddForm filteredData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
             </Modal>
             <Modal
                 centered
