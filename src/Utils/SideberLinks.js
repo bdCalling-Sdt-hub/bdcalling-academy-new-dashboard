@@ -2,7 +2,7 @@
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
 import { CiCalendarDate, CiWallet } from "react-icons/ci";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaRegUserCircle, FaUsers } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
 import { IoBookOutline, IoWalletOutline } from "react-icons/io5";
@@ -132,5 +132,24 @@ export const SideberLink = [
         menu: 'Wallet',
         icon: CiWallet,
         link: '/wallet'
+    },
+    {
+        menu: 'Successful Students',
+        icon: FaUsers,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Success Stories',
+                link: '/success-stories'
+            },
+            {
+                menu: 'Students Journey ',
+                link: '/students-journey'
+            },
+            {
+                menu: 'Trainer Review',
+                link: '/trainer-review'
+            },
+        ]
     },
 ]

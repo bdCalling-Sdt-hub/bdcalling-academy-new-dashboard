@@ -164,6 +164,7 @@
   display: none;
 }
 
+
 @keyframes accordionOpen {
   from {
     max-height: 0px;

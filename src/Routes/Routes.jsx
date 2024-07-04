@@ -35,6 +35,9 @@ import AddEvents from "../Pages/AddEvents";
 import AddNewEvent from "../Pages/AddNewEvent";
 import Cost from "../Pages/Cost";
 import Wallet from "../Pages/Wallet";
+import SuccessStories from "../Pages/SuccessStories";
+import UploadSuccessStories from "../Pages/UploadSuccessStories";
+import StudentsJourney from "../Pages/StudentsJourney";
 
 export const router = createBrowserRouter([
     {
@@ -184,6 +187,18 @@ export const router = createBrowserRouter([
             {
                 path: '/wallet',
                 element: <Wallet />
+            },
+            {
+                path: '/success-stories',
+                element: <SuccessStories />
+            },
+            {
+                path: '/upload-success-stories',
+                element: <UploadSuccessStories />
+            },
+            {
+                path: '/students-journey',
+                element: <StudentsJourney />
             },
         ]
     },
