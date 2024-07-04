@@ -33,6 +33,8 @@ import AdmittedStudentDetails from "../Pages/AdmittedStudentDetails";
 import ClassRoutine from "../Pages/ClassRoutine";
 import AddEvents from "../Pages/AddEvents";
 import AddNewEvent from "../Pages/AddNewEvent";
+import Cost from "../Pages/Cost";
+import Wallet from "../Pages/Wallet";
 
 export const router = createBrowserRouter([
     {
@@ -174,6 +176,14 @@ export const router = createBrowserRouter([
             {
                 path: '/update-event/:id',
                 element: <AddNewEvent />
+            },
+            {
+                path: '/cost',
+                element: <Cost />
+            },
+            {
+                path: '/wallet',
+                element: <Wallet />
             },
         ]
     },

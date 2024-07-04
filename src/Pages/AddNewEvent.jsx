@@ -13,7 +13,7 @@ const AddNewEvent = () => {
                 </Link>
                 <PageHeading text={`Add Events`} />
             </div>
-            <AddEventsFrom />
+            <AddEventsFrom/>
         </>
     )
 }

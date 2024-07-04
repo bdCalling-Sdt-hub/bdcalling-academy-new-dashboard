@@ -1,11 +1,11 @@
 
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
-import { CiCalendarDate } from "react-icons/ci";
+import { CiCalendarDate, CiWallet } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
-import { IoBookOutline } from "react-icons/io5";
+import { IoBookOutline, IoWalletOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 export const SideberLink = [
     {
@@ -114,7 +114,7 @@ export const SideberLink = [
         link: '/add-batch'
     },
     {
-        menu: 'Add Batch',
+        menu: 'Class Routine',
         icon: HiOutlineIdentification,
         link: '/class-routine'
     },
@@ -122,5 +122,15 @@ export const SideberLink = [
         menu: 'Add Events',
         icon: CiCalendarDate,
         link: '/add-events'
+    },
+    {
+        menu: 'Include Cost',
+        icon: IoWalletOutline,
+        link: '/cost'
+    },
+    {
+        menu: 'Wallet',
+        icon: CiWallet,
+        link: '/wallet'
     },
 ]
