@@ -1,11 +1,11 @@
 
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
-import { CiCalendarDate, CiWallet } from "react-icons/ci";
+import { CiCalendarDate, CiImageOn, CiSettings, CiWallet } from "react-icons/ci";
 import { FaRegUserCircle, FaUsers } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
-import { IoBookOutline, IoWalletOutline } from "react-icons/io5";
+import { IoBookOutline, IoSettings, IoWalletOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 export const SideberLink = [
     {
@@ -150,6 +150,48 @@ export const SideberLink = [
                 menu: 'Trainer Review',
                 link: '/trainer-review'
             },
+            {
+                menu: 'Successful Students',
+                link: '/successful-students'
+            },
         ]
+    },
+    {
+        menu: 'Sales Students',
+        icon: FaRegUserCircle,
+        link: false,
+        dropDown: [
+            {
+                menu: 'All Students',
+                link: '/success-stories'
+            },
+            {
+                menu: 'Students Journey ',
+                link: '/students-journey'
+            },
+            {
+                menu: 'Trainer Review',
+                link: '/trainer-review'
+            },
+            {
+                menu: 'Successful Students',
+                link: '/successful-students'
+            },
+        ]
+    },
+    {
+        menu: 'Students Reviews',
+        icon: CiSettings,
+        link: '/students-reviews'
+    },
+    {
+        menu: 'Our Gallery',
+        icon: CiImageOn,
+        link: '/students-gallery'
+    },
+    {
+        menu: 'Settings',
+        icon: IoSettings,
+        link: '/settings'
     },
 ]

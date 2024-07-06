@@ -40,6 +40,7 @@
   .grid-4 {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 xl:grid-cols-4 gap-4
   }
+
   .grid-3 {
     @apply md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-center lg:grid-cols-3 gap-4
   }
@@ -164,6 +165,10 @@
   display: none;
 }
 
+.ant-table-thead .ant-table-cell {
+  background: var(--primary-bg) !important;
+  color: #FFFFFF !important;
+}
 
 @keyframes accordionOpen {
   from {

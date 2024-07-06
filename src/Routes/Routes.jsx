@@ -38,6 +38,20 @@ import Wallet from "../Pages/Wallet";
 import SuccessStories from "../Pages/SuccessStories";
 import UploadSuccessStories from "../Pages/UploadSuccessStories";
 import StudentsJourney from "../Pages/StudentsJourney";
+import SuccessfulStudents from "../Pages/SuccessfulStudents";
+import StudentsReviews from "../Pages/StudentsReviews";
+import Studentsgallery from "../Pages/Studentsgallery";
+import Settings from "../Pages/Settings";
+import Profile from "../Pages/Profile";
+import EditProfile from "../Pages/EditProfile";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
+import TermsAndCondition from "../Pages/TermsAndCondition";
+import AboutUs from "../Pages/AboutUs";
+import AssociateList from "../Pages/AssociateList";
+import Login from "../Pages/Login";
+import ForgotPassword from "../Pages/ForgotPassword";
+import Otp from "../Pages/Otp";
+import UpdatePassword from "../Pages/UpdatePassword";
 
 export const router = createBrowserRouter([
     {
@@ -200,6 +214,62 @@ export const router = createBrowserRouter([
                 path: '/students-journey',
                 element: <StudentsJourney />
             },
+            {
+                path: '/successful-students',
+                element: <SuccessfulStudents />
+            },
+            {
+                path: '/students-reviews',
+                element: <StudentsReviews />
+            },
+            {
+                path: '/students-gallery',
+                element: <Studentsgallery />
+            },
+            {
+                path: '/settings',
+                element: <Settings />
+            },
+            {
+                path: '/profile',
+                element: <Profile />
+            },
+            {
+                path: '/edit-profile',
+                element: <EditProfile />
+            },
+            {
+                path: '/privacy-policy',
+                element: <PrivacyPolicy />
+            },
+            {
+                path: '/terms',
+                element: <TermsAndCondition />
+            },
+            {
+                path: '/about-us',
+                element: <AboutUs />
+            },
+            {
+                path: '/associate-list',
+                element: <AssociateList />
+            },
         ]
+    },
+    {
+        path: '/login',
+        element:<Login/>
+    },
+    {
+        path: '/forgot-password',
+        element:<ForgotPassword/>
+    },
+    {
+        path: '/otp',
+        element:<Otp/>
+    },
+    {
+        path: '/update-password',
+        element:<UpdatePassword/>
     },
 ])
