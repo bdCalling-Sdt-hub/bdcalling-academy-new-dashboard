@@ -52,6 +52,12 @@ import Login from "../Pages/Login";
 import ForgotPassword from "../Pages/ForgotPassword";
 import Otp from "../Pages/Otp";
 import UpdatePassword from "../Pages/UpdatePassword";
+import AllSalesStudent from "../Pages/AllSalesStudent";
+import CreateRoutine from "../Pages/CreateRoutine";
+import SalesAdmittedStudent from "../Pages/SalesAdmittedStudent";
+import TrainerAttendance from "../Pages/TrainerAttendance";
+import StudentsAttendance from "../Pages/StudentsAttendance";
+import ExamResults from "../Pages/ExamResults";
 
 export const router = createBrowserRouter([
     {
@@ -254,22 +260,46 @@ export const router = createBrowserRouter([
                 path: '/associate-list',
                 element: <AssociateList />
             },
+            {
+                path: '/all-sales-students',
+                element: <AllSalesStudent />
+            },
+            {
+                path: '/create-routine',
+                element: <CreateRoutine />
+            },
+            {
+                path: '/sales-admitted-student',
+                element: <SalesAdmittedStudent />
+            },
+            {
+                path: '/trainer-attendance',
+                element: <TrainerAttendance />
+            },
+            {
+                path: '/students-attendance',
+                element: <StudentsAttendance />
+            },
+            {
+                path: '/exam-result',
+                element: <ExamResults />
+            },
         ]
     },
     {
         path: '/login',
-        element:<Login/>
+        element: <Login />
     },
     {
         path: '/forgot-password',
-        element:<ForgotPassword/>
+        element: <ForgotPassword />
     },
     {
         path: '/otp',
-        element:<Otp/>
+        element: <Otp />
     },
     {
         path: '/update-password',
-        element:<UpdatePassword/>
+        element: <UpdatePassword />
     },
 ])

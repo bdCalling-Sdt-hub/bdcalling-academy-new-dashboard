@@ -1,4 +1,5 @@
 
+import { AiTwotoneIdcard } from "react-icons/ai";
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsCollection } from "react-icons/bs";
 import { CiCalendarDate, CiImageOn, CiSettings, CiWallet } from "react-icons/ci";
@@ -163,19 +164,34 @@ export const SideberLink = [
         dropDown: [
             {
                 menu: 'All Students',
-                link: '/success-stories'
+                link: '/all-sales-students'
             },
             {
-                menu: 'Students Journey ',
-                link: '/students-journey'
+                menu: 'Create Routine',
+                link: '/create-routine'
             },
             {
-                menu: 'Trainer Review',
-                link: '/trainer-review'
+                menu: 'Admitted Students',
+                link: '/sales-admitted-student'
+            },
+        ]
+    },
+    {
+        menu: 'Show Batch',
+        icon: AiTwotoneIdcard,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Trainer Attendance',
+                link: '/trainer-attendance'
             },
             {
-                menu: 'Successful Students',
-                link: '/successful-students'
+                menu: 'Students Attendance',
+                link: '/students-attendance'
+            },
+            {
+                menu: 'Exam Results',
+                link: '/exam-result'
             },
         ]
     },
