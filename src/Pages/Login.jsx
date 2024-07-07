@@ -5,12 +5,55 @@ import { useNavigate } from "react-router";
 import loginImage from "../assets/loginImage.png";
 import logo from "../assets/academyLogo.png";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import useAxiosConfig from "../AxiosConfig/useAxiosConfig";
+import toast, { Toaster } from "react-hot-toast";
+import { useUserData } from "../Providers/UserProviders/UserProvider";
 const Login = () => {
+    const { useData, setUserData,loading, setLoading } = useUserData()
     const navigate = useNavigate();
-    const onFinish = (values) => {
-    };
+    if (loading) {
+        return <p>loading.....</p>
+    }
+    if (useData?.email) {
+        return navigate('/')
+    }
+    const AxiosConfig = useAxiosConfig()
+    const onFinish = async (values) => {
+        setLoading(true)
+        // { email: 'asd@gm', password: 'dasdasd ad ', remember: false }
+        try {
+            const loginPromise = AxiosConfig.post('/login', { email: values?.email, password: values?.password }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
 
+            toast.promise(
+                loginPromise,
+                {
+                    loading: 'Logging in...',
+                    success: (res) => {
+                        setLoading(false)
+                        if (res?.data?.access_token) {
+                            localStorage.setItem('token', JSON.stringify(res.data.access_token));
+                            setUserData(res?.data?.user);
+                            return `Logged in as ${res?.data?.user?.name || res?.data?.user?.email || res?.data?.user?.role}`;
+                        }
+                    },
+                    error: (error) => {
+                        setUserData(false);
+                        setLoading(false)
+                        return error?.response?.data?.message || error.message || "Something went wrong."
+                    }
+                }
+            );
+        } catch (error) {
+            setUserData(false);
+            setLoading(false)
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong.");
+        }
+
+    };
     return (
         <div
             className="grid grid-cols-2 gap-0"
@@ -146,6 +189,10 @@ const Login = () => {
                     </Form.Item>
                 </Form>
             </div>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
         </div>
     );
 };

@@ -62,11 +62,12 @@ import AssignmentMark from "../Pages/AssignmentMark";
 import ProvideClassVideo from "../Pages/ProvideClassVideo";
 import AddProvideClassVideo from "../Pages/AddProvideClassVideo";
 import Notification from "../Pages/Notification";
+import PrivetRoute from "../PrivetRoute/PrivetRoute";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Dashboard />,
+        element: <PrivetRoute><Dashboard /></PrivetRoute>,
         children: [
             {
                 path: '/',

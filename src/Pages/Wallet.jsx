@@ -171,6 +171,7 @@ const Wallet = () => {
     return (
         <div className='mt-4'>
             <h4 className='text-2xl font-semibold'>All Wallet</h4>
+
             <div className='grid grid-cols-4 gap-3 mt-3'>
                 {
                     data?.map((item) => <div style={{
