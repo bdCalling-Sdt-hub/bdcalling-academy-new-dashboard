@@ -3,11 +3,13 @@ import Input from "../Input/Input";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import flag from '../../assets/flag.png'
+import { useNavigate } from "react-router-dom";
 const Navber = () => {
     const { register } = useForm();
     const inputHandeler = (e) => {
         // console.log(e.target.value)
     }
+    const navigate = useNavigate()
     return (
         <div className="between-center w-full p-3 py-6 bg-white ">
             <div className="w-[460px] relative" >
@@ -17,7 +19,7 @@ const Navber = () => {
             <div className="flex justify-end items-center w-full gap-5">
                 <img src={flag} className="h-5 w-8 -mr-3" alt="" />
                 <p className="text-lg">EN</p>
-                <div className="relative cursor-pointer">
+                <div onClick={()=>navigate('/notification')} className="relative cursor-pointer">
                     <MdOutlineNotificationsActive className="text-3xl" />
                     <span className="rounded-full bg-[#E91E63] p-[2px] px-[4px] text-white absolute top-0 right-0 text-[10px]" >
                         12

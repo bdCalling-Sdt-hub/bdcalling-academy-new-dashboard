@@ -193,6 +193,14 @@ export const SideberLink = [
                 menu: 'Exam Results',
                 link: '/exam-result'
             },
+            {
+                menu: 'Assignment Results',
+                link: '/assignment-result'
+            },
+            {
+                menu: 'Provide class video',
+                link: '/provide-class-video'
+            },
         ]
     },
     {

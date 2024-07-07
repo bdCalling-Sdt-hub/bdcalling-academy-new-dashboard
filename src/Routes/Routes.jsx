@@ -58,6 +58,10 @@ import SalesAdmittedStudent from "../Pages/SalesAdmittedStudent";
 import TrainerAttendance from "../Pages/TrainerAttendance";
 import StudentsAttendance from "../Pages/StudentsAttendance";
 import ExamResults from "../Pages/ExamResults";
+import AssignmentMark from "../Pages/AssignmentMark";
+import ProvideClassVideo from "../Pages/ProvideClassVideo";
+import AddProvideClassVideo from "../Pages/AddProvideClassVideo";
+import Notification from "../Pages/Notification";
 
 export const router = createBrowserRouter([
     {
@@ -283,6 +287,22 @@ export const router = createBrowserRouter([
             {
                 path: '/exam-result',
                 element: <ExamResults />
+            },
+            {
+                path: '/assignment-result',
+                element: <AssignmentMark />
+            },
+            {
+                path: '/provide-class-video',
+                element: <ProvideClassVideo />
+            },
+            {
+                path: '/add-provide-class-video',
+                element: <AddProvideClassVideo />
+            },
+            {
+                path: '/notification',
+                element: <Notification />
             },
         ]
     },
