@@ -8,7 +8,7 @@ const SelectInput = ({ lebel, defaultValue, classNames, rules, status, handler, 
                 handler && handler(e, rules?.name)
             }} defaultValue={defaultValue ? defaultValue : "please select"} {...rules} className={`w-full p-2 outline-none rounded-md ${classNames}`}>
                 {
-                    options?.map(item => <option value={item} key={item}>{item}</option>)
+                    options?.map(item => <option value={item?.value} key={item}>{item?.name}</option>)
                 }
             </select>
             {

@@ -16,9 +16,6 @@ import toast from "react-hot-toast"
 const CategoryOptions = ['ADMIN', 'SUPER ADMIN',]
 const CreateSuperAdmin = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
-    // const totalData = AdminData.length
-    // const [itemPerPage, setItemPerPage] = useState(8)
-    // const totalPage = Math.ceil(totalData / itemPerPage)
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
@@ -145,7 +142,7 @@ const CreateSuperAdmin = () => {
             </div>
             <div className="center-center my-5 mt-8">
 
-                <Pagination defaultCurrent={page} total={Admins?.data?.total} showSizeChanger={false} onChange={(page, pageSize) => {
+                <Pagination defaultCurrent={page} total={Admins?.data?.total} pageSize={8} showSizeChanger={false} onChange={(page, pageSize) => {
                     setPage(page)
                 }} />
             </div>

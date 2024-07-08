@@ -3,8 +3,11 @@ import UpdateInput from '../Input/UpdateInput'
 import { FaEdit } from "react-icons/fa"
 import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import SelectInput from '../Input/SelectInput'
+import { useLocation } from 'react-router-dom'
 const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register,
     handleSubmit, errors, onSubmit, CategoryOptions, setOpenAddModal, creatingUser }) => {
+    const location = useLocation()
+    // console.log(location.pathname)
     const [inputType, setInputType] = useState('password')
     const [CinputType, setCInputType] = useState('password')
     const handleFileChange = (e) => {
@@ -29,7 +32,7 @@ const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name`} defaultValue={filterdData.name} />
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`User Name`} rules={{ ...register("userName", { required: true }) }} placeholder={`User Name`} defaultValue={filterdData.userName} />
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number`} type={'number'} rules={{ ...register("number", { required: true }) }} placeholder={`Phone Number`} defaultValue={filterdData.number} />
-                <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email`} type={`email`} rules={{ ...register("email", { required: true }) }} placeholder={`email`} defaultValue={filterdData.email} />
+                <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border ${creatingUser ? "" : "pointer-events-none"}`} lebel={`Email`} type={`email`} rules={{ ...register("email", { required: true }) }} placeholder={`email`} defaultValue={filterdData.email} />
                 {
                     creatingUser && <>
                         <div className="relative mb-3">
@@ -52,9 +55,11 @@ const CreateUsersForm = ({ image, setImage, filterdData, inputHandeler, register
                 <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Expert`} rules={{ ...register("expert", { required: true }) }} placeholder={`Designation`} defaultValue={filterdData.expert} />
 
             </div>
-            {/* <SelectInput lebel={`Select Role`} classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...register("category", { required: true }) }} /> */}
+            {
+                location.pathname === '/create-mentors' && <SelectInput lebel={`Select Role`} classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...register("category", { required: true }) }} />
+            }
             <div className="px-48 mt-8">
-                <input value={`${creatingUser ? ' Create' :'Update'}`} className="btn-primary cursor-pointer" type="submit" />
+                <input value={`${creatingUser ? ' Create' : 'Update'}`} className="btn-primary cursor-pointer" type="submit" />
             </div>
         </form>
     )
