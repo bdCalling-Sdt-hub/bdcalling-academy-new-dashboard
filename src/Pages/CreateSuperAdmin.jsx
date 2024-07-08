@@ -3,7 +3,7 @@ import PageHeading from "../Components/Shared/PageHeading"
 import AdminCard from "../Components/Cards/AdminCard"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Modal } from "antd"
+import { Modal, Pagination } from "antd"
 import { useForm } from "react-hook-form"
 import CreateUsersForm from "../Components/Forms/CreateUsersForm"
 import usePostRequest from "../Hooks/usePostRequest"
@@ -15,7 +15,7 @@ import useDeleteRequest from "../Hooks/useDeleteRequest"
 import toast from "react-hot-toast"
 const CategoryOptions = ['ADMIN', 'SUPER ADMIN',]
 const CreateSuperAdmin = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     // const totalData = AdminData.length
     // const [itemPerPage, setItemPerPage] = useState(8)
     // const totalPage = Math.ceil(totalData / itemPerPage)
@@ -27,7 +27,7 @@ const CreateSuperAdmin = () => {
     const { mutate, isLoading, data, error } = usePostRequest('admin', '/admins');
     const { mutate: updateAdmin, isLoading: updateLoading, data: updateData, } = usePatchRequest('admin', `/admins/${filterdData?._id}`);
     const { mutate: DeleteAdmin, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('admin', `/admins/${filterdData?._id}`);
-    const [requestingUser, Admins, adminError, refetch, isError] = useGetRequest('superAdmin', '/show-super-admin')
+    const [requestingUser, Admins, adminError, refetch, isError] = useGetRequest('superAdmin', `/show-super-admin?page=${page}`)
     const AdminData = Admins?.data?.data?.map((item) => {
         return {
             _id: item?.id,
@@ -68,7 +68,6 @@ const CreateSuperAdmin = () => {
                 email: value?.email,
                 designation: value?.designation,
                 expertise: value?.expert,
-                _method: 'PUT',
                 _method: 'PUT',
                 phone_number: value?.number
             }
@@ -144,21 +143,12 @@ const CreateSuperAdmin = () => {
                     AdminData?.map((item, index) => <AdminCard handleDelete={handleDelete} key={index} item={item} handelEdit={handelEdit} />)
                 }
             </div>
-            {/* <div className="center-center my-5 mt-8">
-                <button onClick={() => {
-                    navigate(`/create-super-admin?page=${Number(page) - 1}`)
-                    setPage(Number(page) - 1)
-                }} disabled={page == '0'} className={`rounded-sm bg-[var(--primary-bg)] m-1 h-10 w-16 block text-white`}>prev</button>
-                {
-                    [...Array(totalPage).keys()].map(item => <Link key={item} onClick={() => setPage(item)} to={`/create-super-admin?page=${item}`}>
-                        <button className={`rounded-sm m-1 h-10 w-10 block ${page == item ? 'bg-[var(--primary-bg)] text-white' : 'bg-white'}`} key={item}>{item + 1}</button>
-                    </Link>)
-                }
-                <button disabled={page == totalPage - 1} onClick={() => {
-                    navigate(`/create-super-admin?page=${Number(page) + 1}`)
-                    setPage(Number(page) + 1)
-                }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
-            </div> */}
+            <div className="center-center my-5 mt-8">
+
+                <Pagination defaultCurrent={page} total={Admins?.data?.total} showSizeChanger={false} onChange={(page, pageSize) => {
+                    setPage(page)
+                }} />
+            </div>
             <Modal
                 centered
                 footer={false}

@@ -11,9 +11,9 @@ const UserProvider = ({ children }) => {
     useEffect(() => {
         if (gettingProfile) { setLoading(true) }else{setLoading(false)}
         if (data) setUserData(data.user)
-    }, [gettingProfile, data])
+    }, [gettingProfile, data ,isError])
     return (
-        <UserData.Provider value={{ useData, setUserData, loading, setLoading }}>
+        <UserData.Provider value={{ useData, setUserData, loading, setLoading ,isError }}>
             {children}
             <Toaster
                 position="top-center"
