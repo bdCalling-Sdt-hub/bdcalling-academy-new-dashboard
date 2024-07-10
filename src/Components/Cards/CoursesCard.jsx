@@ -3,11 +3,12 @@ import { BsInfoCircle } from "react-icons/bs"
 import { FaUsers } from "react-icons/fa"
 import { IoMdBook, IoMdTime } from "react-icons/io"
 import { RiDeleteBin5Line, RiEditBoxLine } from "react-icons/ri"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { imageUrl } from "../../AxiosConfig/useAxiosConfig"
 
 
 const CoursesCard = ({ item, deleteModal, setDeleteNodal ,handleDeleteCourse}) => {
+    const location = useLocation()
     const {
         id,
         course_category_id,
@@ -56,7 +57,7 @@ const CoursesCard = ({ item, deleteModal, setDeleteNodal ,handleDeleteCourse}) =
             <h2 className="text-lg font-semibold text-[var(--primary-bg)] py-2">{course_name}</h2>
             <p className="text-lg font-semibold text-[var(--primary-bg)] py-2">{price}</p>
             <div className="between-center">
-                <Link to={`/course-details/${id}`} className="text-white bg-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
+                <Link to={`/course-details/${id}?type=${location.pathname}&course=${course_name}`} className="text-white bg-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
                     <BsInfoCircle />
                 </Link>
                 <Link to={`/update-course/${id}?redirect=offline-course&type=update`} className="border border-[var(--primary-bg)] text-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">

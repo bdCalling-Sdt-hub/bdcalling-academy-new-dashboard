@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { RiEditBoxLine } from 'react-icons/ri'
 import { IoVideocamOutline } from 'react-icons/io5'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const CourseDetails = () => {
+    const [query, setQuery] = useState(new URLSearchParams(window.location.search));
+    const { id } = useParams()
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses/${id}`)
     return (
         <>
             <PageHeading text={`Add Module`} />
@@ -53,7 +57,7 @@ const CourseDetails = () => {
                         <div className="collapse-title font-medium p-1">
                             <div className='border rounded-none py-4 between-center'>
                                 <h3 className='start-center gap-2 text-[#6B6B6B] text-base '><MdKeyboardArrowRight className='text-2xl' /></h3>
-                                <Link to={`/add-video/1`} className="text-white bg-[green] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 mr-2">
+                                <Link to={`/add-video/${id}?course=${query.get('course')}&type=${query.get('type')}&redirect=course-details/${id}`} className="text-white bg-[green] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all cursor-pointer z-50 mr-2">
                                     <FaPlus />
                                 </Link>
                             </div>
