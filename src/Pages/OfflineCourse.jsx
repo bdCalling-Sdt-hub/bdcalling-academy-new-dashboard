@@ -253,21 +253,6 @@ const OfflineCourse = () => {
                     setPage(page)
                 }} />
             </div>
-            {/* <div className="center-center my-5 mt-8">
-                <button onClick={() => {
-                    navigate(`/offline-course?page=${Number(page) - 1}`)
-                    setPage(Number(page) - 1)
-                }} disabled={page == '0'} className={`rounded-sm bg-[var(--primary-bg)] m-1 h-10 w-16 block text-white`}>prev</button>
-                {
-                    [...Array(totalPage).keys()].map(item => <Link key={item} onClick={() => setPage(item)} to={`/offline-course?page=${item}`}>
-                        <button className={`rounded-sm m-1 h-10 w-10 block ${page == item ? 'bg-[var(--primary-bg)] text-white' : 'bg-white'}`} key={item}>{item + 1}</button>
-                    </Link>)
-                }
-                <button disabled={page == totalPage - 1} onClick={() => {
-                    navigate(`/offline-course?page=${Number(page) + 1}`)
-                    setPage(Number(page) + 1)
-                }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
-            </div> */}
         </>
     )
 }

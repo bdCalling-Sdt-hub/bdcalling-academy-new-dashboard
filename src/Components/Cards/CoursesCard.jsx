@@ -16,9 +16,7 @@ const CoursesCard = ({ item, deleteModal, setDeleteNodal ,handleDeleteCourse}) =
         course_details,
         course_time_length,
         price,
-        max_student_length,
-        skill_Level,
-        address,
+
         thumbnail,
         career_opportunities,
         curriculum,
@@ -61,7 +59,7 @@ const CoursesCard = ({ item, deleteModal, setDeleteNodal ,handleDeleteCourse}) =
                 <Link to={`/course-details/${id}`} className="text-white bg-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
                     <BsInfoCircle />
                 </Link>
-                <Link to={`/update-course/${id}`} className="border border-[var(--primary-bg)] text-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
+                <Link to={`/update-course/${id}?redirect=offline-course&type=update`} className="border border-[var(--primary-bg)] text-[var(--primary-bg)] text-xl p-2 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
                     <RiEditBoxLine />
                 </Link>
                 <div className="relative">

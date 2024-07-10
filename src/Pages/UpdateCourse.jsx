@@ -1,8 +1,9 @@
-import CourseAddForm from '../Components/Forms/CourseAddForm'
+
+import CourseUpdateForm from '../Components/Forms/CourseUpdateForm'
 const UpdateCourse = () => {
     return (
         <>
-        <CourseAddForm />
+        <CourseUpdateForm />
     </>
     )
 }
