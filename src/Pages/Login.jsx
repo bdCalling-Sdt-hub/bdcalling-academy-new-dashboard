@@ -4,18 +4,16 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import loginImage from "../assets/loginImage.png";
 import logo from "../assets/academyLogo.png";
-import { Link } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
 import useAxiosConfig from "../AxiosConfig/useAxiosConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { useUserData } from "../Providers/UserProviders/UserProvider";
 const Login = () => {
     const { useData, setUserData,loading, setLoading } = useUserData()
+    const location = useLocation()
     const navigate = useNavigate();
-    if (loading) {
-        return <p>loading.....</p>
-    }
-    if (useData?.email) {
-        return navigate('/')
+    if (useData?.email) {// || localStorage.getItem('token')
+        return navigate(`${location?.state || '/'}`)
     }
     const AxiosConfig = useAxiosConfig()
     const onFinish = async (values) => {

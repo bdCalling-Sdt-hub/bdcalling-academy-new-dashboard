@@ -5,12 +5,16 @@ import { toast } from 'react-hot-toast';
 const usePatchRequest = (key, url) => {
     const AxiosConfig = useAxiosConfig();
     const mutation = useMutation(async (data) => {
-        const res = await AxiosConfig.patch(url, data, {
+        // data.forEach(element => {
+        //     console.log(element)
+        // });
+        const res = await AxiosConfig.post(url, data, {
             headers: {
-                'Content-Type': 'application/json', // Adjust content type as per your API requirement
+                'Content-Type': 'multipart/form-data', // Adjust content type as per your API requirement
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
             },
         });
+        console.log(res);
         return res.data;
     });
     const wrappedMutate = (data) => {

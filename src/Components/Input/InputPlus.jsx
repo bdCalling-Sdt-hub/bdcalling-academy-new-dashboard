@@ -4,8 +4,8 @@ import Input from './Input';
 import { FaPlus, FaXmark } from 'react-icons/fa6';
 import { addNewFields, removeNewFields } from '../../Utils/InputPlusActions';
 import { useForm } from 'react-hook-form';
-const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, status, handler, valueName, fieldFor, actions, actionStyles, inputFor }) => {
-    const { register } = useForm();
+const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, status, handler, valueName, fieldFor, actions, actionStyles, inputFor ,register}) => {
+    // const { register } = useForm();
     return (
         <>
             {
@@ -32,7 +32,7 @@ const InputPlus = ({ Fields, setFields, lebel, type, placeholder, classNames, st
                         </div>
                     } else {
                         return <div key={item?._id} className='flex justify-end items-end gap-2'>
-                            <Input key={item?._id} lebel={lebel ? lebel : null} type={type ? type : 'text'} placeholder={placeholder ? placeholder : 'Enter your text here'} defaultValue={item[valueName] ? item[valueName] : ''} classNames={classNames ? classNames : ''} rules={{ ...register(`${inputFor}-${item?._id}`, { required: true }) }} status={status && status} />
+                            <Input key={item?._id} lebel={lebel ? lebel : null} type={type ? type : 'text'} placeholder={placeholder ? placeholder : 'Enter your text here'} defaultValue={item[valueName] ? item[valueName] : ''} classNames={classNames ? classNames : ''} rules={{ ...register(`${inputFor}_${item?._id}`, { required: true }) }} status={status && status} />
                             <div className='flex items-center justify-end w-fit gap-2'>
                                 {
                                     actions?.cross && <button onClick={() => {

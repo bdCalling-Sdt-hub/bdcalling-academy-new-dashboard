@@ -55,7 +55,6 @@ const CreateMentors = () => {
                 phone_number: value?.number,
                 course_category_id: value?.category
             }
-            console.log(AdminData)
             const formData = new FormData()
             Object.keys(AdminData).map(key => {
                 formData.append(key, AdminData[key])

@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { FaPlus } from 'react-icons/fa6'
-import { DatePicker, Modal, Table } from 'antd'
+import { FaEye, FaEyeSlash, FaPlus } from 'react-icons/fa6'
+import { DatePicker, message, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
@@ -9,163 +9,109 @@ import { RxCross2 } from 'react-icons/rx'
 import { FaEdit } from 'react-icons/fa'
 import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
 import UpdateInput from '../Components/Input/UpdateInput'
-const data = [
-    {
-        "_id": "1",
-        "name": "Alice Smith",
-        "phone": "123-456-7890",
-        "email": "student1@example.com",
-        "course": "Mathematics",
-        "date": "2024-01-15",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "2",
-        "name": "Bob Johnson",
-        "phone": "234-567-8901",
-        "email": "student2@example.com",
-        "course": "Physics",
-        "date": "2024-01-16",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "3",
-        "name": "Charlie Brown",
-        "phone": "345-678-9012",
-        "email": "student3@example.com",
-        "course": "Chemistry",
-        "date": "2024-01-17",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "4",
-        "name": "David Wilson",
-        "phone": "456-789-0123",
-        "email": "student4@example.com",
-        "course": "Biology",
-        "date": "2024-01-18",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "5",
-        "name": "Eva Martinez",
-        "phone": "567-890-1234",
-        "email": "student5@example.com",
-        "course": "English",
-        "date": "2024-01-19",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "6",
-        "name": "Frank Garcia",
-        "phone": "678-901-2345",
-        "email": "student6@example.com",
-        "course": "History",
-        "date": "2024-01-20",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "7",
-        "name": "Grace Miller",
-        "phone": "789-012-3456",
-        "email": "student7@example.com",
-        "course": "Geography",
-        "date": "2024-01-21",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "8",
-        "name": "Hank Lee",
-        "phone": "890-123-4567",
-        "email": "student8@example.com",
-        "course": "Economics",
-        "date": "2024-01-22",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "9",
-        "name": "Ivy Harris",
-        "phone": "901-234-5678",
-        "email": "student9@example.com",
-        "course": "Political Science",
-        "date": "2024-01-23",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "10",
-        "name": "Jack Clark",
-        "phone": "012-345-6789",
-        "email": "student10@example.com",
-        "course": "Sociology",
-        "date": "2024-01-24",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "11",
-        "name": "Karen Lewis",
-        "phone": "123-456-7891",
-        "email": "student11@example.com",
-        "course": "Philosophy",
-        "date": "2024-01-25",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "12",
-        "name": "Leo Walker",
-        "phone": "234-567-8902",
-        "email": "student12@example.com",
-        "course": "Art",
-        "date": "2024-01-26",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "13",
-        "name": "Mona Hall",
-        "phone": "345-678-9013",
-        "email": "student13@example.com",
-        "course": "Music",
-        "date": "2024-01-27",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "14",
-        "name": "Nick Young",
-        "phone": "456-789-0124",
-        "email": "student14@example.com",
-        "course": "Theater",
-        "date": "2024-01-28",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "15",
-        "name": "Olivia King",
-        "phone": "567-890-1235",
-        "email": "student15@example.com",
-        "course": "Dance",
-        "date": "2024-01-29",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    }
-]
-
-
+import usePatchRequest from '../Hooks/usePatchRequest'
+import useDeleteRequest from '../Hooks/useDeleteRequest'
+import useGetRequest from '../Hooks/useGetRequest'
+import usePostRequest from '../Hooks/usePostRequest'
+import SelectInput from '../Components/Input/SelectInput'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import ProfileImage from '../assets/corporate-user-icon.webp'
+import toast from 'react-hot-toast'
 const AllStudents = () => {
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register: registerStudent, handleSubmit: handleStudent, formState: { errors: StudentError } } = useForm();
+    const { register: registerMassage, handleSubmit: handleMassage, formState: { errors: MassageError } } = useForm();
     const [filterData, setFilterData] = useState({})
     const [image, setImage] = useState(null);
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
-    const onSubmit = data => console.log(data);
+    const [inputType, setInputType] = useState('password')
+    const [text, setText] = useState(true)
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    // query 
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
+    const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
+    const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
+    const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/show/all/student?`)//phone_number=01317659523&name=r&category_name=1&
+    const TableData = Students?.data?.map((item, index) => {
+        return {
+            key: index + 1,
+            name: item?.user?.name,
+            email: item?.user?.email,
+            phone_number: item?.phone_number,
+            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            course: item?.category?.category_name,
+            _id: item?.id,
+            gender: item?.gender,
+            religion: item?.religion,
+            registration_date: item?.registration_date,
+            category_id: item?.category_id,
+            blood_group: item?.blood_group,
+            religion: item?.religion,
+            dob: item?.dob,
+            address: item?.address
+        }
+    })
+
+
+    const onSelectChange = (newSelectedRowKeys) => {
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+    const onSubmit = data => {
+
+    };
+
+    // add student
+    const onSubmitStudent = (values) => {
+        const data = {
+            name: filterData?.name,
+            email: filterData?.email,
+            password: filterData?.password,
+            phone_number: filterData?.phone_number,
+            gender: filterData?.gender,
+            religion: filterData?.religion,
+            dob: filterData?.dob,
+            blood_group: filterData?.blood_group,
+            registration_date: filterData.registration_date,
+            student_type: 'super admin',
+            address: filterData?.address,
+            category_id: values?.category
+            // add_by:'super admin'
+        }
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        if (image) {
+            formData.append('image', image)
+        }
+        if (text) {
+            mutate(formData)
+        } else {
+            formData.append('_method', 'PUT')
+            updateStudents(formData)
+        }
+    }
+
     const onChange = (date, dateString) => {
     };
+
     const columns = [
         {
             title: '#Sl',
-            dataIndex: '_id',
-            key: '_id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
@@ -177,8 +123,8 @@ const AllStudents = () => {
         },
         {
             title: 'Phone Number',
-            dataIndex: 'phone',
-            key: 'phone'
+            dataIndex: 'phone_number',
+            key: 'phone_number'
         },
         {
             title: 'Email',
@@ -202,6 +148,7 @@ const AllStudents = () => {
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
+                    setSelectedRowKeys([record.key])
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
@@ -235,13 +182,17 @@ const AllStudents = () => {
                     Admit
                 </button>
                 <button onClick={() => {
+                    setText(false)
                     handelFilterData(record?._id)
                     setImage(null)
                     setOpenStudentAddModal(true)
                 }} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <MdEditSquare />
                 </button>
-                <button className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
+                <button onClick={() => {
+                    handelFilterData(record._id)
+                    handleDelete()
+                }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
                 </button>
             </div>,
@@ -249,31 +200,66 @@ const AllStudents = () => {
         },
     ];
     const handelFilterData = (id) => {
-        console.log(id)
-        const newData = data.filter(item => item._id === id)
+        const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-    const [colorType, setColorType] = useState(['blue'])
-    const colorHandeler = (color) => {
-        if (colorType.find(item => item == color)) {
-            const newColor = colorType.filter(item => item != color)
-            setColorType([...newColor])
-        } else {
-            setColorType([...colorType, color])
-        }
-    }
+    // const [colorType, setColorType] = useState(['blue'])
+    // const colorHandeler = (color) => {
+    //     if (colorType.find(item => item == color)) {
+    //         const newColor = colorType.filter(item => item != color)
+    //         setColorType([...newColor])
+    //     } else {
+    //         setColorType([...colorType, color])
+    //     }
+    // }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+            setImage(file)
+        } else {
+            setImage(null)
         }
     };
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
+    }
+    const CategoryOptions = Category?.data?.data?.map(item => {
+        return { name: item?.category_name, value: item?.id }
+    })
+    useEffect(() => {
+        if (isLoading, updateLoading, DeleteLoading) return
+        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
+    //delete users
+    const handleDelete = () => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete {filterData?.name}</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteStudents()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
+    }
+
+    // send followup message
+    const HandleSendMassage = (value) => {
+        const data = {
+            ids: selectedRowKeys,
+            messages: [value.comment]
+        }
+        const formData = new FormData()
+        formData.append('ids[]', selectedRowKeys)
+        formData.append('messages[]', value.comment)
+        followUpMessage(formData)
     }
     return (
         <>
@@ -282,8 +268,11 @@ const AllStudents = () => {
                     <PageHeading text={`All Students`} />
                 </div>
                 <div className="flex justify-end items-center w-full gap-3">
-                    <button className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
                     <button onClick={() => {
+                        selectedRowKeys?.length <= 0 ? toast.error('please select students') : setOpenFollowUpModal(true)
+                    }} className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
+                    <button onClick={() => {
+                        setText(true)
                         setImage(null)
                         setOpenStudentAddModal(true)
                     }} className="btn-primary max-w-44"><FaPlus /> Add Student</button>
@@ -314,7 +303,13 @@ const AllStudents = () => {
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={TableData || []}
+                        rowSelection={rowSelection}
+                        pagination={{
+                            total: Students?.total || 0,
+                            onChange: (page, pagesize) => setPage(page),
+                            showSizeChanger: false
+                        }}
                     />
                 </div>
             </div>
@@ -326,13 +321,12 @@ const AllStudents = () => {
                 open={openStudentAddModal}
                 width={600}
             >
-                <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
+                <form className="text-base" onSubmit={handleStudent(onSubmitStudent)}>
                     <div className="center-center">
                         <div className={`h-28 w-28 rounded-full my-4  relative`}>
                             {
-                                image ? <img className="h-full w-full rounded-full object-cover" src={image} alt="" /> : filterData?.profile ? <img className="h-full w-full rounded-full object-cover" src={filterData?.profile} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={`https://i.ibb.co/6NTVcx7/default-user-icon.webp`} alt="" />
+                                image ? <img className="h-full w-full rounded-full object-cover" src={URL.createObjectURL(image)} alt="" /> : filterData?.img ? <img className="h-full w-full rounded-full object-cover" src={filterData?.img} alt="" /> : <img className="h-full w-full object-cover rounded-full" src={ProfileImage} alt="" />
                             }
-
                             <label className="absolute right-1 bottom-1 z-30 bg-[var(--primary-bg)] p-2 rounded-full text-white cursor-pointer" htmlFor="profile">
                                 <FaEdit />
                             </label>
@@ -340,54 +334,36 @@ const AllStudents = () => {
                     </div>
                     <input id="profile" onChange={handleFileChange} className="hidden" name="profile" type="file" />
                     <div className="grid-2">
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...register("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number*`} rules={{ ...register("phone", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Email*`} type={'email'} rules={{ ...register("email", { required: true }) }} placeholder={`Email*`} defaultValue={filterData.email} />
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Date of Birth*`} type={`date`} rules={{ ...register("date", { required: true }) }} placeholder={`Date of Birth*`} defaultValue={filterData.date} />
-
-                        <lebel className='mt-3 block w-full relative'>
-                            Course Category
-                            <select {...register("category", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="category">Please Select a Category</option>
-                                <option value="category">category</option>
-                                <option value="category">category</option>
-                                <option value="category">category</option>
-                            </select>
-                            {
-                                errors?.category && <p className="absolute -bottom-4 text-red-600">category is requerd</p>
-                            }
-                        </lebel>
-                        <lebel className='mt-3 block w-full relative'>
-                            Gender*
-                            <select {...register("gender", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="gender">Gender</option>
-                                <option value="gender">gender</option>
-                                <option value="gender">gender</option>
-                                <option value="gender">gender</option>
-                            </select>
-                            {
-                                errors?.gender && <p className="absolute -bottom-4 text-red-600">gender is requerd</p>
-                            }
-                        </lebel>
-                        <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Blood Group*`} type={`text`} rules={{ ...register("blood", { required: true }) }} placeholder={`Blood Group*`} defaultValue={filterData?.blood} />
-                        <lebel className='mt-3 block w-full relative'>
-                            <p>Course Category</p>
-                            <select {...register("religion*", { required: true })} className="w-full outline-none border p-2 rounded-md" id="">
-                                <option value="religion">religion</option>
-                                <option value="religion">religion</option>
-                                <option value="category">religion</option>
-                                <option value="religion">religion</option>
-                            </select>
-                            {
-                                errors?.category && <p className="absolute -bottom-4 text-red-600">religion is requerd</p>
-                            }
-                        </lebel>
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...registerStudent("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Phone Number*`} rules={{ ...registerStudent("phone_number", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone_number} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full ${text ? "" : "pointer-events-none"} border`} lebel={`Email*`} type={'email'} rules={{ ...registerStudent("email", { required: true }) }} placeholder={`Email*`} defaultValue={filterData.email} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Date of Birth*`} type={`date`} rules={{ ...registerStudent("dob", { required: true }) }} placeholder={`Date of Birth*`} defaultValue={filterData.dob} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Admission Date`} type={`date`} rules={{ ...registerStudent("registration_date", { required: true }) }} placeholder={`Admission date`} defaultValue={filterData.registration_date} />
+                        {
+                            text && <div className="relative mb-3">
+                                <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Password`} type={inputType} rules={{ ...registerStudent("password", { required: false }) }} placeholder={`Password`} defaultValue={filterData?.password} />
+                                {
+                                    inputType === 'password' ? <FaEyeSlash onClick={() => setInputType('text')} className="text-xl absolute top-[42px] right-2 text-gray-500 cursor-pointer" /> : <FaEye onClick={() => setInputType('password')} className="text-xl absolute top-[42px] right-2 text-gray-500" />
+                                }
+                            </div>
+                        }
+                        <SelectInput lebel={`Course Category`} handler={inputHandeler} defaultValue={filterData?.category_id} classNames={`border`} status={StudentError} options={CategoryOptions} rules={{ ...registerStudent("category", { required: true }) }} />
+                        <SelectInput lebel={`Gender`} handler={inputHandeler} defaultValue={filterData.gender} classNames={`border`} status={StudentError} options={[
+                            { name: 'Female', value: 'female' },
+                            { name: 'Male', value: 'male' },
+                        ]} rules={{ ...registerStudent("gender", { required: true }) }} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Blood Group*`} type={`text`} rules={{ ...registerStudent("blood_group", { required: true }) }} placeholder={`Blood Group*`} defaultValue={filterData?.blood_group} />
+                        <SelectInput defaultValue={filterData?.religion} lebel={`Religion`} handler={inputHandeler} classNames={`border`} status={StudentError} options={[
+                            { name: 'Islam', value: 'islam' },
+                            { name: 'Buddhism', value: 'buddhism' },
+                            { name: 'Hinduism', value: 'hinduism' },
+                            { name: 'Christianity', value: 'christianity' },
+                            { name: 'Other', value: 'other' },
+                        ]} rules={{ ...registerStudent("religion", { required: true }) }} />
                     </div>
-                    <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...register("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
+                    <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...registerStudent("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
-                        <input onClick={() => {
-                            setOpenStudentAddModal(false)
-                        }} value={`Create`} className="btn-primary cursor-pointer" type="submit" />
+                        <input value={text ? 'create' : 'update'} className="btn-primary cursor-pointer capitalize" type="submit" />
                     </div>
                 </form>
             </Modal>
@@ -673,21 +649,27 @@ const AllStudents = () => {
             >
                 <div className=''>
                     <h3 className='section-title -mt-7'>Follow Up Comments</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} className='border border-[var(--primary-bg)] rounded-md p-2'>
-                        <div className='start-center gap-3'>
-                            <img src={filterData?.img} className='h-8 w-8 rounded-full' alt="" /> <p className='text-base font-semibold'>{filterData?.name}</p>
-                        </div>
-                        <textarea className='resize-none w-full border rounded-md outline-none mt-5 min-h-32 p-2' {...register('comment', { required: true })} />
-                        {errors.comment && <p className='text-red-500'>comment is required <sup className=''>*</sup></p>}
+                    <form onSubmit={handleMassage(HandleSendMassage)} className='border border-[var(--primary-bg)] rounded-md p-2'>
+                        {
+                            selectedRowKeys?.length > 1 ? <p className='text-lg font-semibold'>send message to {selectedRowKeys?.length} Students</p> : <div className='start-center gap-3'>
+                                send message to  <img src={filterData?.img} className='h-8 w-8 rounded-full' alt="" /> <p className='text-base font-semibold'>{filterData?.name}</p>
+                            </div>
+                        }
+
+                        <textarea className='resize-none w-full border rounded-md outline-none mt-5 min-h-32 p-2' {...registerMassage('comment', { required: true })} />
+                        {MassageError.comment && <p className='text-red-500'>comment is required <sup className=''>*</sup></p>}
                         <div className='between-center mt-2'>
                             <div className='start-center gap-2'>
+                                <span className={`cursor-pointer w-5 h-5  bg-[#2492EB] border-[#2492EB] border rounded-full`}></span>
+                                <span className={`cursor-pointer w-5 h-5 bg-[#2BA24C] border-[#2BA24C] border rounded-full`}></span>
+                                <span className={`cursor-pointer w-5 h-5 bg-[#FFC60B] border-[#FFC60B] border rounded-full`}></span>
+                            </div>
+                            {/* <div className='start-center gap-2'>
                                 <span onClick={() => colorHandeler('blue')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'blue') ? 'bg-[#2492EB]' : 'bg-transparent')} border-[#2492EB] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
-                            </div>
-                            <button onClick={()=>{
-                                setOpenFollowUpModal(false)
-                            }} className='btn-primary max-w-32'>Send Comment</button>
+                            </div> */}
+                            <button className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>

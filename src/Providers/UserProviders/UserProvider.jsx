@@ -6,7 +6,7 @@ const UserData = createContext()
 export const useUserData = () => useContext(UserData);
 const UserProvider = ({ children }) => {
     const [useData, setUserData] = useState({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [gettingProfile, data, error, refetch, isError,] = useGetRequest('profile', '/profile')
     useEffect(() => {
         if (gettingProfile) { setLoading(true) }else{setLoading(false)}

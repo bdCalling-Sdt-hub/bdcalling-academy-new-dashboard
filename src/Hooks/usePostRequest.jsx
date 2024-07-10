@@ -6,6 +6,9 @@ const usePostRequest = (key, url) => {
     const AxiosConfig = useAxiosConfig();
 
     const mutation = useMutation(async (data) => {
+    //   data.forEach(element => {
+    //         console.log(element)
+    //     });
         const res = await AxiosConfig.post(url, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -13,6 +16,7 @@ const usePostRequest = (key, url) => {
             },
         });
         return res.data;
+        console.log(res)
     });
 
     const wrappedMutate = (data) => {
@@ -25,7 +29,6 @@ const usePostRequest = (key, url) => {
             }
         );
     };
-
     return {
         ...mutation,
         mutate: wrappedMutate,
