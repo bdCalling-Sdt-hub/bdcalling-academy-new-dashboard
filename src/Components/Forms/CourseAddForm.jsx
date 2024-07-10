@@ -41,9 +41,8 @@ const CourseAddForm = ({ formFor }) => {
     const [image, setImage] = useState(null);
     const [query, setQuery] = useState(new URLSearchParams(window.location.search));
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+
     const { mutate: addCourse, isLoading: courseLoading, data: courseData, error: courseError } = usePostRequest('courses', '/courses');
-    const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
-    const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const CategoryOptions = Category?.data?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
     })
@@ -102,18 +101,18 @@ const CourseAddForm = ({ formFor }) => {
         if (image) {
             formData.append('image', image)
         } else {
-            toast.error('image is required')
+            return toast.error('image is required')
         }
         addCourse(formData)
     };
-    useEffect(()=>{
+    useEffect(() => {
         if (courseLoading) {
             return
         }
         if (!courseError && courseData) {
-          return navigate(`/${query.get('redirect')}`)  
+            // return navigate(`/${query.get('redirect')}`)
         }
-    },[courseError,courseLoading ,courseData])
+    }, [courseError, courseLoading, courseData])
     // console.log(query.get('redirect'))
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>

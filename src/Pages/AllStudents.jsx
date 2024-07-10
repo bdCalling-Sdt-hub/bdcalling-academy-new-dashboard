@@ -33,6 +33,7 @@ const AllStudents = () => {
     const [inputType, setInputType] = useState('password')
     const [text, setText] = useState(true)
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [search,setSearch]=useState({name:'',phone_number:'',category_name:''})
     // query 
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');

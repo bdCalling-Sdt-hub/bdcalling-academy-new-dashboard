@@ -3,6 +3,7 @@ import useAxiosConfig from '../AxiosConfig/useAxiosConfig';
 import { toast } from 'react-hot-toast';
 
 const useDeleteRequest = (key, url) => {
+    console.log(url)
     const AxiosConfig = useAxiosConfig();
     const mutation = useMutation(async () => {
         const res = await AxiosConfig.delete(url, {

@@ -122,7 +122,7 @@ const CreateAdmin = () => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
     const [image, setImage] = useState(null);
-
+  
     return (
         <>
             <div className="between-center gap-2">

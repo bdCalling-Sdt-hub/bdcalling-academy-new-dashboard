@@ -1,8 +1,11 @@
 import { FaPlus } from "react-icons/fa"
 import PageHeading from '../Components/Shared/PageHeading'
 import CoursesCard from "../Components/Cards/CoursesCard"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import useGetRequest from "../Hooks/useGetRequest"
+import useDeleteRequest from "../Hooks/useDeleteRequest"
+import { Pagination } from "antd"
 const data = [
     {
         _id: '1',
@@ -220,10 +223,16 @@ const data = [
 const OfflineCourse = () => {
     const [deleteModal, setDeleteNodal] = useState({ show: false, id: false })
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses?course_type=offline`)
+    const { mutate: DeleteCourse, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('course', `/courses/${deleteModal?.id}`);
     const totalData = data.length
     const [itemPerPage, setItemPerPage] = useState(8)
     const totalPage = Math.ceil(totalData / itemPerPage)
     const navigate = useNavigate()
+    useEffect(() => {
+        if (DeleteLoading) return
+        if (DeleteData) refetch()
+    }, [DeleteData, DeleteLoading])
     return (
         <>
             <div className="between-center gap-2">
@@ -235,10 +244,16 @@ const OfflineCourse = () => {
             </div>
             <div className="grid-4">
                 {
-                    data?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map(item => <CoursesCard key={item?._id} item={item} deleteModal={deleteModal} setDeleteNodal={setDeleteNodal} />)
+                    Course?.data?.map(item => <CoursesCard key={item?._id} item={item} deleteModal={deleteModal} setDeleteNodal={setDeleteNodal} handleDeleteCourse={DeleteCourse} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
+
+                <Pagination defaultCurrent={page} total={Course?.total} pageSize={8} showSizeChanger={false} onChange={(page, pageSize) => {
+                    setPage(page)
+                }} />
+            </div>
+            {/* <div className="center-center my-5 mt-8">
                 <button onClick={() => {
                     navigate(`/offline-course?page=${Number(page) - 1}`)
                     setPage(Number(page) - 1)
@@ -252,7 +267,7 @@ const OfflineCourse = () => {
                     navigate(`/offline-course?page=${Number(page) + 1}`)
                     setPage(Number(page) + 1)
                 }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
-            </div>
+            </div> */}
         </>
     )
 }
