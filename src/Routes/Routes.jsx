@@ -63,6 +63,7 @@ import ProvideClassVideo from "../Pages/ProvideClassVideo";
 import AddProvideClassVideo from "../Pages/AddProvideClassVideo";
 import Notification from "../Pages/Notification";
 import PrivetRoute from "../PrivetRoute/PrivetRoute";
+import UpdateVideo from "../Pages/UpdateVideo";
 
 export const router = createBrowserRouter([
     {
@@ -304,6 +305,10 @@ export const router = createBrowserRouter([
             {
                 path: '/notification',
                 element: <Notification />
+            },
+            {
+                path: '/update-video/:id',
+                element: <UpdateVideo />
             },
         ]
     },
