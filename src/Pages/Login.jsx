@@ -25,7 +25,6 @@ const Login = () => {
                     'Content-Type': 'multipart/form-data',
                 }
             });
-
             toast.promise(
                 loginPromise,
                 {
