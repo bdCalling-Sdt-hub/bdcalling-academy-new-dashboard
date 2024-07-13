@@ -8,6 +8,7 @@ import TrainerCard from "../Components/Cards/TrainerCard"
 import TrainerAddForm from "../Components/Forms/TrainerAddForm"
 import TrainerPaymentForm from "../Components/Forms/TrainerPaymentForm"
 import { AiOutlinePrinter, AiTwotonePrinter } from "react-icons/ai"
+import useGetRequest from "../Hooks/useGetRequest"
 const AdminData = [
     {
         _id: '1',

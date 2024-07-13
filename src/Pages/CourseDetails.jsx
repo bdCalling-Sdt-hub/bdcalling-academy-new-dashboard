@@ -37,6 +37,10 @@ const CourseDetails = () => {
     //         "updated_at": "2024-07-10T11:16:11.000000Z"
     //     },
     // console.log(Course?.data?.data[0]?.course_module[0])
+    // {
+    //     video :,
+    //     exam :{},
+    // }
     return (
         <>
             <PageHeading text={`Add Module`} />

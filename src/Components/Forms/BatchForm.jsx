@@ -1,21 +1,56 @@
-import {  DatePicker, Form, Select } from 'antd';
+import { DatePicker, Form, Select } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useGetRequest from '../../Hooks/useGetRequest';
+import usePostRequest from '../../Hooks/usePostRequest';
 const BatchForm = () => {
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses`)
+    const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
+    const { mutate, isLoading, data, error } = usePostRequest('mentors', '/batches');
+    const CourseOptions = Course?.data?.map((item) => {
+        return { value: item?.id, label: item?.course_name }
+    })
+    const MentorsOptions = Admins?.teacher?.data?.map((item) => {
+        return { value: item?.id, label: item?.user?.name }
+    })
     const [form] = Form.useForm();
     const [Image, setImage] = useState()
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const data = {
+            course_id: values?.CourseName,
+            batch_name: values?.batch,
+            start_date: startDate,
+            end_date: endDate,
+            seat_left: 34,
+            seat_limit: values?.seat,
+            discount_price: values?.discountPrice,
+            teacher_id: JSON.stringify(values.trainer),
+            image: Image
+        }
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        // console.log(data)
+        mutate(formData)
     };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+
 
     const handleChange = (e) => {
         setImage(e.target.files[0])
     }
     const onChange = (field, date, dateString) => {
         // console.log(field, date, dateString);
+        if (field === 'start') {
+            setStartDate(dateString)
+        } else if (field === 'end') {
+            setEndDate(dateString)
+        }
+    };
+    const onCourseSelect = (value) => {
+        console.log(`selected ${value}`);
     };
     return (
         <div id='addBatch'>
@@ -23,19 +58,33 @@ const BatchForm = () => {
                 layout={'vertical'}
                 form={form}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
             >
                 <div className='grid-2 w-[70%]'>
+                    <div className='col-span-2'>
+                        <Form.Item
+                            label={<span className="text-lg font-bold text-[#333333] col-span-2">Batch Name</span>}
+                            name="batch"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your batch!',
+                                },
+                            ]}>
+                            <input className='outline-none w-full border p-[10px] rounded-md' placeholder="batch name" />
+                        </Form.Item>
+                    </div>
                     <Form.Item
-                        label={<span className="text-lg font-bold text-[#333333]">Course name</span>}
+                        label={<span className="text-lg font-bold text-[#333333]">Course</span>}
                         name="CourseName"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your Course name!',
+                                message: 'Please input your Course!',
                             },
                         ]}>
-                        <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
+                        <Select style={{
+                            height: '40px'
+                        }} onChange={onCourseSelect} placeholder={`please select course`} options={CourseOptions} />
                     </Form.Item>
                     <Form.Item
                         label={<span className="text-lg font-bold text-[#333333]">Upload Image*</span>}
@@ -73,11 +122,9 @@ const BatchForm = () => {
                                 message: 'Please input trainer name!',
                             },
                         ]}>
-                        <Select className='h-[43px]' defaultValue={`chooes a value`} options={[
-                            { value: 'Asad', label: <span>Asad</span> },
-                            { value: 'Asad1', label: <span>Asad1</span> },
-                            { value: 'Asad2', label: <span>Asad2</span> },
-                        ]} />
+                        <Select style={{
+                            minHeight: '43px'
+                        }} mode="multiple" className='min-h-[43px]' defaultValue={`chooes a value`} options={MentorsOptions} />
                     </Form.Item>
                     <Form.Item
                         label={<span className="text-lg font-bold text-[#333333]">Enter discount price</span>}
@@ -95,6 +142,12 @@ const BatchForm = () => {
                     <Form.Item
                         label={<span className="text-lg font-bold text-[#333333]">Enter max Student Length</span>}
                         name='seat'
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input course seat!',
+                            },
+                        ]}
                     >
                         <input type='number' className='outline-none w-full border p-[10px] rounded-md' placeholder="20" />
                     </Form.Item>

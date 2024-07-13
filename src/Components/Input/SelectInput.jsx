@@ -1,6 +1,7 @@
 import React from 'react'
 
 const SelectInput = ({ lebel, defaultValue, classNames, rules, status, handler, options }) => {
+    // console.log(options)
     return (
         <div className="w-full relative">
             {lebel && <p className="pb-2">{lebel}</p>}

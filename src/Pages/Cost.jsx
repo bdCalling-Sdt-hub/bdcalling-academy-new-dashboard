@@ -70,7 +70,7 @@ const Cost = () => {
                     </button>
                 </form>
                 <div className="flex justify-end items-center w-full gap-3">
-                    <button onClick={() => setOpen(true)} className="btn-primary max-w-40"><FaPlus />Add Batch</button>
+                    <button onClick={() => setOpen(true)} className="btn-primary max-w-40"><FaPlus />Add Cost</button>
                 </div>
             </div>
             <Table dataSource={data} columns={columns} />

@@ -1,11 +1,32 @@
 import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
-
+import useGetRequest from '../../Hooks/useGetRequest'
 const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [form] = Form.useForm();
+    const CourseOptions = Course?.data?.map(item => {
+        return { label: item?.course_name, value: item?.id }
+    }) || []
     const onFinish = (values) => {
-        console.log('Success:', values);
+        // {
+        //     name: 'Oscar',
+        //     userName: 'qonafuho',
+        //     number: '218',
+        //     email: 'josabasy@mailinator.com',
+        //     password: 'Pa$$w0rd!',
+        //     cpassword: 'Pa$$w0rd!',
+        //     designation: 'Ducimus cumque a po',
+        //     expert: 'Quos cupiditate moll',
+        //     trainerType: 'part time1',
+        //     paymentType: 'Per class1',
+        //     paymentMethode: 'Bkash1',
+        //     payment: '25'
+        //   }
+        const data = {
+            name: values?.name,
+            email: values?.email,
+        }
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -16,8 +37,8 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
 
 
     useEffect(() => {
-        if(filteredData){
-            form.setFieldsValue({...filteredData});
+        if (filteredData) {
+            form.setFieldsValue({ ...filteredData });
         }
     }, [filteredData, form]);
 
@@ -25,7 +46,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
     return (
         <Form
             layout={'vertical'}
-        onFinish={onFinish}
+            onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         >
             <div className='w-28 h-28 relative'>
@@ -127,7 +148,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                     <Input className='outline-none w-full border p-[10px] rounded-md' placeholder="Expert*" />
                 </Form.Item>
                 <Form.Item
-                    label={<span className="text-lg font-bold text-[#333333]">Please Select a Category*</span>}
+                    label={<span className="text-lg font-bold text-[#333333]">Please Select Course Category*</span>}
                     name="trainerType"
                     rules={[
                         {
@@ -135,11 +156,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                             message: 'Please Input trainer Type!',
                         },
                     ]}>
-                    <Select className='h-[43px]' defaultValue={`part time`} options={[
-                        { value: 'part time', label: <span>part time</span> },
-                        { value: 'part time1', label: <span>part time1</span> },
-                        { value: 'part time2', label: <span>part time2</span> },
-                    ]} />
+                    <Select className='h-[43px]' defaultValue={CourseOptions[0]?.value} options={CourseOptions} />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">Payment type*</span>}
@@ -187,7 +204,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
             <Form.Item >
                 <div className='center-center gap-4' >
                     <button onClick={() => {
-                        setOpenAddModal(false)
+                        // setOpenAddModal(false)
                     }} type="submit" className='btn-primary max-w-44 cursor-pointer hover:bg-[var(--primary-bg)]' >Save</button>
                 </div>
             </Form.Item>
