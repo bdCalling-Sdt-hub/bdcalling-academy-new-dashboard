@@ -46,9 +46,9 @@ const AllStudents = () => {
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/show/all/student?`)//phone_number=01317659523&name=r&category_name=1&
+    const [filterBy, setFilterBy] = useState({})
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/show/all/student?page=${page}${filterBy?.phone && `&phone_number=${filterBy?.phone}`}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
-    console.log(Students)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
@@ -311,21 +311,18 @@ const AllStudents = () => {
                     }} className="btn-primary max-w-44"><FaPlus /> Add Student</button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
-                <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
-                <div className='max-w-44 min-w-44'>
+            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-9 items-center gap-4 flex-wrap max-w-[60%] bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
+                <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl col-span-2' onChange={onChange} />
+                <div className='max-w-44 min-w-44 col-span-2'>
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
-                <div className='max-w-44 min-w-44'>
+                <div className='max-w-44 min-w-44 col-span-2'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
                 </div>
-                <select name='category' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                </select>
-                <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
+                <div className='col-span-2'>
+                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...registerAdmit("category", { required: true }) }} />
+                </div>
+                <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
                 </button>
             </form>
@@ -440,10 +437,10 @@ const AllStudents = () => {
                         }
                         <div className='grid-2 gap-2 mb-2'>
                             <UpdateInput handler={inputHandeler} defaultValue={filterData?.name} classNames={`border rounded`} rules={{ ...registerAdmit('name', { required: true }) }} lebel={`Full Name*`} status={AdmitError} placeholder={`student name`} />
-                            <UpdateInput handler={inputHandeler} defaultValue={filterData?.phone_number} type={`number`} classNames={`border rounded`} rules={{ ...registerAdmit('number', { required: true }) }} lebel={`Phone Number*`} status={AdmitError} placeholder={`Phone Number`} />
+                            <UpdateInput handler={inputHandeler} defaultValue={filterData?.phone_number} type={`number`} classNames={`border rounded`} rules={{ ...registerAdmit('phone_number', { required: true }) }} lebel={`Phone Number*`} status={AdmitError} placeholder={`Phone Number`} />
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
-                            <UpdateInput handler={inputHandeler} defaultValue={filterData?.key} classNames={`border rounded`} rules={{ ...registerAdmit('studentID', { required: true }) }} lebel={`Students ID*`} status={AdmitError} placeholder={`*Required Field`} />
+                            <UpdateInput handler={inputHandeler} defaultValue={filterData?._id} classNames={`border rounded`} rules={{ ...registerAdmit('studentID', { required: true }) }} lebel={`Students ID*`} status={AdmitError} placeholder={`*Required Field`} />
                             <SelectInput lebel={`Batch`} classNames={`border`} status={AdmitError} options={BatchOptions} rules={{ ...registerAdmit("batchNo", { required: true }) }} />
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
@@ -456,7 +453,7 @@ const AllStudents = () => {
                         <div className='grid-2 gap-2 mb-2'>
                             {/* <Input classNames={`border rounded`} rules={{ ...registerAdmit('courseName', { required: true }) }} lebel={`Course Name*`} status={AdmitError} placeholder={`ux/Ui`} /> */}
                             <SelectInput lebel={`Course Name`} classNames={`border`} status={AdmitError} options={CourseOptions} rules={{ ...registerAdmit("courseName", { required: true }) }} />
-                            <SelectInput lebel={`Course Type`} classNames={`border`} status={AdmitError} options={CategoryOptions} rules={{ ...registerAdmit("category", { required: true }) }} />
+                            <SelectInput lebel={`Course Category`} classNames={`border`} status={AdmitError} options={CategoryOptions} rules={{ ...registerAdmit("category", { required: true }) }} />
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
                             <UpdateInput defaultValue={filterData?.dob} handler={inputHandeler} type={`date`} classNames={`border rounded`} rules={{ ...registerAdmit('date', { required: true }) }} lebel={`Date of Birth*`} status={AdmitError} placeholder={`*Required Field`} />
@@ -475,7 +472,14 @@ const AllStudents = () => {
                                 { name: 'Other', value: 'other' },
                             ]} rules={{ ...registerAdmit("religion", { required: true }) }} />
                         </div>
-                        <UpdateInput defaultValue={filterData?.address} handler={inputHandeler} classNames={`border rounded`} rules={{ ...registerAdmit('address', { required: true }) }} lebel={`Address*`} status={AdmitError} placeholder={`*Required Field`} />
+                        <div className='grid-2 gap-2 mb-2'>
+                            <UpdateInput defaultValue={filterData?.address} handler={inputHandeler} classNames={`border rounded`} rules={{ ...registerAdmit('address', { required: true }) }} lebel={`Address*`} status={AdmitError} placeholder={`*Required Field`} />
+                            <SelectInput defaultValue={filterData?.method} lebel={`Payment method`} classNames={`border`} status={AdmitError} options={[
+                                { name: 'Bkash', value: 'Bkash' },
+                                { name: 'Nagad', value: 'Nagad' },
+                                { name: 'Cash', value: 'Cash' },
+                            ]} rules={{ ...registerAdmit("method", { required: true }) }} />
+                        </div>
                         <button className='btn-primary max-w-44 mx-auto mt-6'>
                             Next
                         </button>

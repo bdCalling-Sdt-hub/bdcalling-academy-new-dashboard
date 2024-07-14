@@ -6,31 +6,56 @@ import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import Input from '../Input/Input';
 import toast from 'react-hot-toast';
 import UpdateInput from '../Input/UpdateInput';
+import usePostRequest from '../../Hooks/usePostRequest';
 
 const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, AdmitValues }) => {
-
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError } } = useForm();
+    const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [totalPayment, setTotalPayment] = useState(course?.price || 0)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
-        // {
-        //     discount: '',
-        //     reference: '',
-        //     amount: '247',
-        //     date: '2024-07-24',
-        //     '2ndInstallment': '0',
-        //     '3ndInstallment': '0',
-        //     enddate: '2024-07-26',
-        //     '2nddate': '2024-07-26',
-        //     '2ndDate': '2024-07-24',
-        //     '3rdDate': '2024-07-31'
-        //   }
+        const paymentData = {
+            student_id: AdmitValues?.studentID,
+            batch_id: AdmitValues?.batchNo,
+            course_fee: course?.price,
+            discount_price: data?.discount,
+            amount: firstInstallment,
+            gateway_name: AdmitValues?.method,
+            discount_reference: data?.reference,
+            installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }, { second_installment: data?.secondDate }, { third_installment: data?.thirdDate }]),
+            payment_type: 'installment',
+            currency: 'TK',
+        }
+        const formData = new FormData()
+        Object.keys(paymentData).map(key => {
+            formData.append(key, paymentData[key])
+        })
+        mutate(formData)
+        reset()
+        setOpenPaymentModal(false)
     };
     const onFullPaymentSubmit = data => {
-        console.log(data)
-        // setFullPaymentType(false)
+        const paymentData = {
+            student_id: AdmitValues?.studentID,
+            batch_id: AdmitValues?.batchNo,
+            course_fee: course?.price,
+            discount_price: data?.discount,
+            amount: totalPayment,
+            gateway_name: AdmitValues?.method,
+            discount_reference: data?.reference,
+            installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }]),
+            payment_type: 'one_time',
+            currency: 'TK',
+        }
+        const formData = new FormData()
+        Object.keys(paymentData).map(key => {
+            formData.append(key, paymentData[key])
+        })
+        mutate(formData)
+        fullPaymentReset()
+        setOpenPaymentModal(false)
     };
     const inputHandler = (e, name) => {
         if (Number(course?.price) < Number(e.target.value)) {
@@ -129,7 +154,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                                     }} defaultValue={Number(firstInstallment)} classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} />
                                 </div>
                                 <div className='col-span-4 w-full'>
-                                    <Input type={`date`} classNames={`border rounded text-gray-300`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
+                                    <Input type={`date`} classNames={`border rounded text-gray-300`} rules={{ ...register('date', { required: true }) }} lebel={`date`} status={errors} />
                                 </div>
                                 <div className='w-10 h-10 border rounded ml-auto border-green-500'>
                                     <img className='w-10 h-10' src='https://i.ibb.co/4Zff45B/check-mark-1-1.png' alt="" />
@@ -143,7 +168,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                                     <UpdateInput defaultValue={(Number(totalPayment) - Number(firstInstallment)) / 2 || `0`} classNames={`border rounded`} rules={{ ...register('2ndInstallment', { required: false }) }} lebel={`Amount`} status={errors} />
                                 </div>
                                 <div className='col-span-4 w-full'>
-                                    <Input type={`date`} classNames={`border rounded`} rules={{ ...register('2ndDate', { required: true }) }} lebel={`date`} status={errors} />
+                                    <Input type={`date`} classNames={`border rounded`} rules={{ ...register('secondDate', { required: true }) }} lebel={`date`} status={errors} />
                                 </div>
                                 <div className='w-10 h-10 border rounded ml-auto border-red-500'>
 
@@ -157,7 +182,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                                     <UpdateInput defaultValue={(Number(totalPayment) - Number(firstInstallment)) / 2 || `0`} classNames={`border rounded`} rules={{ ...register('3ndInstallment', { required: false }) }} lebel={`Amount`} status={errors} />
                                 </div>
                                 <div className='col-span-4 w-full'>
-                                    <Input type={`date`} classNames={`border rounded`} rules={{ ...register('3rdDate', { required: true }) }} lebel={`date`} status={errors} />
+                                    <Input type={`date`} classNames={`border rounded`} rules={{ ...register('thirdDate', { required: true }) }} lebel={`date`} status={errors} />
                                 </div>
                                 <div className='w-10 h-10 border rounded ml-auto border-red-500'>
 
