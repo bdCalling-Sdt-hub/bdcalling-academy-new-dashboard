@@ -43,7 +43,6 @@ const AddEventsFrom = ({ type }) => {
     const [image, setImage] = useState(null);
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        console.log()
         if (file) {
             setImage(file);
         } else {

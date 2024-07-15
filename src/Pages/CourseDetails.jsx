@@ -8,6 +8,7 @@ import { FaPlus } from 'react-icons/fa'
 import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import { Modal } from 'antd'
+import { FaFilePen } from 'react-icons/fa6'
 
 const CourseDetails = () => {
     const [query, setQuery] = useState(new URLSearchParams(window.location.search));
@@ -16,31 +17,8 @@ const CourseDetails = () => {
     const [videoUrl, setVideoUrl] = useState('')
     const [playingVideo, setPlayingVideo] = useState('')
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/show-module?course_id=${id}`)
+    console.log(Course)
 
-    // {
-    //     id: 3,
-    //     course_id: 19,
-    //     module_title: 'sdfsdf',
-    //     created_by: null,
-    //     module_no: '1',
-    //     created_at: '2024-07-10T10:37:10.000000Z',
-    //     updated_at: '2024-07-10T10:37:10.000000Z'
-    //   }
-    // "videos": [
-    //     {
-    //         "id": 11,
-    //         "course_module_id": 7,
-    //         "name": "Ian Christian",
-    //         "video_url": "https://www.tywuw.us",
-    //         "order": "1",
-    //         "created_at": "2024-07-10T11:16:11.000000Z",
-    //         "updated_at": "2024-07-10T11:16:11.000000Z"
-    //     },
-    // console.log(Course?.data?.data[0]?.course_module[0])
-    // {
-    //     video :,
-    //     exam :{},
-    // }
     return (
         <>
             <PageHeading text={`Add Module`} />
@@ -71,6 +49,14 @@ const CourseDetails = () => {
                                             <IoVideocamOutline className='text-xl' /> <p className='text-sm'>{video?.name}</p>
                                         </span> <p className={`mr-8 underline ${index <= 0 ? 'text-[#2BA24C]' : 'text-red-500'} text-sm whitespace-nowrap`}>{index <= 0 ? 'Free Class' : 'paid'}</p>
                                     </button>)
+                                }
+                                {
+                                    // item?.quiz?.exam_name 
+                                    item?.quiz && <Link to={`/update-question/${item?.id}`} className='between-center gap-2 text-[var(--primary-bg)] p-2 z-50'>
+                                        <span className='start-center gap-2'>
+                                            <FaFilePen className='text-xl' /> <p className='text-sm'>{item?.quiz?.exam_name}</p>
+                                        </span> <p className={`mr-8 underline ${index <= 0 ? 'text-[#2BA24C]' : 'text-red-500'} text-sm whitespace-nowrap`}>{index <= 0 ? 'Free Class' : 'paid'}</p>
+                                    </Link>
                                 }
                             </div>
                         </div>)

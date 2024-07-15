@@ -3,10 +3,12 @@ import PageHeading from '../Components/Shared/PageHeading'
 import Input from '../Components/Input/Input'
 import { useForm } from 'react-hook-form'
 import { IoSearch } from 'react-icons/io5'
-import { DatePicker, Form, Modal, Table } from 'antd'
+import { Button, DatePicker, Form, Modal, Space, Table  } from 'antd'
 import { LuPrinter } from 'react-icons/lu'
 import { FaEdit, FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa'
 import { SiMicrosoftword } from 'react-icons/si'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { CiCircleMinus } from 'react-icons/ci'
 const data = [
     {
         key: '1',
@@ -42,7 +44,7 @@ const Cost = () => {
             key: 'key',
             render: (_, record) => {
                 return (<div className='flex justify-start items-center gap-4 text-2xl'>
-                    <button onClick={()=>setOpenPrintModal(true)} className='text-green-600 cursor-pointer'><LuPrinter /></button>
+                    <button onClick={() => setOpenPrintModal(true)} className='text-green-600 cursor-pointer'><LuPrinter /></button>
                     <button onClick={() => setOpen(true)} className='text-blue-400 cursor-pointer'><FaEdit /></button>
                 </div>)
             }
@@ -83,7 +85,6 @@ const Cost = () => {
             >
                 <Form
                     onFinish={onFinish}
-                    autoComplete="off"
                     layout='vertical'
                     className='mt-3'
                 >
@@ -94,7 +95,44 @@ const Cost = () => {
                         <DatePicker className='w-1/2' onChange={onChange} />
                     </Form.Item>
                     <p><span className='text-red-500'>*</span> Cost Details</p>
-                    <div className='p-2 rounded-md border grid grid-cols-3 gap-2'>
+                    <Form.List name="costing">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <div className='flex items-center justify-between gap-2 '>
+                                       <div className=' w-[59%]'>
+                                       <Form.Item
+                                            {...restField}
+                                            name={[name, 'reason']}
+                                            rules={[{ required: true, message: 'Missing first name' }]}
+                                        >
+                                            <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="First Name" />
+                                        </Form.Item>
+                                       </div>
+                                       <div className=' w-[38%]'>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'cost']}
+                                            rules={[{ required: true, message: 'Missing last name' }]}
+                                        >
+                                            <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Last Name" />
+                                        </Form.Item>
+                                        </div>
+                                        <div className=' h-full flex justify-center items-center text-2xl -mt-5'>
+                                        <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => remove(name)} />
+                                        </div>
+                                    </div>
+    
+                                ))}
+                                <Form.Item>
+                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                        Add field
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                    {/* <div className='p-2 rounded-md border grid grid-cols-3 gap-2'>
                         <div className='w-full col-span-2'>
                             <p>Reason</p>
                             {
@@ -117,7 +155,7 @@ const Cost = () => {
                                 </Form.Item>)
                             }
                         </div>
-                    </div>
+                    </div> */}
                     <div className='flex justify-end items-center gap-3 py-1'>
                         <p>Total Cost</p> <p>Tk 3,000</p>
                     </div>

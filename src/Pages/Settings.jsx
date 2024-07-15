@@ -54,6 +54,11 @@ const Settings = () => {
             }} className='bg-[#F6F6F6] p-4 py-5 rounded-md w-full flex justify-between items-center gap-2'>
                 <p className='text-lg font-medium'>Associates</p> <Link to={`/associate-list`} className='text-2xl'><IoIosArrowForward /></Link>
             </div>
+            <div style={{
+                boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+            }} className='bg-[#F6F6F6] p-4 py-5 rounded-md w-full flex justify-between items-center gap-2'>
+                <p className='text-lg font-medium'>Sign out</p> <button className='text-2xl'><IoIosArrowForward /></button>
+            </div>
             <Modal
                 open={open}
                 onCancel={() => setOpen(false)}

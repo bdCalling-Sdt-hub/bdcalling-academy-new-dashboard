@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { IoIosArrowBack } from 'react-icons/io'
 import { Modal } from 'antd'
 import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const StudentsInformation = () => {
+    const { id, batch } = useParams()
+    const [requestingPayment, Payment, PaymentError,] = useGetRequest('Category', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
+    console.log(Payment)
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const { register, handleSubmit, formState: { errors } } = useForm();

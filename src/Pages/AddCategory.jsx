@@ -27,7 +27,7 @@ const AddCategory = () => {
         if (creatingCategory) {
             mutate({ category_name: filterData?.category_name })
         } else {
-            updateCategory({ category_name: filterData?.category_name })
+            updateCategory({ category_name: filterData?.category_name , _method:'PUT'})
         }
         // console.log(filterData)
     };

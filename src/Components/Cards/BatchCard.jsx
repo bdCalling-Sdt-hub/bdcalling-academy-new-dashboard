@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { imageUrl } from "../../AxiosConfig/useAxiosConfig";
 
 const BatchCard = ({ item }) => {
+    // console.log(item)
     return (
         <div className="bg-white card-shadow p-3 rounded-md">
             <div className="w-full h-[240px] object-cover rounded-md overflow-hidden">
@@ -13,7 +14,7 @@ const BatchCard = ({ item }) => {
                 <Link to={`/all-admitted-student/${item?.id}`}className="btn-primary ">
                     All Students
                 </Link>
-                <Link to={`/add-batch/update`} className="btn-secondary">
+                <Link to={`/update-batch/${item?.id}`} className="btn-secondary">
                 Edit Batch
                 </Link>
             </div>

@@ -7,20 +7,26 @@ import Input from '../Input/Input';
 import toast from 'react-hot-toast';
 import UpdateInput from '../Input/UpdateInput';
 import usePostRequest from '../../Hooks/usePostRequest';
-const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, AdmitValues }) => {
+import useGetRequest from '../../Hooks/useGetRequest';
+const DuePayment = ({setOpenPaymentModal,AdmitValues}) => {
+    const [requestingPayment, Payment, PaymentError,] = useGetRequest('Category', `/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order?.batch_id}`)
+    console.log(Payment)
+    const {course}=AdmitValues;
+    console.log(AdmitValues)
     const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
-    const [totalPayment, setTotalPayment] = useState(course?.price || 0)
+    const [totalPayment, setTotalPayment] = useState(AdmitValues?.order?.due || 0)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
+
         const paymentData = {
-            student_id: AdmitValues?.studentID,
+            student_id: AdmitValues?._id,
             batch_id: AdmitValues?.batchNo,
             course_fee: course?.price,
             discount_price: data?.discount,
-            amount: String(firstInstallment),
+            amount: firstInstallment,
             gateway_name: AdmitValues?.method,
             discount_reference: data?.reference,
             installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }, { second_installment: data?.secondDate }, { third_installment: data?.thirdDate }]),
@@ -37,7 +43,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
     };
     const onFullPaymentSubmit = data => {
         const paymentData = {
-            student_id: AdmitValues?.studentID,
+            student_id: AdmitValues?._id,
             batch_id: AdmitValues?.batchNo,
             course_fee: course?.price,
             discount_price: data?.discount,
@@ -104,7 +110,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Student ID:</p>
-                            <p className='text-end text-sm'>{AdmitValues?.studentID}</p>
+                            <p className='text-end text-sm'>{AdmitValues?._id}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Fee:</p>
@@ -130,15 +136,6 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                             <Input classNames={`border rounded`} rules={{ ...register('reference', { required: false }) }} lebel={`Reference`} status={errors} placeholder={`CEO, Monir sir`} />
                         </div>
                         <div className='border p-2 rounded'>
-                            {/* <div className='grid-2 gap-2 mb-2'>
-                                <div className='w-full relative'>
-                                    <p className="pb-2">Installment Type</p>
-                                    <select defaultValue={`3 installment`} className='w-full p-2 outline-none border rounded-md' {...register('installmentType', { required: false })}>
-                                        <option value="3 installment">3 installment</option>
-                                        <option value="3 installment">3 installment</option>
-                                    </select>
-                                </div>
-                            </div> */}
                             <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
                                 <div className='col-span-2'>
                                     <p className='text-[var(--primary-bg)] -mt-8'>1st installment</p>
@@ -188,11 +185,6 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                                 </div>
                             </div>
                         </div>
-
-                        {/* <div className='grid-2 gap-2 my-4'>
-                            <p className=' text-sm'>Payable Amount Date:</p>
-                            <p className='text-end text-sm'>04/05/2024</p>
-                        </div> */}
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Name:</p>
                             <p className='text-end text-sm'>{course?.course_name}</p>
@@ -224,9 +216,9 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                     </form>
                 </>
             }
-
         </div>
     )
 }
 
-export default AdmitPaymentModal
+
+export default DuePayment

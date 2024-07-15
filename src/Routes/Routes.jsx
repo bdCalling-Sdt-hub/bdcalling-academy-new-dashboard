@@ -27,7 +27,7 @@ import TrainerReview from "../Pages/TrainerReview";
 import VideoCourseExamQuestion from "../Pages/VideoCourseExamQuestion";
 import AddBatch from "../Pages/AddBatch";
 import AddNewBatch from "../Pages/AddNewBatch";
-import UpdateBatch from "../Pages/UpdateBatch";
+// import UpdateBatch from "../Pages/UpdateBatch";
 import AllAdmittedStudent from "../Pages/AllAdmittedStudent";
 import AdmittedStudentDetails from "../Pages/AdmittedStudentDetails";
 import ClassRoutine from "../Pages/ClassRoutine";
@@ -64,6 +64,8 @@ import AddProvideClassVideo from "../Pages/AddProvideClassVideo";
 import Notification from "../Pages/Notification";
 import PrivetRoute from "../PrivetRoute/PrivetRoute";
 import UpdateVideo from "../Pages/UpdateVideo";
+import UpdateQuestions from "../Pages/UpdateQuestions";
+import UpdateBatch from "../Components/Forms/UpdateBatch";
 
 export const router = createBrowserRouter([
     {
@@ -107,7 +109,7 @@ export const router = createBrowserRouter([
                 element: <AdmittedStudents />
             },
             {
-                path: '/admitted-students/students-information/:id',
+                path: '/admitted-students/students-information/:id/:batch',
                 element: <StudentsInformation />
             },
             {
@@ -178,10 +180,10 @@ export const router = createBrowserRouter([
                 path: '/add-batch/add',
                 element: <AddNewBatch />
             },
-            {
-                path: '/add-batch/update',
-                element: <UpdateBatch />
-            },
+            // {
+            //     path: '/add-batch/update',
+            //     element: <UpdateBatch />
+            // },
             {
                 path: '/all-admitted-student/:id',
                 element: <AllAdmittedStudent />
@@ -309,6 +311,14 @@ export const router = createBrowserRouter([
             {
                 path: '/update-video/:id',
                 element: <UpdateVideo />
+            },
+            {
+                path: '/update-question/:id',
+                element: <UpdateQuestions />
+            },
+            {
+                path: '/update-batch/:id',
+                element: <UpdateBatch />
             },
         ]
     },

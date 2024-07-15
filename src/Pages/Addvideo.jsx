@@ -29,6 +29,7 @@ const Addvideo = () => {
     // const [totalExams, settotalExams] = useState(totalexam)
     const [deleteID, setDeleteID] = useState([])
     const [ExamName, setExamName] = useState(null)
+    const [Questions, setQuestions] = useState([])
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
         const videoNames = []
@@ -65,6 +66,10 @@ const Addvideo = () => {
         Object.keys(moduleData).map(key => {
             formData.append(key, moduleData[key])
         })
+        if (query.get('type') === '/video-course' && Questions.length > 0) {
+            formData.append('questions', JSON.stringify(Questions))
+            formData.append('exam_name', ExamName)
+        }
         addModule(formData)
     };
     useEffect(() => {
@@ -163,7 +168,7 @@ const Addvideo = () => {
                                 </button>
                             </div>
                         </form>
-                    </> : <VideoCourseExamQuestion ExamName={ExamName} setFormFor={setFormFor} />
+                    </> : <VideoCourseExamQuestion setQuestions={setQuestions} ExamName={ExamName} setFormFor={setFormFor} />
             }
         </>
     )

@@ -1,12 +1,16 @@
 import { DatePicker, Form, Select } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
-const BatchForm = () => {
-    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses`)
+import dayjs from 'dayjs';
+import usePatchRequest from '../../Hooks/usePatchRequest';
+const UpdateBatch = () => {
+    const { id } = useParams()
+    const [requestingBatch, Batch, BatchError, refetch] = useGetRequest('singleBatch', `/batches/${id}`)
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
-    const { mutate, isLoading, data, error } = usePostRequest('mentors', '/batches');
+    const { mutate: updateBatch, isLoading: updateLoading, data: updateData, } = usePatchRequest('Batch', `/batches/${id}`);
     const CourseOptions = Course?.data?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
@@ -18,6 +22,7 @@ const BatchForm = () => {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const onFinish = (values) => {
+        console.log(values.trainer)
         const data = {
             course_id: values?.CourseName,
             batch_name: values?.batch,
@@ -26,15 +31,16 @@ const BatchForm = () => {
             seat_left: values?.seat,
             seat_limit: values?.seat,
             discount_price: values?.discountPrice,
-            teacher_id: JSON.stringify(values.trainer),
-            image: Image
+            teacher_user_ids: JSON.stringify(values.trainer),
+            image: Image,
+            _method:'PUT'
         }
         const formData = new FormData()
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
         // console.log(data)
-        mutate(formData)
+        updateBatch(formData)
     };
 
 
@@ -52,6 +58,18 @@ const BatchForm = () => {
     const onCourseSelect = (value) => {
         console.log(`selected ${value}`);
     };
+    useEffect(() => {
+        form.setFieldsValue({
+            batch: Batch?.data?.batch_name,
+            CourseName: Batch?.data?.course_id,
+            coupon: Batch?.data?.coupon,
+            discountPrice: Batch?.data?.discount_price,
+            trainer: Batch?.data?.teachers?.map(item => item?.id),
+            seat: Batch?.data?.seat_left,
+            startDate:dayjs(Batch?.data?.start_date, 'YYYY-MM-DD'),
+            endDate:dayjs(Batch?.data?.end_date, 'YYYY-MM-DD')
+        })//defaultValue={dayjs('2019-09-03', dateFormat)}
+    }, [form, Batch])
     return (
         <div id='addBatch'>
             <Form
@@ -133,6 +151,7 @@ const BatchForm = () => {
                         <input type='number' className='outline-none w-full border p-[10px] rounded-md' placeholder="477" />
                     </Form.Item>
                     <Form.Item
+                        name={`startDate`}
                         label={<span className="text-lg font-bold text-[#333333]">Enter Start Date</span>}
                     >
                         <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
@@ -152,6 +171,7 @@ const BatchForm = () => {
                         <input type='number' className='outline-none w-full border p-[10px] rounded-md' placeholder="20" />
                     </Form.Item>
                     <Form.Item
+                    name={`endDate`}
                         label={<span className="text-lg font-bold text-[#333333]">Enter end Date</span>}
                     >
                         <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
@@ -169,4 +189,5 @@ const BatchForm = () => {
         </div>
     );
 };
-export default BatchForm
+
+export default UpdateBatch

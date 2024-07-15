@@ -7,7 +7,6 @@ import { IoSearch } from 'react-icons/io5'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 import { Link, useParams } from 'react-router-dom'
 import { MdArrowForwardIos } from 'react-icons/md'
-import useGetRequest from '../Hooks/useGetRequest'
 const data = [
     {
         "_id": "1",
@@ -192,8 +191,6 @@ const data = [
 ]
 const AllAdmittedStudent = () => {
     const { id } = useParams()
-    const [requestingBatchStudents, BatchStudents, BatchStudentsError,] = useGetRequest('batchStudents', `/show-admit-student?batch_id=${id}`)
-    console.log(BatchStudents)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
     const columns = [

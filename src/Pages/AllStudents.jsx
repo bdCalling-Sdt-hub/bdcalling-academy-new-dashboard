@@ -43,11 +43,13 @@ const AllStudents = () => {
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
+    const { mutate: mutateAdmit, isLoading:isAdmitLoading, data:AdmitData, error:errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [filterBy, setFilterBy] = useState({})
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/show/all/student?page=${page}${filterBy?.phone && `&phone_number=${filterBy?.phone}`}`)//phone_number=01317659523&name=r&category_name=1&
+    const [dob, setdob] = useState('')
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
@@ -71,7 +73,8 @@ const AllStudents = () => {
             blood_group: item?.blood_group,
             religion: item?.religion,
             dob: item?.dob,
-            address: item?.address
+            address: item?.address,
+            messages:item?.messages
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -89,6 +92,7 @@ const AllStudents = () => {
         onChange: onSelectChange,
     };
     const onSubmit = data => {
+        setFilterBy({ ...data, dob })
     };
     // add student
     const onSubmitStudent = (values) => {
@@ -123,6 +127,7 @@ const AllStudents = () => {
     }
 
     const onChange = (date, dateString) => {
+        setdob(dateString)
     };
 
     const columns = [
@@ -155,11 +160,6 @@ const AllStudents = () => {
             key: 'course'
         },
         {
-            title: 'Date Of admission',
-            dataIndex: 'date',
-            key: 'date'
-        },
-        {
             title: 'Set Follow Up',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2 relative'>
@@ -179,11 +179,8 @@ const AllStudents = () => {
                     }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
                 }
                 {
-                    [...Array(3).keys()].map(item => <div key={item} className={`${(followUp?._id == record?._id && followUp?.index == item) ? 'block' : 'hidden'} ${item == 0 ? 'border-[#2492EB]' : item == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
-                        <p className='text-[#5C5C5C] '>Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment</p>
+                    record?.messages?.map((item,index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                        <p className='text-[#5C5C5C] '>{item}</p>
                     </div>)
                 }
             </div>,
@@ -245,6 +242,9 @@ const AllStudents = () => {
     const CategoryOptions = Category?.data?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
     })
+    const CategoryOptions2 = Category?.data?.data?.map(item => {
+        return { name: item?.category_name, value: item?.category_name }
+    })
     useEffect(() => {
         if (isLoading, updateLoading, DeleteLoading) return
         if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
@@ -287,16 +287,37 @@ const AllStudents = () => {
     }
 
     // const handle admit student
-    const HandleAdmitStudent = (value) => {
+    const HandleAdmitStudent = async (value) => {
         setAdmitValues(value)
         const filterCourse = Course?.data?.filter(item => item?.id == value.courseName)
         setSingleCourse(filterCourse[0])
-        setOpenPaymentModal(true)
-        setOpenAdmitModal(false)
+        const paymentData = {
+            student_id: value?.studentID,
+            batch_id: value?.batchNo,
+            name: value?.name,
+            email: value?.email,
+            phone_number: value?.phone_number,
+            gender: value?.gender,
+            religion: value?.religion,
+            dob: value?.date,
+            blood_group: value?.blood,
+            address: value?.address,
+            category_id: value?.category
+        }
+        const formData = new FormData()
+        Object.keys(paymentData).map(key => {
+            formData.append(key, paymentData[key])
+        })
+        mutateAdmit(formData)
     }
+    useEffect(() => {
+        console.log(errorAdmit, AdmitData, isAdmitLoading)
+        if (isAdmitLoading) return
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true);setOpenAdmitModal(false)
+    }, [errorAdmit, AdmitData, isAdmitLoading])
     return (
         <>
-            <div className='grid-2'>
+            <div className='grid-2 '>
                 <div className='w-full'>
                     <PageHeading text={`All Students`} />
                 </div>
@@ -317,10 +338,10 @@ const AllStudents = () => {
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
                 <div className='max-w-44 min-w-44 col-span-2'>
-                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
+                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
                 </div>
                 <div className='col-span-2'>
-                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...registerAdmit("category", { required: true }) }} />
+                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions2} rules={{ ...register("category", { required: false }) }} />
                 </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
@@ -330,6 +351,17 @@ const AllStudents = () => {
 
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>Add Student List</h3>
+                {
+                    (filterBy?.name || filterBy?.number || filterBy?.category || filterBy?.dob) && <div className='flex justify-start items-center gap-2 mb-2 -mt-3 ml-5'>Filter by
+                        {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
+                        {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
+                        {filterBy?.category && <> <strong>category</strong> : {filterBy?.category} </>}
+                        {filterBy?.dob && <> <strong>date of birth</strong> : {filterBy?.dob} </>}
+                        <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
+                            <RxCross2 />
+                        </button>
+                    </div>
+                }
                 <div>
                     <Table
                         columns={columns}
@@ -481,7 +513,7 @@ const AllStudents = () => {
                             ]} rules={{ ...registerAdmit("method", { required: true }) }} />
                         </div>
                         <button className='btn-primary max-w-44 mx-auto mt-6'>
-                            Next
+                            {isAdmitLoading?'loading....':"Next"}
                         </button>
                     </form>
                 </div>
