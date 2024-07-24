@@ -38,22 +38,28 @@ const AdmittedStudents = () => {
     const [inputType, setInputType] = useState('password')
     const [text, setText] = useState(true)
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [search, setSearch] = useState({ name: '', phone_number: '', category_name: '' })
+    const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
 
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingBatchStudents, BatchStudents, BatchStudentsError,] = useGetRequest('batchStudents', `/show-admit-student`)
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError,] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
-    const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
-
     const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const BatchOptions = Batch?.data?.data?.map(item => {
+        return { name: item?.batch_name, value: item?.id }
+    }) || []
+    const CourseOptions = Course?.data?.map(item => {
+        return { name: item?.course_name, value: item?.id }
+    }) || []
     const TableData = AllStudents.map((item, index) => {
         return {
             key: index + 1,
@@ -74,6 +80,7 @@ const AdmittedStudents = () => {
             course_type: item?.course_type,
             order: item?.order,
             messages: item?.messages,
+            course_name: item?.course_name
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -128,8 +135,8 @@ const AdmittedStudents = () => {
         },
         {
             title: 'Course Name',
-            dataIndex: 'course',
-            key: 'course'
+            dataIndex: 'course_name',
+            key: 'course_name'
         },
         {
             title: 'Course Type',
@@ -188,15 +195,15 @@ const AdmittedStudents = () => {
                 }} className='p-1 text-green-500 text-2xl rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
                     <RiPrinterFill />
                 </button>
-                <Link to={`/admitted-students/students-information/${record._id}/${record?.order?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                <Link to={`/admitted-students/students-information/${record._id}/${record?.order[0]?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <CiCircleInfo />
                 </Link>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
-                </button>
+                </button> */}
             </div>,
             key: '_id'
         },
@@ -254,6 +261,7 @@ const AdmittedStudents = () => {
         if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
     }, [errorAdmit, AdmitData, isAdmitLoading])
     useEffect(() => {
+        console.log(BatchStudents)
         const result = [];
         BatchStudents?.data.forEach(batch => {
             batch.students.forEach(student => {
@@ -269,7 +277,6 @@ const AdmittedStudents = () => {
                     order: student?.order,
                     _id: student?.id,
                     email: student?.user?.email,
-                    course: batch?.course?.course_name,
                     course_type: batch?.course?.course_type,
                     messages: student?.messages,
                     course: batch?.course
@@ -290,13 +297,16 @@ const AdmittedStudents = () => {
                     }} className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-9 items-center gap-4 flex-wrap max-w-[60%] bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
-                <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl col-span-2' onChange={onChange} />
-                <div className='max-w-44 min-w-44 col-span-2'>
+            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-11 items-center gap-4 flex-wrap max-w-[60%] bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
+                <DatePicker className=' py-2 border-none rounded-3xl col-span-2' onChange={onChange} />
+                <div className=' col-span-2'>
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
-                <div className='max-w-44 min-w-44 col-span-2'>
+                <div className=' col-span-2'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
+                </div>
+                <div className='col-span-2'>
+                    <SelectInput lebel={false} classNames={`border`} status={AdmitError} options={BatchOptions} rules={{ ...register("batchNo", { required: false }) }} />
                 </div>
                 <div className='col-span-2'>
                     <SelectInput classNames={`border`} status={errors} options={CategoryOptions2} rules={{ ...register("category", { required: false }) }} />
@@ -314,7 +324,7 @@ const AdmittedStudents = () => {
                         {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
                         {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
                         {filterBy?.category && <> <strong>category</strong> : {filterBy?.category} </>}
-                        {filterBy?.dob && <> <strong>date of birth</strong> : {filterBy?.dob} </>}
+                        {filterBy?.dob && <> <strong>registration date</strong> : {filterBy?.dob} </>}
                         <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
                             <RxCross2 />
                         </button>

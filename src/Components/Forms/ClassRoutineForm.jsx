@@ -1,5 +1,18 @@
 import { DatePicker, Form, Select, TimePicker } from 'antd';
+import useGetRequest from '../../Hooks/useGetRequest';
 const ClassRoutineForm = () => {
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
+    const CourseOptions = Course?.data?.map(item => {
+        return { label: item?.course_name, value: item?.id }
+    }) || []
+    const BatchOptions = Batch?.data?.data?.map(item => {
+        return { label: item?.batch_name, value: item?.id }
+    }) || []
+    const MentorsOptions = Admins?.teacher?.data?.map((item) => {
+        return { value: item?.id, label: item?.user?.name }
+    })
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -32,7 +45,7 @@ const ClassRoutineForm = () => {
                             message: 'Please input your Course name!',
                         },
                     ]}>
-                    <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
+                    <Select options={CourseOptions} defaultValue={CourseOptions[0]?.value} className='outline-none w-full h-[43px]  rounded-md' placeholder='this field is required' />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-base font-bold text-[#333333]">Trainer Name</span>}
@@ -43,8 +56,8 @@ const ClassRoutineForm = () => {
                             message: 'Please input trainer name',
                         },
                     ]}>
-                    <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
-                </Form.Item>
+                    <Select defaultValue={MentorsOptions[0]?.value} options={MentorsOptions} className='outline-none w-full h-[43px]  rounded-md' placeholder='this field is required' />
+                </Form.Item> 
                 <Form.Item
                     label={<span className="text-base font-bold text-[#333333]">Batch NO</span>}
                     name="batch"
@@ -54,7 +67,7 @@ const ClassRoutineForm = () => {
                             message: 'Please input batch No',
                         },
                     ]}>
-                    <input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
+                   <Select defaultValue={BatchOptions[0]?.value} options={BatchOptions} className='outline-none w-full h-[43px]  rounded-md' placeholder='this field is required' />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-base font-bold text-[#333333]">Select Time</span>}

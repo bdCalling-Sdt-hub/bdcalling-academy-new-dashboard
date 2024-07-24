@@ -3,7 +3,7 @@ import PageHeading from '../Components/Shared/PageHeading'
 import Input from '../Components/Input/Input'
 import { useForm } from 'react-hook-form'
 import { IoSearch } from 'react-icons/io5'
-import { Button, DatePicker, Form, Modal, Space, Table  } from 'antd'
+import { Button, DatePicker, Form, Modal, Space, Table } from 'antd'
 import { LuPrinter } from 'react-icons/lu'
 import { FaEdit, FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa'
 import { SiMicrosoftword } from 'react-icons/si'
@@ -100,29 +100,29 @@ const Cost = () => {
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
                                     <div className='flex items-center justify-between gap-2 '>
-                                       <div className=' w-[59%]'>
-                                       <Form.Item
-                                            {...restField}
-                                            name={[name, 'reason']}
-                                            rules={[{ required: true, message: 'Missing first name' }]}
-                                        >
-                                            <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="First Name" />
-                                        </Form.Item>
-                                       </div>
-                                       <div className=' w-[38%]'>
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, 'cost']}
-                                            rules={[{ required: true, message: 'Missing last name' }]}
-                                        >
-                                            <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Last Name" />
-                                        </Form.Item>
+                                        <div className=' w-[59%]'>
+                                            <Form.Item
+                                                {...restField}
+                                                name={[name, 'reason']}
+                                                rules={[{ required: true, message: 'Missing first name' }]}
+                                            >
+                                                <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="First Name" />
+                                            </Form.Item>
+                                        </div>
+                                        <div className=' w-[38%]'>
+                                            <Form.Item
+                                                {...restField}
+                                                name={[name, 'cost']}
+                                                rules={[{ required: true, message: 'Missing last name' }]}
+                                            >
+                                                <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Last Name" />
+                                            </Form.Item>
                                         </div>
                                         <div className=' h-full flex justify-center items-center text-2xl -mt-5'>
-                                        <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => remove(name)} />
+                                            <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => remove(name)} />
                                         </div>
                                     </div>
-    
+
                                 ))}
                                 <Form.Item>
                                     <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>

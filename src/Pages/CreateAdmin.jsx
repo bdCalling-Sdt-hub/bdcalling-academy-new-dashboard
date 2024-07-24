@@ -141,7 +141,6 @@ const CreateAdmin = () => {
                 }
             </div>
             <div className="center-center my-5 mt-8">
-
                 <Pagination defaultCurrent={page} total={Admins?.data?.total} pageSize={8} showSizeChanger={false} onChange={(page, pageSize) => {
                     setPage(page)
                 }} />

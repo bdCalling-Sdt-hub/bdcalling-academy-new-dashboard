@@ -248,7 +248,7 @@ const ClassRoutine = () => {
                             </Form.Item>
                             <Form.Item
                                 label={false}
-                                name="CourseName">
+                                name="trainer">
                                 <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
                             </Form.Item>
                             <Form.Item

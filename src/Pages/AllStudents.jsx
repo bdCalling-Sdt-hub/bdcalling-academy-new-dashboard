@@ -43,7 +43,7 @@ const AllStudents = () => {
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
-    const { mutate: mutateAdmit, isLoading:isAdmitLoading, data:AdmitData, error:errorAdmit } = usePostRequest('admitStudents', '/admit-student');
+    const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
@@ -74,7 +74,7 @@ const AllStudents = () => {
             religion: item?.religion,
             dob: item?.dob,
             address: item?.address,
-            messages:item?.messages
+            messages: item?.messages
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -179,7 +179,7 @@ const AllStudents = () => {
                     }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
                 }
                 {
-                    record?.messages?.map((item,index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                    record?.messages?.map((item, index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
                         <p className='text-[#5C5C5C] '>{item}</p>
                     </div>)
                 }
@@ -288,11 +288,11 @@ const AllStudents = () => {
 
     // const handle admit student
     const HandleAdmitStudent = async (value) => {
-        setAdmitValues(value)
+        setAdmitValues({ ...filterData, batchNo: value?.batchNo, method: value?.method })
         const filterCourse = Course?.data?.filter(item => item?.id == value.courseName)
         setSingleCourse(filterCourse[0])
         const paymentData = {
-            student_id: value?.studentID,
+            student_id: filterData?._id,
             batch_id: value?.batchNo,
             name: value?.name,
             email: value?.email,
@@ -311,9 +311,8 @@ const AllStudents = () => {
         mutateAdmit(formData)
     }
     useEffect(() => {
-        console.log(errorAdmit, AdmitData, isAdmitLoading)
         if (isAdmitLoading) return
-        if (AdmitData && !errorAdmit) setOpenPaymentModal(true);setOpenAdmitModal(false)
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
     }, [errorAdmit, AdmitData, isAdmitLoading])
     return (
         <>
@@ -513,7 +512,7 @@ const AllStudents = () => {
                             ]} rules={{ ...registerAdmit("method", { required: true }) }} />
                         </div>
                         <button className='btn-primary max-w-44 mx-auto mt-6'>
-                            {isAdmitLoading?'loading....':"Next"}
+                            {isAdmitLoading ? 'loading....' : "Next"}
                         </button>
                     </form>
                 </div>

@@ -2,35 +2,34 @@ import { Form, Input, Select } from 'antd';
 import { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import useGetRequest from '../../Hooks/useGetRequest'
-const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
-    const [form] = Form.useForm();
-    const CourseOptions = Course?.data?.map(item => {
-        return { label: item?.course_name, value: item?.id }
+import usePostRequest from '../../Hooks/usePostRequest';
+import usePatchRequest from '../../Hooks/usePatchRequest';
+const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFor }) => {
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const { mutate, isLoading, data, error } = usePostRequest('TeacherAdd', '/teachers');
+    const { mutate: updateTeacher, isLoading: updateLoading, data: updateData, } = usePatchRequest('TeacherAdd', `/teachers/${filteredData?._id}`);
+    const CourseOptions = Category?.data?.data?.map(item => {
+        return { label: item?.category_name, value: item?.id }
     }) || []
+    const [form] = Form.useForm();
     const onFinish = (values) => {
-        // {
-        //     name: 'Oscar',
-        //     userName: 'qonafuho',
-        //     number: '218',
-        //     email: 'josabasy@mailinator.com',
-        //     password: 'Pa$$w0rd!',
-        //     cpassword: 'Pa$$w0rd!',
-        //     designation: 'Ducimus cumque a po',
-        //     expert: 'Quos cupiditate moll',
-        //     trainerType: 'part time1',
-        //     paymentType: 'Per class1',
-        //     paymentMethode: 'Bkash1',
-        //     payment: '25'
-        //   }
-        const data = {
-            name: values?.name,
-            email: values?.email,
+        const { first_Name, email, payment, ...data } = values
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        formData.append('payment', Number(payment))
+        if (image) {
+            formData.append('image', image)
+        }
+        if (formFor == 'add') {
+            mutate(formData)
+        } else {
+            formData.append('_method', 'PUT')
+            updateTeacher(formData)
         }
     };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+
     const handleChange = (e) => {
         setImage(e.target.files[0])
     }
@@ -42,9 +41,13 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
         }
     }, [filteredData, form]);
 
-
+    useEffect(() => {
+        if (isLoading) return
+        if (data && !error) setOpenAddModal(false)
+    }, [data, isLoading, error])
     return (
         <Form
+            form={form}
             layout={'vertical'}
             onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
@@ -57,21 +60,23 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                 }} />
             </div>
             <div className='grid-3 w-full'>
-                <Form.Item
-                    label={<span className="text-lg font-bold text-[#333333]">First Name*</span>}
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please Input your First Name!',
-                        },
-                    ]}
-                >
-                    <Input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
-                </Form.Item>
+                {
+                    formFor == 'add' && <Form.Item
+                        label={<span className="text-lg font-bold text-[#333333]">First Name*</span>}
+                        name="first_Name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please Input your First Name!',
+                            },
+                        ]}
+                    >
+                        <Input className='outline-none w-full border p-[10px] rounded-md' placeholder="*Required Field" />
+                    </Form.Item>
+                }
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">User Name*</span>}
-                    name="userName"
+                    name="name"
                     rules={[
                         {
                             required: true,
@@ -82,7 +87,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">Phone Number*</span>}
-                    name="number"
+                    name="phone_number"
                     // getValueFromEvent={(e)=>Number(e.target.value)}
                     rules={[
                         {
@@ -101,30 +106,37 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                             message: 'Please Input your email',
                         },
                     ]}>
-                    <Input type='email' className='outline-none w-full border p-[10px] rounded-md' placeholder="Phone Number" />
+                    <Input type='email' className={`outline-none w-full border p-[10px] rounded-md ${formFor == 'add' ? '' : 'pointer-events-none'}`} placeholder="Phone Number" />
                 </Form.Item>
-                <Form.Item
-                    label={<span className="text-lg font-bold text-[#333333]">Password*</span>}
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please Input your password',
-                        },
-                    ]}>
-                    <Input.Password type='password' className='outline-none w-full border p-[10px] rounded-md' placeholder="********" />
-                </Form.Item>
-                <Form.Item
-                    label={<span className="text-lg font-bold text-[#333333]">Confirm Password*</span>}
-                    name="cpassword"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please Input your password',
-                        },
-                    ]}>
-                    <Input.Password type='password' className='outline-none w-full border p-[10px] rounded-md' placeholder="*******" />
-                </Form.Item>
+                {
+                    formFor == 'add' && <>
+
+                        <Form.Item
+                            label={<span className="text-lg font-bold text-[#333333]">Password*</span>}
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please Input your password',
+                                },
+                            ]}>
+                            <Input.Password type='password' className='outline-none w-full border p-[10px] rounded-md' placeholder="********" />
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className="text-lg font-bold text-[#333333]">Confirm Password*</span>}
+                            name="password_confirmation"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please Input your password',
+                                },
+                            ]}>
+                            <Input.Password type='password' className='outline-none w-full border p-[10px] rounded-md' placeholder="*******" />
+                        </Form.Item>
+
+                    </>
+                }
+
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">Designation*</span>}
                     name="designation"
@@ -148,44 +160,43 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal }) => {
                     <Input className='outline-none w-full border p-[10px] rounded-md' placeholder="Expert*" />
                 </Form.Item>
                 <Form.Item
-                    label={<span className="text-lg font-bold text-[#333333]">Please Select Course Category*</span>}
-                    name="trainerType"
+                    label={<span className="text-lg font-bold text-[#333333]">Course Category*</span>}
+                    name="course_category_id"
                     rules={[
                         {
                             required: true,
                             message: 'Please Input trainer Type!',
                         },
                     ]}>
-                    <Select className='h-[43px]' defaultValue={CourseOptions[0]?.value} options={CourseOptions} />
+                    <Select className='h-[43px]' options={CourseOptions} />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">Payment type*</span>}
-                    name="paymentType"
+                    name="payment_type"
                     rules={[
                         {
                             required: true,
                             message: 'Please Input Payment type!',
                         },
                     ]}>
-                    <Select className='h-[43px]' defaultValue={`Per class`} options={[
+                    <Select className='h-[43px]' options={[
                         { value: 'Per class', label: <span>Per class</span> },
-                        { value: 'Per class1', label: <span>Per class1</span> },
-                        { value: 'Per class2', label: <span>Per class2</span> },
+                        { value: 'monthly', label: <span>monthly</span> },
                     ]} />
                 </Form.Item>
                 <Form.Item
                     label={<span className="text-lg font-bold text-[#333333]">Payment method*</span>}
-                    name="paymentMethode"
+                    name="payment_method"
                     rules={[
                         {
                             required: true,
                             message: 'Please Input Payment method!',
                         },
                     ]}>
-                    <Select className='h-[43px]' defaultValue={`Bkash`} options={[
-                        { value: 'Bkash', label: <span>Bkashs</span> },
-                        { value: 'Bkash1', label: <span>Bkash1</span> },
-                        { value: 'Bkash2', label: <span>Bkash2</span> },
+                    <Select className='h-[43px]' options={[
+                        { value: 'Bkash', label: <span>Bkash</span> },
+                        { value: 'Nagad', label: <span>Nagad</span> },
+                        { value: 'Cash', label: <span>Cash</span> },
                     ]} />
                 </Form.Item>
                 <Form.Item
