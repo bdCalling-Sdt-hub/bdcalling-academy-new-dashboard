@@ -5,12 +5,9 @@ import { DatePicker, Divider, Modal, Radio, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
-import { RxCross2 } from 'react-icons/rx'
-import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
-import { FiPrinter } from 'react-icons/fi'
-import { IoMdInformationCircleOutline } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import {  MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { SiMicrosoftword } from 'react-icons/si'
+import useGetRequest from '../Hooks/useGetRequest'
 const data = [
     {
         "_id": "1",
@@ -204,6 +201,9 @@ const SuccessfulStudents = () => {
     const [exportType, setExportType] = useState('pdf')
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const { register, handleSubmit, formState: { errors } } = useForm();
+    // query
+    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/success/story`)
+    console.log(Stores)
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };

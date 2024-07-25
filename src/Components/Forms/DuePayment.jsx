@@ -10,29 +10,26 @@ import usePostRequest from '../../Hooks/usePostRequest';
 import useGetRequest from '../../Hooks/useGetRequest';
 const DuePayment = ({ setOpenPaymentModal, AdmitValues }) => {
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('paymentStatus', `/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order[0]?.batch_id}`)
-    console.log(Payment)
     const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [totalPayment, setTotalPayment] = useState(Payment?.data[Payment?.data.length - 1]?.due || 0)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
-    console.log(`/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order?.batch_id}`)
     const onSubmit = data => {
         const paymentData = {
             student_id: AdmitValues?._id,
-            batch_id: AdmitValues?.order?.batch_id,
+            batch_id: AdmitValues?.order[0]?.batch_id,
             course_fee: Payment?.data[0]?.course_fee,
             discount_price: Payment?.data[0]?.discount_price || 0,
             amount: firstInstallment,
-            gateway_name: AdmitValues?.method,
+            gateway_name: Payment?.data[0]?.gateway_name,
             discount_reference: Payment?.data[0]?.discount_reference || "",
             installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }, { second_installment: data?.secondDate }, { third_installment: data?.thirdDate }]),
             payment_type: 'installment',
             currency: 'TK',
         }
-        console.log(paymentData)
-        // return
+
         const formData = new FormData()
         Object.keys(paymentData).map(key => {
             formData.append(key, paymentData[key])
@@ -44,16 +41,17 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues }) => {
     const onFullPaymentSubmit = data => {
         const paymentData = {
             student_id: AdmitValues?._id,
-            batch_id: AdmitValues?.batchNo,
+            batch_id: AdmitValues?.order[0]?.batch_id,
             course_fee: Payment?.data[0]?.course_fee,
-            discount_price: data?.discount,
+            discount_price: data?.discount || '',
             amount: totalPayment,
-            gateway_name: AdmitValues?.method,
-            discount_reference: data?.reference,
-            installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }]),
+            gateway_name: Payment?.data[0]?.gateway_name,
+            discount_reference: data?.reference || '',
+            installment_date: JSON.stringify([{ second_installment: new Date().toISOString().split('T')[0] }]),
             payment_type: 'one_time',
             currency: 'TK',
         }
+
         const formData = new FormData()
         Object.keys(paymentData).map(key => {
             formData.append(key, paymentData[key])

@@ -149,11 +149,11 @@ const AdmittedStudents = () => {
             key: 'order',
             render: (_, record) => {
                 return (<div className='flex justify-start items-center gap-2'>
-                    <p className={`${record?.order?.due == '0' ? "text-green-500" : "text-red-500"}`}>{record?.order?.due == '0' ? "paid" : "due"}</p>
+                    <p className={`${record?.order?.[record?.order.length-1]?.due == '0' ? "text-green-500" : "text-red-500"}`}>{record?.order?.[record?.order.length-1]?.due == '0' ? "paid" : "due"}</p>
                     <button onClick={() => {
                         handelFilterData(record._id)
                         setOpenPaymentModal(true)
-                    }} className={`${record?.order?.due == '0' ? "bg-gray-200 pointer-events-none text-black" : "bg-yellow-600 text-white cursor-pointer"}  px-3 py-1 rounded-md uppercase font-semibold`}>payment</button>
+                    }} className={`${record?.order?.[record?.order.length-1]?.due == '0' ? "bg-gray-200 pointer-events-none text-black" : "bg-yellow-600 text-white cursor-pointer"}  px-3 py-1 rounded-md uppercase font-semibold`}>payment</button>
                 </div>)
             }
         },
@@ -261,7 +261,6 @@ const AdmittedStudents = () => {
         if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
     }, [errorAdmit, AdmitData, isAdmitLoading])
     useEffect(() => {
-        console.log(BatchStudents)
         const result = [];
         BatchStudents?.data.forEach(batch => {
             batch.students.forEach(student => {

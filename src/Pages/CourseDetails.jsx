@@ -17,8 +17,6 @@ const CourseDetails = () => {
     const [videoUrl, setVideoUrl] = useState('')
     const [playingVideo, setPlayingVideo] = useState('')
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/show-module?course_id=${id}`)
-    console.log(Course)
-
     return (
         <>
             <PageHeading text={`Add Module`} />

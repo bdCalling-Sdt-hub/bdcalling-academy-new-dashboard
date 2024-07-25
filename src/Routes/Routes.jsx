@@ -66,6 +66,7 @@ import PrivetRoute from "../PrivetRoute/PrivetRoute";
 import UpdateVideo from "../Pages/UpdateVideo";
 import UpdateQuestions from "../Pages/UpdateQuestions";
 import UpdateBatch from "../Components/Forms/UpdateBatch";
+import UploadGallery from "../Pages/UploadGallery";
 
 export const router = createBrowserRouter([
     {
@@ -223,6 +224,10 @@ export const router = createBrowserRouter([
             {
                 path: '/upload-success-stories',
                 element: <UploadSuccessStories />
+            },
+            {
+                path: '/upload-gallery',
+                element: <UploadGallery />
             },
             {
                 path: '/students-journey',

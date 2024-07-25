@@ -7,197 +7,37 @@ import { IoSearch } from 'react-icons/io5'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 import { Link, useParams } from 'react-router-dom'
 import { MdArrowForwardIos } from 'react-icons/md'
-const data = [
-    {
-        "_id": "1",
-        "name": "Alice Smith",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7890",
-        "studentID": "student1@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "2",
-        "name": "Bob Johnson",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8901",
-        "studentID": "student2@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "3",
-        "name": "Charlie Brown",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9012",
-        "studentID": "student3@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "4",
-        "name": "David Wilson",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0123",
-        "studentID": "student4@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "5",
-        "name": "Eva Martinez",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1234",
-        "studentID": "student5@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "6",
-        "name": "Frank Garcia",
-        "Batch no": "BAC-WP2024",
-        "phone": "678-901-2345",
-        "studentID": "student6@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "7",
-        "name": "Grace Miller",
-        "Batch no": "BAC-WP2024",
-        "phone": "789-012-3456",
-        "studentID": "student7@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "8",
-        "name": "Hank Lee",
-        "Batch no": "BAC-WP2024",
-        "phone": "890-123-4567",
-        "studentID": "student8@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "9",
-        "name": "Ivy Harris",
-        "Batch no": "BAC-WP2024",
-        "phone": "901-234-5678",
-        "studentID": "student9@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "10",
-        "name": "Jack Clark",
-        "Batch no": "BAC-WP2024",
-        "phone": "012-345-6789",
-        "studentID": "student10@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "11",
-        "name": "Karen Lewis",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7891",
-        "studentID": "student11@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "12",
-        "name": "Leo Walker",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8902",
-        "studentID": "student12@example.com",
-        "course": "Art",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "13",
-        "name": "Mona Hall",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9013",
-        "studentID": "student13@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "14",
-        "name": "Nick Young",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0124",
-        "studentID": "student14@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    },
-    {
-        "_id": "15",
-        "name": "Olivia King",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1235",
-        "studentID": "student15@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
-        'date': '12-08-2023'
-    }
-]
+import useGetRequest from '../Hooks/useGetRequest'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 const AllAdmittedStudent = () => {
     const { id } = useParams()
+    const [filterBy, setFilterBy] = useState({})
+    const [requestingStudents, Students, StudentsError,] = useGetRequest('showAdmitStudent', `/show-admit-student?batch_id=${id}&${filterBy?.number && `phone_number=${filterBy?.number}`}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        setFilterBy(data)
+    };
+    const data = Students?.data?.[0]?.students?.map((item, i) => {
+        return {
+            "key": i + 1,
+            "_id": item?.id,
+            "name": item?.user?.name,
+            "Batch no": Students?.data?.[0]?.batch_id,
+            "phone": item?.phone_number,
+            "studentID": item?.user?.email,
+            "course": Students?.data?.[0]?.course?.course_name,
+            "Course type": "off line",
+            "Payment status": "due",
+            "img": `${imageUrl}/${item?.image}` || "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
+            'date': item?.registration_date
+        }
+    })
+
     const columns = [
         {
             title: '#Sl',
-            dataIndex: '_id',
-            key: '_id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
@@ -222,11 +62,7 @@ const AllAdmittedStudent = () => {
             dataIndex: 'course',
             key: 'course'
         },
-        {
-            title: 'Date Of Admition',
-            dataIndex: 'date',
-            key: 'date'
-        },
+
         {
             title: 'Actions',
             dataIndex: '_id',

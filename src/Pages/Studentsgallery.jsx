@@ -22,7 +22,7 @@ const Studentsgallery = () => {
                         <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>Success Stories</p>
                     </div>
                 </div>
-                <Link to={`/upload-success-stories`} className='w-fit flex justify-end items-center bg-blue-400 text-white gap-2 px-6 py-2 rounded-md'>
+                <Link to={`/upload-gallery`} className='w-fit flex justify-end items-center bg-blue-400 text-white gap-2 px-6 py-2 rounded-md'>
                     <FaPlus /> Add Stories
                 </Link>
             </div>

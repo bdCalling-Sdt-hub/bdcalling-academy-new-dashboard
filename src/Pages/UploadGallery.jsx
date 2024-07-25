@@ -9,14 +9,14 @@ import useAxiosConfig from '../AxiosConfig/useAxiosConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const UploadSuccessStories = () => {
+const UploadGallery = () => {
     const [files, setFiles] = useState([]);
     const [isDragging, setIsDragging] = useState(false);
     const axiosInstance = useAxiosConfig();
 
     const fileDrop = e => {
         e.preventDefault();
-        const newFiles = Array.from(e.dataTransfer.files).filter(file => file.type.includes('video'));
+        const newFiles = Array.from(e.dataTransfer.files).filter(file => file.type.includes('image'));
         if (newFiles.length) {
             const updatedFiles = newFiles.map((file) => ({
                 file,
@@ -59,9 +59,9 @@ const UploadSuccessStories = () => {
 
     const uploadFile = (fileObj) => {
         const data = new FormData();
-        data.append('file', fileObj.file);
+        data.append('image', fileObj.file);
 
-        axiosInstance.post('/success/story', data, {
+        axiosInstance.post('/gallery', data, {
             onUploadProgress: (progressEvent) => {
                 const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 setFiles(prevFiles =>
@@ -150,7 +150,7 @@ const UploadSuccessStories = () => {
                                 <p className='bg-blue-400 text-white px-4 py-2 rounded-md'>
                                     Choose File
                                 </p>
-                                <input onChange={handleFileChange} className='hidden' type="file" accept='video/*' multiple id="image" />
+                                <input onChange={handleFileChange} className='hidden' type="file" accept='image/*' multiple id="image" />
                             </label>
                     }
                 </label>
@@ -207,4 +207,5 @@ const UploadSuccessStories = () => {
     );
 };
 
-export default UploadSuccessStories;
+
+export default UploadGallery

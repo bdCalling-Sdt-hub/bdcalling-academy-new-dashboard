@@ -15,7 +15,7 @@ const StudentsInformation = () => {
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
     const [AdmitValues, setAdmitValue] = useState({ _id: id, order: [{ batch_id: batch }] })
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
-    const [fullpaymentType, setFullPaymentType] = useState(true)
+    console.log(Payment?.data[2])
     return (
         <>
             <div className='start-center gap-2'>
@@ -114,14 +114,14 @@ const StudentsInformation = () => {
                         <p className='text-base text-[#2BA24C]'>{Payment?.data[0]?.amount}Tk <span className='text-sm ml-2'>({Payment?.data[0]?.installment_date[0]?.first_installment})</span></p>
                     </div>
                     {
-                        Payment?.data.length === 1 && <>
+                        Payment?.data.length === 1 && Payment?.data[0]?.due && <>
                             <div className='grid-2 my-3'>
                                 <p className='text-base font-medium text-[var(--primary-color)]'>2nd Instalment <span className='text-[#FA1131]'>(Due)</span></p>
-                                <p className='text-base text-[#FA1131]'>{Payment?.data[0]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[0]?.installment_date[1]?.second_installment})</span></p>
+                                <p className='text-base text-[#FA1131]'>{Payment?.data[0]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[0]?.installment_date[0]?.second_installment})</span></p>
                             </div>
                             <div className='grid-2 my-3'>
                                 <p className='text-base font-medium text-[var(--primary-color)]'>3rd Instalment <span className='text-[#FA1131]'>(Due)</span></p>
-                                <p className='text-base text-[#FA1131]'>{Payment?.data[0]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[0]?.installment_date[2]?.third_installment})</span></p>
+                                <p className='text-base text-[#FA1131]'>{Payment?.data[0]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[0]?.installment_date[2]?.second_installment})</span></p>
                             </div></>
                     }
                     {
@@ -129,17 +129,27 @@ const StudentsInformation = () => {
                             <p className='text-base font-medium text-[var(--primary-color)]'>2nd Instalment <span className='text-green-500'>(Complete)</span></p>
                             <p className='text-base text-green-500'>{Payment?.data[1]?.amount}Tk  <span className='text-sm ml-2'>({Payment?.data[1]?.installment_date[0]?.first_installment})</span></p>
                         </div>
-                            <div className='grid-2 my-3'>
-                                <p className='text-base font-medium text-[var(--primary-color)]'>3rd Instalment <span className='text-[#FA1131]'>(Due)</span></p>
-                                <p className='text-base text-[#FA1131]'>{Payment?.data[1]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[1]?.installment_date[2]?.third_installment})</span></p>
-                            </div>
+                            {
+                                Payment?.data[1]?.due && <div className='grid-2 my-3'>
+                                    <p className='text-base font-medium text-[var(--primary-color)]'>3rd Instalment <span className='text-[#FA1131]'>(Due)</span></p>
+                                    <p className='text-base text-[#FA1131]'>{Payment?.data[1]?.due / 2}Tk  <span className='text-sm ml-2'>({Payment?.data[1]?.installment_date[2]?.third_installment})</span></p>
+                                </div>
+                            }
+
                         </>
                     }
                     {
-                        Payment?.data.length === 3 && <div className='grid-2 my-3'>
-                            <p className='text-base font-medium text-[var(--primary-color)]'>3rd Instalment <span className='text-green-500'>(Complete)</span></p>
-                            <p className='text-base text-green-500'>{Payment?.data[2]?.amount}Tk  <span className='text-sm ml-2'>({Payment?.data[2]?.installment_date[2]?.third_installment})</span></p>
-                        </div>
+                        Payment?.data.length === 3 && <>
+                            <div className='grid-2 my-3'>
+                                <p className='text-base font-medium text-[var(--primary-color)]'>2nd Instalment <span className='text-green-500'>(Complete)</span></p>
+                                <p className='text-base text-green-500'>{Payment?.data[1]?.amount}Tk  <span className='text-sm ml-2'>({Payment?.data[1]?.installment_date[0]?.second_installment})</span></p>
+                            </div>
+                            <div className='grid-2 my-3'>
+                                <p className='text-base font-medium text-[var(--primary-color)]'>3rd Instalment <span className='text-green-500'>(Complete)</span></p>
+                                <p className='text-base text-green-500'>{Payment?.data[2]?.amount}Tk  <span className='text-sm ml-2'>({Payment?.data[1]?.installment_date[0]?.second_installment})</span></p>
+                            </div>
+                        </>
+
                     }
                     <hr className='w-[80%] my-5' />
                     <div className='flex justify-end items-center pr-[140px]'>
