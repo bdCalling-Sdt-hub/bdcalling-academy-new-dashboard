@@ -74,6 +74,10 @@ import StudentCourseVideo from "../Pages/StudentCourseVideo";
 import StudentsCourse from "../Pages/StudentsCourse";
 import StudentCourseExam from "../Pages/StudentCourseExam";
 import StudentExamResult from "../Pages/StudentExamResult";
+import TrainerFeedback from "../Pages/TrainerFeedback";
+import SendStudentReview from "../Pages/SendStudentReview";
+import StudentCertificates from "../Pages/StudentCertificates";
+import StudentProfile from "../Pages/StudentProfile";
 
 export const router = createBrowserRouter([
     {
@@ -357,6 +361,22 @@ export const router = createBrowserRouter([
             {
                 path: '/student/course-exam-result',
                 element: <StudentExamResult />
+            },
+            {
+                path: '/student/trainer-feedback',
+                element: <TrainerFeedback />
+            },
+            {
+                path: '/student/send-feedback',
+                element: <SendStudentReview />
+            },
+            {
+                path: '/student/certificates',
+                element: <StudentCertificates />
+            },
+            {
+                path: '/student/profile',
+                element: <StudentProfile />
             },
         ]
     },
