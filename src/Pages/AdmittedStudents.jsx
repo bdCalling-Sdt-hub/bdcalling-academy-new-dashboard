@@ -41,9 +41,9 @@ const AdmittedStudents = () => {
     const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-
+    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingBatchStudents, BatchStudents, BatchStudentsError,] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
@@ -51,7 +51,6 @@ const AdmittedStudents = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const BatchOptions = Batch?.data?.data?.map(item => {
@@ -149,11 +148,11 @@ const AdmittedStudents = () => {
             key: 'order',
             render: (_, record) => {
                 return (<div className='flex justify-start items-center gap-2'>
-                    <p className={`${record?.order?.[record?.order.length-1]?.due == '0' ? "text-green-500" : "text-red-500"}`}>{record?.order?.[record?.order.length-1]?.due == '0' ? "paid" : "due"}</p>
+                    <p className={`${record?.order?.[record?.order.length - 1]?.due == '0' ? "text-green-500" : "text-red-500"}`}>{record?.order?.[record?.order.length - 1]?.due == '0' ? "paid" : "due"}</p>
                     <button onClick={() => {
                         handelFilterData(record._id)
                         setOpenPaymentModal(true)
-                    }} className={`${record?.order?.[record?.order.length-1]?.due == '0' ? "bg-gray-200 pointer-events-none text-black" : "bg-yellow-600 text-white cursor-pointer"}  px-3 py-1 rounded-md uppercase font-semibold`}>payment</button>
+                    }} className={`${record?.order?.[record?.order.length - 1]?.due == '0' ? "bg-gray-200 pointer-events-none text-black" : "bg-yellow-600 text-white cursor-pointer"}  px-3 py-1 rounded-md uppercase font-semibold`}>payment</button>
                 </div>)
             }
         },
@@ -304,11 +303,8 @@ const AdmittedStudents = () => {
                 <div className=' col-span-2'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
                 </div>
-                <div className='col-span-2'>
-                    <SelectInput lebel={false} classNames={`border`} status={AdmitError} options={BatchOptions} rules={{ ...register("batchNo", { required: false }) }} />
-                </div>
-                <div className='col-span-2'>
-                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions2} rules={{ ...register("category", { required: false }) }} />
+                <div className=' col-span-2'>
+                    <Input rules={{ ...register("batch", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Batch ID`} />
                 </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
@@ -319,10 +315,10 @@ const AdmittedStudents = () => {
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>Admitted Students List</h3>
                 {
-                    (filterBy?.name || filterBy?.number || filterBy?.category || filterBy?.dob) && <div className='flex justify-start items-center gap-2 mb-2 -mt-3 ml-5'>Filter by
+                    (filterBy?.name || filterBy?.number || filterBy?.batch || filterBy?.dob) && <div className='flex justify-start items-center gap-2 mb-2 -mt-3 ml-5'>Filter by
                         {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
                         {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
-                        {filterBy?.category && <> <strong>category</strong> : {filterBy?.category} </>}
+                        {filterBy?.batch && <> <strong>batch</strong> : {filterBy?.batch} </>}
                         {filterBy?.dob && <> <strong>registration date</strong> : {filterBy?.dob} </>}
                         <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
                             <RxCross2 />
@@ -335,14 +331,14 @@ const AdmittedStudents = () => {
                         dataSource={TableData || []}
                         rowSelection={rowSelection}
                         pagination={{
-                            total: Students?.total || 0,
+                            total: BatchStudents?.total || 0,
                             onChange: (page, pagesize) => setPage(page),
                             showSizeChanger: false
                         }}
                     />
                 </div>
             </div>
-            {/* create and update student  modal */}
+            {/* create and update student  modal develope by siyam */}
 
             {/* payment modal  */}
             <Modal

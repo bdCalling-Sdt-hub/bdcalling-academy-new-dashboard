@@ -37,9 +37,7 @@ const Notification = () => {
         <div>
             <p className='text-xl font-semibold my-4'>Notification </p>
             {
-                data?.map((item, index) => <div key={index} className='p-3 my-4 flex justify-start items-center gap-2 rounded-md' style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-                }}>
+                data?.map((item, index) => <div key={index} className='p-3 my-4 flex justify-start items-center gap-2 rounded-md card-shadow'>
                     <img src={item?.img} className='w-10 h-10 rounded-full' alt="" />
                     <div className='flex justify-between items-start gap-2 w-full mx-3'>
                         <div className=''>

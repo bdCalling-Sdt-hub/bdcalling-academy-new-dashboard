@@ -1,37 +1,26 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
+import usePostRequest from '../Hooks/usePostRequest';
+import useGetRequest from '../Hooks/useGetRequest';
 
 const AboutUs = () => {
     const editor = useRef(null);
-    const [content, setContent] = useState('');
-    const [isLoading, seLoading] = useState(false)
-
+    const [requestingAbout, About, AboutError,] = useGetRequest('About', `/show/about`)
+    console.log(About)
+    const [content, setContent] = useState(About?.data?.about || '');
+    useEffect(() => {
+        setContent(About?.data?.about)
+    }, [About])
+    const { mutate, isLoading, data, error } = usePostRequest('about', '/update/about');
     const handleTerms = () => {
-        seLoading(true)
-        dispatch(AddPrivecy({ description: content })).then((res) => {
-            seLoading(false)
-            if (res.type == 'AddPrivecy/fulfilled') {
-                Swal.fire({
-                    title: "Added",
-                    text: "New Terms has been Added.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            } else {
-                Swal.fire({
-                    title: "opps!",
-                    text: "something went's wrong",
-                    icon: "error",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
-        })
+        const formData = new FormData()
+        formData.append('id', 1)
+        formData.append('about', content)
+        mutate(formData)
     }
     const config = {
         readonly: false,
@@ -66,6 +55,6 @@ const AboutUs = () => {
             }}>Save & change</button>
         </>
     )
-}
+}//disabled={isLoading}
 
 export default AboutUs

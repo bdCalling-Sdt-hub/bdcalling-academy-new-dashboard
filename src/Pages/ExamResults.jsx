@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { DatePicker, Form, message, Modal, Table } from 'antd'
+import { DatePicker, Form, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
 import { FaEdit } from 'react-icons/fa'
+import useGetRequest from '../Hooks/useGetRequest'
 const data = [
     {
         "_id": "1",
@@ -208,6 +209,8 @@ const ExamResults = () => {
     const [openEditModal, setOpenEditModal] = useState(false)
     const [filterData, setFilterData] = useState({})
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [requestingExamResult, ExamResult, ExamResultError,] = useGetRequest('ExamResult', `/show-assign-mark`)
+    console.log(ExamResult)
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };

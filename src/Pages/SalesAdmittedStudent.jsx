@@ -1,202 +1,113 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa6'
-import { DatePicker, Divider, Modal, Radio, Table } from 'antd'
+import { FaEye, FaEyeSlash, FaInfo, FaPlus, FaPrint } from 'react-icons/fa6'
+import { DatePicker, message, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
+import { FaEdit } from 'react-icons/fa'
 import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
-import { FiPrinter } from 'react-icons/fi'
-import { IoMdInformationCircleOutline } from 'react-icons/io'
+import UpdateInput from '../Components/Input/UpdateInput'
+import usePatchRequest from '../Hooks/usePatchRequest'
+import useDeleteRequest from '../Hooks/useDeleteRequest'
+import useGetRequest from '../Hooks/useGetRequest'
+import usePostRequest from '../Hooks/usePostRequest'
+import SelectInput from '../Components/Input/SelectInput'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import ProfileImage from '../assets/corporate-user-icon.webp'
+import toast from 'react-hot-toast'
+import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
+import { CiCircleInfo } from 'react-icons/ci'
+import DuePayment from '../Components/Forms/DuePayment'
+import { RiPrinterFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
-import { SiMicrosoftword } from 'react-icons/si'
-const data = [
-    {
-        "_id": "1",
-        "name": "Alice Smith",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7890",
-        "studentID": "student1@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "2",
-        "name": "Bob Johnson",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8901",
-        "studentID": "student2@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "3",
-        "name": "Charlie Brown",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9012",
-        "studentID": "student3@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "4",
-        "name": "David Wilson",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0123",
-        "studentID": "student4@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "5",
-        "name": "Eva Martinez",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1234",
-        "studentID": "student5@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "6",
-        "name": "Frank Garcia",
-        "Batch no": "BAC-WP2024",
-        "phone": "678-901-2345",
-        "studentID": "student6@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "7",
-        "name": "Grace Miller",
-        "Batch no": "BAC-WP2024",
-        "phone": "789-012-3456",
-        "studentID": "student7@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "8",
-        "name": "Hank Lee",
-        "Batch no": "BAC-WP2024",
-        "phone": "890-123-4567",
-        "studentID": "student8@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "9",
-        "name": "Ivy Harris",
-        "Batch no": "BAC-WP2024",
-        "phone": "901-234-5678",
-        "studentID": "student9@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "10",
-        "name": "Jack Clark",
-        "Batch no": "BAC-WP2024",
-        "phone": "012-345-6789",
-        "studentID": "student10@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "11",
-        "name": "Karen Lewis",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7891",
-        "studentID": "student11@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "12",
-        "name": "Leo Walker",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8902",
-        "studentID": "student12@example.com",
-        "course": "Art",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "13",
-        "name": "Mona Hall",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9013",
-        "studentID": "student13@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "14",
-        "name": "Nick Young",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0124",
-        "studentID": "student14@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "15",
-        "name": "Olivia King",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1235",
-        "studentID": "student15@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    }
-]
-
 const SalesAdmittedStudent = () => {
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
-    const [openPrintModal, setOpenPrintModal] = useState(false)
-    const [openDropModal, setOpenDropModal] = useState(false)
-    const [openPaymentModal, setOpenPaymentModal] = useState(false)
-    const [fullpaymentType, setFullPaymentType] = useState(true)
-    const [filterData, setFilterData] = useState({})
-    const [exportType, setExportType] = useState('pdf')
-    const [followUp, setFollowUp] = useState({ _id: false, index: false })
+    const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const { register: registerStudent, handleSubmit: handleStudent, formState: { errors: StudentError } } = useForm();
+    const { register: registerMassage, handleSubmit: handleMassage, formState: { errors: MassageError } } = useForm();
+    const { register: registerAdmit, handleSubmit: handleAdmit, formState: { errors: AdmitError } } = useForm();
+    const [filterData, setFilterData] = useState({})
+    const [image, setImage] = useState(null);
+    const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
+    const [followUp, setFollowUp] = useState({ _id: false, index: false })
+    const [inputType, setInputType] = useState('password')
+    const [text, setText] = useState(true)
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [filterBy, setFilterBy] = useState({})
+    const [SendMessageTo, setSendMessage] = useState([])
+    // query 
+    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
+    const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
+    const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
+    const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
+    const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
+    const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
+    const [dob, setdob] = useState('')
+    const [AllStudents, setAllStudent] = useState([])
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const BatchOptions = Batch?.data?.data?.map(item => {
+        return { name: item?.batch_name, value: item?.id }
+    }) || []
+    const CourseOptions = Course?.data?.map(item => {
+        return { name: item?.course_name, value: item?.id }
+    }) || []
+    const TableData = AllStudents.map((item, index) => {
+        return {
+            key: index + 1,
+            name: item?.name,
+            email: item?.email,
+            phone_number: item?.phone_number,
+            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            _id: item?._id,
+            batch_id: item?.batch_id,
+            gender: item?.gender,
+            registration_date: item?.registration_date,
+            category_id: item?.category_id,
+            blood_group: item?.blood_group,
+            religion: item?.religion,
+            dob: item?.dob,
+            address: item?.address,
+            course: item?.course,
+            course_type: item?.course_type,
+            order: item?.order,
+            messages: item?.messages,
+            course_name: item?.course_name
+        }
+    })
+    const onSelectChange = (newSelectedRowKeys) => {
+        const FilteredId = []
+        TableData.map(item => {
+            if (newSelectedRowKeys.includes(item.key)) {
+                FilteredId.push(item._id)
+            }
+        })
+        setSendMessage(FilteredId)
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
+    const onSubmit = data => {
+        setFilterBy({ ...data, dob })
+    };
+    // add student
     const onChange = (date, dateString) => {
+        setdob(dateString)
     };
     const columns = [
         {
             title: '#Sl',
-            dataIndex: '_id',
-            key: '_id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
@@ -208,29 +119,29 @@ const SalesAdmittedStudent = () => {
         },
         {
             title: 'Phone Number',
-            dataIndex: 'phone',
-            key: 'phone'
+            dataIndex: 'phone_number',
+            key: 'phone_number'
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email'
         },
         {
             title: 'Batch no',
-            dataIndex: 'Batch no',
-            key: 'Batch no'
-        },
-        {
-            title: 'Student ID',
-            dataIndex: 'studentID',
-            key: 'studentID'
+            dataIndex: 'batch_id',
+            key: 'batch_id'
         },
         {
             title: 'Course Name',
-            dataIndex: 'course',
-            key: 'course'
+            dataIndex: 'course_name',
+            key: 'course_name'
         },
         {
-            title: 'Course type',
-            dataIndex: 'Course type',
-            key: 'Course type'
-        },
+            title: 'Course Type',
+            dataIndex: 'course_type',
+            key: 'course_type'
+        }, 
         {
             title: 'Set Follow Up',
             dataIndex: '_id',
@@ -238,8 +149,8 @@ const SalesAdmittedStudent = () => {
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
-                    setOpenPrintModal(false)
-                    setOpenDropModal(false)
+                    setSelectedRowKeys([record.key])
+                    setSendMessage([record._id])
                 }} className='btn-primary max-w-32'>
                     <FaPlus /> Follow Up
                 </button>
@@ -251,11 +162,8 @@ const SalesAdmittedStudent = () => {
                     }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
                 }
                 {
-                    [...Array(3).keys()].map(item => <div key={item} className={`${(followUp?._id == record?._id && followUp?.index == item) ? 'block' : 'hidden'} ${item == 0 ? 'border-[#2492EB]' : item == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
-                        <p className='text-[#5C5C5C] '>Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment Dear student Your 2ns/3rd instilment date is 10/8/2024.
-                            Pleas pay your payment</p>
+                    record?.messages?.map((item, index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                        <p className='text-[#5C5C5C] '>{item}</p>
                     </div>)
                 }
             </div>,
@@ -265,83 +173,159 @@ const SalesAdmittedStudent = () => {
             title: 'Actions',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     handelFilterData(record._id)
-                    setOpenPrintModal(true)
-                    setOpenFollowUpModal(false)
-                    setOpenDropModal(false)
-                }} className='text-2xl text-[#2ba24c] hover:scale-105 active:scale-95'>
-                    <FiPrinter />
-                </button>
-                <Link to={`/admitted-students/students-information/${record?._id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
-                    <IoMdInformationCircleOutline />
+                    setImage(null)
+
+                }} className='p-1 text-green-500 text-2xl rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
+                    <RiPrinterFill />
+                </button> */}
+                <Link to={`/admitted-students/students-information/${record._id}/${record?.order[0]?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                    <CiCircleInfo />
                 </Link>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     handelFilterData(record._id)
-                    setOpenPrintModal(false)
-                    setOpenFollowUpModal(false)
-                    setOpenDropModal(true)
+                    handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
-                </button>
+                </button> */}
             </div>,
             key: '_id'
         },
     ];
     const handelFilterData = (id) => {
-        const newData = data.filter(item => item._id === id)
+        const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-    const [colorType, setColorType] = useState(['blue'])
-    const colorHandeler = (color) => {
-        if (colorType.find(item => item == color)) {
-            const newColor = colorType.filter(item => item != color)
-            setColorType([...newColor])
-        } else {
-            setColorType([...colorType, color])
-        }
-    }
-    const inputHandeler = (e, name) => {
-        setFilterData({ ...filterData, [name]: e.target.value })
-    }
-    return (
-        <>
-            <div className='grid-2'>
-                <div className='w-full'>
-                    <PageHeading text={`All Admitted Students`} />
-                </div>
-                <div className="flex justify-end items-center w-full gap-3">
-                    <button onClick={() => setOpenFollowUpModal(true)} className="btn-secondary max-w-32">Follow Up</button>
+
+    const CategoryOptions2 = Category?.data?.data?.map(item => {
+        return { name: item?.category_name, value: item?.category_name }
+    })
+    useEffect(() => {
+        if (isLoading, updateLoading, DeleteLoading) return
+        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
+    //delete users
+    const handleDelete = () => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete {filterData?.name}</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteStudents()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
-                <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
-                <div className='max-w-44 min-w-44'>
+        ));
+    }
+
+    // send followup message
+    const HandleSendMassage = (value) => {
+        const data = {
+            ids: JSON.stringify(SendMessageTo),
+            messages: JSON.stringify([value.comment])
+        }
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        // return
+        followUpMessage(formData)
+    }
+
+    // const handle admit student
+
+    useEffect(() => {
+        if (isAdmitLoading) return
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
+    }, [errorAdmit, AdmitData, isAdmitLoading])
+    useEffect(() => {
+        const result = [];
+        BatchStudents?.data.forEach(batch => {
+            batch.students.forEach(student => {
+                result.push({
+                    id: batch?.id,
+                    courseId: batch?.course_id,
+                    studentID: student?.id,
+                    batch_id: batch?.batch_id,
+                    course_name: batch?.course?.course_name,
+                    name: student?.user?.name,
+                    image: student.image,
+                    phone_number: student?.phone_number,
+                    order: student?.order,
+                    _id: student?.id,
+                    email: student?.user?.email,
+                    course_type: batch?.course?.course_type,
+                    messages: student?.messages,
+                    course: batch?.course
+                });
+            });
+        });
+        setAllStudent(result)
+    }, [BatchStudents])
+    return (
+        <>
+            <div className='grid-2 '>
+                <div className='w-full'>
+                    <PageHeading text={`Admitted Student`} />
+                </div>
+                <div className="flex justify-end items-center w-full gap-3">
+                    <button onClick={() => {
+                        selectedRowKeys?.length <= 0 ? toast.error('please select students') : setOpenFollowUpModal(true)
+                    }} className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
+                </div>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-11 items-center gap-4 flex-wrap max-w-[60%] bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
+                <DatePicker className=' py-2 border-none rounded-3xl col-span-2' onChange={onChange} />
+                <div className=' col-span-2'>
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
-                <div className='max-w-44 min-w-44'>
-                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
+                <div className=' col-span-2'>
+                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
                 </div>
-                <select name='category' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                </select>
-                <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
+                <div className=' col-span-2'>
+                    <Input rules={{ ...register("batch", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Batch ID`} />
+                </div>
+                <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
                 </button>
             </form>
 
 
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
+                <h3 className='section-title px-5'>Admitted Students List</h3>
+                {
+                    (filterBy?.name || filterBy?.number || filterBy?.batch || filterBy?.dob) && <div className='flex justify-start items-center gap-2 mb-2 -mt-3 ml-5'>Filter by
+                        {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
+                        {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
+                        {filterBy?.batch && <> <strong>batch</strong> : {filterBy?.batch} </>}
+                        {filterBy?.dob && <> <strong>registration date</strong> : {filterBy?.dob} </>}
+                        <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
+                            <RxCross2 />
+                        </button>
+                    </div>
+                }
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={TableData || []}
+                        rowSelection={rowSelection}
+                        pagination={{
+                            total: BatchStudents?.total || 0,
+                            onChange: (page, pagesize) => setPage(page),
+                            showSizeChanger: false
+                        }}
                     />
                 </div>
             </div>
+            {/* create and update student  modal develope by siyam */}
+
             {/* payment modal  */}
             <Modal
                 centered
@@ -350,295 +334,9 @@ const SalesAdmittedStudent = () => {
                 onCancel={() => setOpenPaymentModal(false)}
                 width={700}
             >
-                <div>
-                    <div className='start-center gap-4'>
-                        <MdOutlineArrowBackIosNew className='cursor-pointer' onClick={() => {
-                            setOpenPaymentModal(false)
-                        }} /> <h4>Payment</h4>
-                    </div>
-                    <div className='start-center gap-2 my-2'>
-                        <input onClick={() => {
-                            setFullPaymentType(true)
-                        }} defaultChecked={fullpaymentType} className='cursor-pointer' type="radio" value="paymentType" name="paymentOption" id="fullPayment" />
-                        <label for="fullPayment">Full Payment</label>
-
-                        <input onClick={() => {
-                            setFullPaymentType(false)
-                        }} defaultChecked={!fullpaymentType} className='cursor-pointer' type="radio" value="instalmentpayment" name="paymentOption" id="instalmentPayment" />
-                        <label for="instalmentPayment">Instalment Payment</label>
-                    </div>
-                    {
-                        fullpaymentType ? <>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className='grid-2 gap-2 mb-2'>
-                                    <div className='w-full relative'>
-                                        <p className="pb-2">Discount</p>
-                                        <select defaultValue={`*Required Field`} className='w-full p-2 outline-none border rounded-md' {...register('discount', { required: false })}>
-                                            <option value="tk 2000">tk 2000</option>
-                                            <option value="tk 2000">tk 2000</option>
-                                        </select>
-
-                                    </div>
-                                    <Input classNames={`border rounded`} rules={{ ...register('reference', { required: false }) }} lebel={`Reference`} status={errors} placeholder={`CEO, Monir sir`} />
-                                </div>
-                            </form>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Payable Amount Date:</p>
-                                <p className='text-end text-sm'>04/05/2024</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course Name:</p>
-                                <p className='text-end text-sm'>UX/UI Design</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course ID:</p>
-                                <p className='text-end text-sm'>202402</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Student ID:</p>
-                                <p className='text-end text-sm'>BDA202415</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course Fee:</p>
-                                <p className='text-end text-sm'>15000Tk</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Due Amount:</p>
-                                <p className='text-end text-sm'>0</p>
-                            </div>
-                            <hr className='w-full my-2 block' />
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm font-semibold'>Total Paymet :</p>
-                                <p className='text-end text-sm font-semibold'>13000Tk</p>
-                            </div>
-                            <button onClick={() => {
-                                setOpenPaymentModal(false)
-                            }} className='btn-primary max-w-32 mx-auto mt-7'>
-                                Confirm
-                            </button>
-                        </> : <>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className='grid-2 gap-2 mb-2'>
-                                    <div className='w-full relative'>
-                                        <p className="pb-2">Discount</p>
-                                        <select defaultValue={`tk 2000`} className='w-full p-2 outline-none border rounded-md' {...register('discount', { required: false })}>
-                                            <option value="tk 2000">tk 2000</option>
-                                            <option value="tk 2000">tk 2000</option>
-                                        </select>
-
-                                    </div>
-                                    <Input classNames={`border rounded`} rules={{ ...register('reference', { required: false }) }} lebel={`Reference`} status={errors} placeholder={`CEO, Monir sir`} />
-                                </div>
-                                <div className='border p-2 rounded'>
-                                    <div className='grid-2 gap-2 mb-2'>
-                                        <div className='w-full relative'>
-                                            <p className="pb-2">Installment Type</p>
-                                            <select defaultValue={`3 installment`} className='w-full p-2 outline-none border rounded-md' {...register('installmentType', { required: false })}>
-                                                <option value="3 installment">3 installment</option>
-                                                <option value="3 installment">3 installment</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
-                                        <div className='col-span-2'>
-                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`7000`} />
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input type={`date`} classNames={`border rounded text-gray-300`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
-                                        </div>
-                                        <div className='w-10 h-10 border rounded ml-auto border-green-500'>
-                                            <img className='w-10 h-10' src='https://i.ibb.co/4Zff45B/check-mark-1-1.png' alt="" />
-                                        </div>
-                                    </div>
-                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
-                                        <div className='col-span-2'>
-                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`3000`} />
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input type={`date`} classNames={`border rounded`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
-                                        </div>
-                                        <div className='w-10 h-10 border rounded ml-auto border-red-500'>
-
-                                        </div>
-                                    </div>
-                                    <div className='grid grid-cols-11 gap-2 items-end justify-start my-4'>
-                                        <div className='col-span-2'>
-                                            <p className='text-[var(--primary-bg)] -mt-8'>1st instilment</p>
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input classNames={`border rounded`} rules={{ ...register('amount', { required: false }) }} lebel={`Amount`} status={errors} placeholder={`3000`} />
-                                        </div>
-                                        <div className='col-span-4 w-full'>
-                                            <Input type={`date`} classNames={`border rounded`} rules={{ ...register('date', { required: false }) }} lebel={`date`} status={errors} />
-                                        </div>
-                                        <div className='w-10 h-10 border rounded ml-auto border-red-500'>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Payable Amount Date:</p>
-                                <p className='text-end text-sm'>04/05/2024</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course Name:</p>
-                                <p className='text-end text-sm'>UX/UI Design</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course ID:</p>
-                                <p className='text-end text-sm'>202402</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Student ID:</p>
-                                <p className='text-end text-sm'>BDA202415</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Course Fee:</p>
-                                <p className='text-end text-sm'>15000Tk</p>
-                            </div>
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm'>Due Amount:</p>
-                                <p className='text-end text-sm text-red-600'>6000</p>
-                            </div>
-                            <hr className='w-full my-2 block' />
-                            <div className='grid-2 gap-2 my-4'>
-                                <p className=' text-sm font-semibold'>Total Paymet :</p>
-                                <p className='text-end text-sm font-semibold'>13000Tk</p>
-                            </div>
-                            <button onClick={() => {
-                                setOpenPaymentModal(false)
-                            }} className='btn-primary max-w-32 mx-auto mt-7'>
-                                Confirm
-                            </button>
-                        </>
-                    }
-
-                </div>
+                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={filterData} />
             </Modal>
-            {/* drop modal  */}
-            <Modal
-                centered
-                footer={false}
-                open={openDropModal}
-                onCancel={() => setOpenDropModal(false)}
-                width={400}
-            >
-                <div className=''>
-                    <p className='text-2xl text-center mt-4 text-[#5C5C5C]'>want to dropout this student ?</p>
-                    <div className='between-center mt-6'>
-                        <button onClick={() => {
-                            setOpenDropModal(false)
-                        }} className='text-[#FFFFFF] bg-red-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Dropout</button>
-                        <button onClick={() => {
-                            setOpenDropModal(false)
-                        }} className='text-[#FFFFFF] bg-green-600 p-2 px-4 rounded-md hover:scale-105 active:scale-95 font-medium'>Cancel</button>
-                    </div>
-                </div>
-            </Modal>
-            {/* print modal  */}
-            <Modal
-                centered
-                footer={false}
-                open={openPrintModal}
-                onCancel={() => setOpenPrintModal(false)}
-                width={600}
-            >
-                <div>
-                    <div className='grid-2-start gap-2'>
-                        <div className='w-full'>
-                            <img className='mt-5' src="https://i.ibb.co/LScrG6N/image-336.png" alt="" />
-                            <p className='text-2xl text-[var(--primary-color)] font-semibold mt-7'>Billed To:</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>Rahman Abir</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>+880 1744545477</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>House: 14, Block #A, Banasree, Dhaka 1219</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>Bkash</p>
-                        </div>
-                        <div className='w-full'>
-                            <p className='text-2xl text-[var(--primary-color)] font-semibold mt-7'>Invoice No: 1234</p>
-                            <p className='text-2xl text-[var(--primary-color)] font-semibold mt-9'>Payments Information:</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>Bkash</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>Account Name: Rahman Abir</p>
-                            <p className='text-[var(--primary-color)] text-base font-normal my-2'>Pay Date: 13 March, 2024</p>
-                        </div>
-                    </div>
-                    <p className='text-2xl text-[var(--primary-color)] font-semibold mt-7'>Students Information:</p>
-                    <div className='grid-2 my-3'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Course Name:</p>
-                        <p className='text-base text-[var(--primary-color)]'>UX/UI Design</p>
-                    </div>
-                    <div className='grid-2 my-3'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Course ID:</p>
-                        <p className='text-base text-[var(--primary-color)]'>202402</p>
-                    </div>
-                    <div className='grid-2 my-3'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Student ID:</p>
-                        <p className='text-base text-[var(--primary-color)]'>202402</p>
-                    </div>
-                    <div className='grid-2 my-3'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Payable Amount Date:</p>
-                        <p className='text-base text-[var(--primary-color)]'>04/05/2024</p>
-                    </div>
-                    <div className='grid-2 my-3'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Due Amount:</p>
-                        <p className='text-base text-[var(--primary-color)] text-red-500'>15000</p>
-                    </div>
-                    <span className='block w-full h-[2px] bg-black'></span>
-                    <div className='grid-4 my-1'>
-                        <p className='text-base font-medium text-[var(--primary-color)] text-start'>Course Name</p>
-                        <p className='text-base font-medium text-[var(--primary-color)] text-center'>Price</p>
-                        <p className='text-base font-medium text-[var(--primary-color)] text-center'>Quantity</p>
-                        <p className='text-base font-medium text-[var(--primary-color)] text-end'>Total Amount</p>
-                    </div>
-                    <span className='block w-full h-[2px] bg-black'></span>
-                    <div className='grid-4 my-1'>
-                        <p className='text-base text-[var(--primary-color)] text-start'>UX/Ui Design</p>
-                        <p className='text-base text-[var(--primary-color)] text-center'>15000Tk</p>
-                        <p className='text-base text-[var(--primary-color)] text-center'>1</p>
-                        <p className='text-base text-[var(--primary-color)] text-end'>15000Tk</p>
-                    </div>
-                    <span className='block w-full h-[2px] bg-black'></span>
-                    <div className='grid-2 my-1'>
-                        <p className='text-base font-medium text-[var(--primary-color)]'>Total Amount:</p>
-                        <p className='text-base font-medium text-[var(--primary-color)] text-end'>15000Tk</p>
-                    </div>
-                    <span className='block w-full h-[2px] bg-black'></span>
-                    <div className='start-center gap-3 my-6'>
-                        <button onClick={() => {
-                            setExportType('pdf')
-                        }} className={`center-center flex-col rounded-md max-w-11 p-1 ${exportType == 'pdf' ? 'bg-gray-300' : 'bg-transparent'}`}>
-                            <FaRegFilePdf />
-                            PDF
-                        </button>
-                        <button onClick={() => {
-                            setExportType('word')
-                        }} className={`center-center flex-col rounded-md max-w-11 p-1 ${exportType == 'word' ? 'bg-gray-300' : 'bg-transparent'}`}>
-                            <SiMicrosoftword />
-                            WORD
-                        </button>
-                        <button onClick={() => {
-                            setExportType('excel')
-                        }} className={`center-center flex-col rounded-md max-w-11 p-1 ${exportType == 'excel' ? 'bg-gray-300' : 'bg-transparent'}`}>
-                            <FaFileExcel />
-                            EXCEL
-                        </button>
-                    </div>
-                    <div className='start-center gap-4'>
-                        <button onClick={() => {
-                            setOpenPrintModal(false)
-                        }} className='btn-primary max-w-40'>Download Invoice</button>
-                        <button onClick={() => {
-                            setOpenPrintModal(false)
-                        }} className='btn-secondary max-w-28'>Print</button>
-                    </div>
-                </div>
-            </Modal>
+            {/* admit modal  */}
             {/* Follow up Modal  */}
             <Modal
                 centered
@@ -648,21 +346,27 @@ const SalesAdmittedStudent = () => {
             >
                 <div className=''>
                     <h3 className='section-title -mt-7'>Follow Up Comments</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} className='border border-[var(--primary-bg)] rounded-md p-2'>
-                        <div className='start-center gap-3'>
-                            <img src={filterData?.img} className='h-8 w-8 rounded-full' alt="" /> <p className='text-base font-semibold'>{filterData?.name}</p>
-                        </div>
-                        <textarea className='resize-none w-full border rounded-md outline-none mt-5 min-h-32 p-2' {...register('comment', { required: true })} />
-                        {errors.comment && <p className='text-red-500'>comment is required <sup className=''>*</sup></p>}
+                    <form onSubmit={handleMassage(HandleSendMassage)} className='border border-[var(--primary-bg)] rounded-md p-2'>
+                        {
+                            selectedRowKeys?.length > 1 ? <p className='text-lg font-semibold'>send message to {selectedRowKeys?.length} Students</p> : <div className='start-center gap-3'>
+                                send message to  <img src={filterData?.img} className='h-8 w-8 rounded-full' alt="" /> <p className='text-base font-semibold'>{filterData?.name}</p>
+                            </div>
+                        }
+
+                        <textarea className='resize-none w-full border rounded-md outline-none mt-5 min-h-32 p-2' {...registerMassage('comment', { required: true })} />
+                        {MassageError.comment && <p className='text-red-500'>comment is required <sup className=''>*</sup></p>}
                         <div className='between-center mt-2'>
                             <div className='start-center gap-2'>
+                                <span className={`cursor-pointer w-5 h-5  bg-[#2492EB] border-[#2492EB] border rounded-full`}></span>
+                                <span className={`cursor-pointer w-5 h-5 bg-[#2BA24C] border-[#2BA24C] border rounded-full`}></span>
+                                <span className={`cursor-pointer w-5 h-5 bg-[#FFC60B] border-[#FFC60B] border rounded-full`}></span>
+                            </div>
+                            {/* <div className='start-center gap-2'>
                                 <span onClick={() => colorHandeler('blue')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'blue') ? 'bg-[#2492EB]' : 'bg-transparent')} border-[#2492EB] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
                                 <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
-                            </div>
-                            <button onClick={() => {
-                                setOpenFollowUpModal(false)
-                            }} className='btn-primary max-w-32'>Send Comment</button>
+                            </div> */}
+                            <button className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>

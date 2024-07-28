@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 import { FaEye, FaPlay, FaPlus } from 'react-icons/fa'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const SuccessStories = () => {
     const [current, setCurrent] = useState(3);
+    const [requestingStory, Story, StoryError,] = useGetRequest('Profile', `/success/story`)
+    console.log(Story)
     const onChange = (page) => {
         setCurrent(page);
     };

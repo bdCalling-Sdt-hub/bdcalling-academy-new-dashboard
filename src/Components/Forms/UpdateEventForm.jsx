@@ -3,19 +3,22 @@ import { useForm } from 'react-hook-form';
 import Input from '../Input/Input';
 import SelectInput from '../Input/SelectInput';
 import TextArea from '../Input/TextArea';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PageHeading from '../Shared/PageHeading';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { FaEdit, FaPlus } from 'react-icons/fa';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
+import usePatchRequest from '../../Hooks/usePatchRequest';
 const EventTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' }]
 
-const AddEventsFrom = ({ type }) => {
+const UpdateEventForm = () => {
+    const { id } = useParams()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [filterData, setFilterData] = useState({})
     const [image, setImage] = useState(null);
-    const { mutate, isLoading, data, error } = usePostRequest('event', '/event');
+    const [requestingEvents, Events, EventsError, refetch, isError] = useGetRequest('Events', `/event/${id}`)
+    const { mutate, isLoading, data, error } = usePatchRequest('event', `/event/${id}`);
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.course_name }
@@ -33,13 +36,14 @@ const AddEventsFrom = ({ type }) => {
     }
     const onSubmit = values => {
         const data = {
-            course_name: values?.courseName,
+            course_name: values?.courseName || Events?.data?.course_name,
             date: values?.date,
             time: values?.start_time,
             end_time: values?.end_time,
             locations: values?.location,
             descriptions: values?.description,
-            status: values?.status,
+            status: values?.status || Events?.data?.status,
+            _method: 'PUT'
         }
         const formData = new FormData()
         Object.keys(data).map(key => {
@@ -48,6 +52,18 @@ const AddEventsFrom = ({ type }) => {
         formData.append('image', image)
         mutate(formData)
     };
+    // {
+    //     id: 1,
+    //     course_name: 'Laravel',
+    //     date: '2024-05-11',
+    //     time: '10:30:00',
+    //     end_time: '11:30:00',
+    //     locations: 'Dhaka',
+    //     descriptions: 'welcome to our family',
+    //     status: '0',
+    //     created_at: '2024-06-12T08:44:58.000000Z',
+    //     updated_at: '2024-06-12T08:44:58.000000Z'
+    //   }
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>
             <div className='start-center gap-2 '>
@@ -61,15 +77,15 @@ const AddEventsFrom = ({ type }) => {
             </div>
             <input onChange={handleFileChange} type="file" name="courseImage" className='hidden' id="upload" />
             <div className='grid-3 mb-4'>
-                <SelectInput lebel={`Course Name`} classNames={`border`} status={errors} options={CourseOptions} rules={{ ...register("courseName", { required: true }) }} />
-                <Input lebel={`Enter date`} type={`date`} classNames={`border`} status={errors} rules={{ ...register("date", { required: true }) }} />
-                <Input lebel={`Start Time`} type={`time`} classNames={`border`} status={errors} rules={{ ...register("start_time", { required: true }) }} />
-                <Input lebel={`End Time`} type={`time`} classNames={`border`} status={errors} rules={{ ...register("end_time", { required: true }) }} />
-                <SelectInput lebel={`Status`} classNames={`border`} status={errors} options={EventTypeOptions} rules={{ ...register("status", { required: true }) }} />
-                <Input lebel={`Offline Location`} classNames={`border`} status={errors} placeholder={`dhaka `} rules={{ ...register("location", { required: true }) }} />
+                <SelectInput lebel={`Course Name`} classNames={`border`} status={errors} defaultValue={Events?.data?.course_name} options={CourseOptions} rules={{ ...register("courseName", { required: false }) }} />
+                <Input lebel={`Enter date`} defaultValue={Events?.data?.date} type={`date`} classNames={`border`} status={errors} rules={{ ...register("date", { required: false }) }} />
+                <Input lebel={`Start Time`} defaultValue={Events?.data?.time} type={`time`} classNames={`border`} status={errors} rules={{ ...register("start_time", { required: false }) }} />
+                <Input lebel={`End Time`} defaultValue={Events?.data?.end_time} type={`time`} classNames={`border`} status={errors} rules={{ ...register("end_time", { required: false }) }} />
+                <SelectInput lebel={`Status`} defaultValue={Events?.data?.status} classNames={`border`} status={errors} options={EventTypeOptions} rules={{ ...register("status", { required: false }) }} />
+                <Input lebel={`Offline Location`} defaultValue={Events?.data?.locations} classNames={`border`} status={errors} placeholder={`dhaka `} rules={{ ...register("location", { required: false }) }} />
             </div>
             <div className='mt-4'>
-                <TextArea lebel={`Description`} handler={inputHandler} defaultValue={filterData?.description} type={`text`} classNames={`border h-32`} status={errors} placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`} rules={{ ...register("description", { required: true }) }} />
+                <TextArea lebel={`Description`} handler={inputHandler} defaultValue={filterData?.description || Events?.data?.descriptions} type={`text`} classNames={`border h-32`} status={errors} placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`} rules={{ ...register("description", { required: false }) }} />
             </div>
             <div className='flex justify-end items-center gap-4 my-8'>
                 <Link to={-1}>
@@ -84,4 +100,4 @@ const AddEventsFrom = ({ type }) => {
 }
 
 
-export default AddEventsFrom
+export default UpdateEventForm

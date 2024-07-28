@@ -65,7 +65,7 @@ const UpdateExamQuestions = () => {
                                             {
                                                 (correctAnswers.find(activeItem => activeItem[item._id] == `answer${item2 + 1}-${item?._id}`)) && <img className='w-10 h-10 animate-pulse' src='https://i.ibb.co/4Zff45B/check-mark-1-1.png' alt="" />
                                             }
-                                            {/* */}
+                                            {/*develop by siyam */}
                                         </div>
                                         <Input status={errors} classNames={`border`} defaultValue={item?.option ? item?.option[item2] : ''} placeholder={`N/A`} rules={{ ...register(`answer${item2 + 1}-${item?._id}`, { required: true }) }} />
                                     </div>

@@ -2,20 +2,28 @@ import { Form, Input, Modal, Switch } from 'antd';
 import React, { useState } from 'react'
 import { FaEye, FaEyeSlash, FaLock } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/academyLogo.png'
+import usePostRequest from '../Hooks/usePostRequest';
 
 const Settings = () => {
     const [open, setOpen] = useState(false)
     const [oldPasswordType, setoldPasswordType] = useState('password')
     const [newPasswordType, setnewPasswordType] = useState('password')
     const [confirmNewPasswordType, setconfirmNewPasswordType] = useState('password')
+    const { mutate, isLoading, data, error } = usePostRequest('UpdatePassWord', '/update-pass');
     const onChange = (checked) => {
         console.log(`switch to ${checked}`);
     };
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const formData = new FormData()
+        Object.keys(values).map(key => {
+            formData.append(key, values[key])
+        })
+        formData.append('_method', 'PUT')
+        mutate(formData)
     };
+    const navigate = useNavigate()
     return (
         <div className='flex flex-col justify-start items-start gap-4 mt-6'>
             <p className='text-xl font-semibold'>Settings</p>
@@ -57,7 +65,10 @@ const Settings = () => {
             <div style={{
                 boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
             }} className='bg-[#F6F6F6] p-4 py-5 rounded-md w-full flex justify-between items-center gap-2'>
-                <p className='text-lg font-medium'>Sign out</p> <button className='text-2xl'><IoIosArrowForward /></button>
+                <p className='text-lg font-medium'>Sign out</p> <button onClick={() => {
+                    localStorage.removeItem('token')
+                    navigate('/login')
+                }} className='text-2xl'><IoIosArrowForward /></button>
             </div>
             <Modal
                 open={open}
@@ -74,7 +85,7 @@ const Settings = () => {
                         <p className='text-lg font-medium py-2'>Change password</p>
                         <p>Your password must be 8-10 character long.</p>
                         <Form.Item
-                            name={`old_password`}
+                            name={`current_password`}
                             label={<p>Old password</p>}
                             rules={[
                                 {
@@ -101,7 +112,7 @@ const Settings = () => {
                         </Form.Item>
                         <Form.Item
 
-                            name={`confirm_new_password`}
+                            name={`confirm_password`}
                             label={<p>Confirm New password</p>}
                             rules={[
                                 {

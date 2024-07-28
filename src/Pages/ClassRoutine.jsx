@@ -13,8 +13,10 @@ import useDeleteRequest from '../Hooks/useDeleteRequest'
 
 
 const ClassRoutine = () => {
+    const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
-    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines`)
+    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}`)
+    console.log(Routine)
     const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
@@ -88,7 +90,7 @@ const ClassRoutine = () => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        formData.append('_method','PUT')
+        formData.append('_method', 'PUT')
         updateRoutine(formData)
     };
     const handleDelete = () => {
@@ -152,7 +154,11 @@ const ClassRoutine = () => {
                             </Form.Item>
                         </div>
                     </Form>
-                    <Table dataSource={routineData} columns={columns} />
+                    <Table dataSource={routineData} pagination={{
+                        total: Routine?.data?.total || 0,
+                        pageSize:10,
+                        onChange:(page,pageSize)=>setPage(page)
+                    }} columns={columns} />
                 </div>
             </div>
             <Modal

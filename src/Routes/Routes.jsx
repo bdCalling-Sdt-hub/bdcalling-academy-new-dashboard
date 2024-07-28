@@ -67,6 +67,13 @@ import UpdateVideo from "../Pages/UpdateVideo";
 import UpdateQuestions from "../Pages/UpdateQuestions";
 import UpdateBatch from "../Components/Forms/UpdateBatch";
 import UploadGallery from "../Pages/UploadGallery";
+import UpdateEventForm from "../Components/Forms/UpdateEventForm";
+import AddSalesStudentBatch from "../Pages/AddSalesStudentBatch";
+import StudentOverview from "../Pages/StudentOverview";
+import StudentCourseVideo from "../Pages/StudentCourseVideo";
+import StudentsCourse from "../Pages/StudentsCourse";
+import StudentCourseExam from "../Pages/StudentCourseExam";
+import StudentExamResult from "../Pages/StudentExamResult";
 
 export const router = createBrowserRouter([
     {
@@ -181,10 +188,10 @@ export const router = createBrowserRouter([
                 path: '/add-batch/add',
                 element: <AddNewBatch />
             },
-            // {
-            //     path: '/add-batch/update',
-            //     element: <UpdateBatch />
-            // },
+            {
+                path: '/add-sales-student-batch',
+                element: <AddSalesStudentBatch />
+            },
             {
                 path: '/all-admitted-student/:id',
                 element: <AllAdmittedStudent />
@@ -207,7 +214,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/update-event/:id',
-                element: <AddNewEvent />
+                element: <UpdateEventForm />
             },
             {
                 path: '/cost',
@@ -324,6 +331,32 @@ export const router = createBrowserRouter([
             {
                 path: '/update-batch/:id',
                 element: <UpdateBatch />
+            },
+        ]
+    },
+    {
+        path: '/student',
+        element: <Dashboard />,
+        children: [
+            {
+                path: '/student/student-dashboard',
+                element: <StudentOverview />
+            },
+            {
+                path: '/student/student-course-video',
+                element: <StudentCourseVideo />
+            },
+            {
+                path: '/student/student-course',
+                element: <StudentsCourse />
+            },
+            {
+                path: '/student/course-exam',
+                element: <StudentCourseExam />
+            },
+            {
+                path: '/student/course-exam-result',
+                element: <StudentExamResult />
             },
         ]
     },

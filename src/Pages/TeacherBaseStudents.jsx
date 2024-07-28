@@ -70,7 +70,6 @@ const TeacherBaseStudents = () => {
             registration_date: item?.registration_date,
             category_id: item?.category_id,
             blood_group: item?.blood_group,
-            religion: item?.religion,
             dob: item?.dob,
             address: item?.address,
             messages:item?.messages

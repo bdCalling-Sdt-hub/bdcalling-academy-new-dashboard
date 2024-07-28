@@ -15,7 +15,6 @@ const StudentsInformation = () => {
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
     const [AdmitValues, setAdmitValue] = useState({ _id: id, order: [{ batch_id: batch }] })
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
-    console.log(Payment?.data[2])
     return (
         <>
             <div className='start-center gap-2'>
@@ -96,7 +95,7 @@ const StudentsInformation = () => {
                         <p className='text-base text-[var(--primary-color)]'>{Payment?.data[0]?.price}TK</p>
                     </div>
                     {
-                        Payment?.data[0]?.due && <div className='grid-2 my-3'>
+                        Payment?.data[Payment?.data.length - 1]?.due && <div className='grid-2 my-3'>
                             <p className='text-base font-medium text-[var(--primary-color)]'>Total Due</p>
                             <p className='text-base text-red-500'>{Payment?.data[Payment?.data.length - 1]?.due}TK</p>
                         </div>

@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { Form, Input } from 'antd'
 import { Link } from 'react-router-dom'
 
 const AddProvideClassVideo = () => {
+    const [image, setImage] = useState(null)
+    const [video, setVideo] = useState(null)
     const onFinish = (value) => {
-
+        console.log(value)
+        // {
+        //     name: 'McKenzie Salas',
+        //     title: 'Kimberly Meyer',
+        //     duration: 'Vel aut non labore m',
+        //     batch: 'Do ut mollitia ullam',
+        //     cover: 'C:\fakepath\images (18).jfif',
+        //     video: 'C:\fakepath\3327959-hd_1920_1080_24fps.mp4'
+        //   }
     }
     return (
         <>
@@ -28,8 +38,8 @@ const AddProvideClassVideo = () => {
                     label="Trainer Name"
                     rules={[
                         {
-                            required:true,
-                            message:'please input trainer name'
+                            required: true,
+                            message: 'please input trainer name'
                         }
                     ]}
                 >
@@ -40,8 +50,8 @@ const AddProvideClassVideo = () => {
                     label="Video Name"
                     rules={[
                         {
-                            required:true,
-                            message:'please input Video name'
+                            required: true,
+                            message: 'please input Video name'
                         }
                     ]}
                 >
@@ -52,8 +62,8 @@ const AddProvideClassVideo = () => {
                     label="Video Time length"
                     rules={[
                         {
-                            required:true,
-                            message:'please input Video duration'
+                            required: true,
+                            message: 'please input Video duration'
                         }
                     ]}
                 >
@@ -64,8 +74,8 @@ const AddProvideClassVideo = () => {
                     label="Batch No"
                     rules={[
                         {
-                            required:true,
-                            message:'please input Batch No'
+                            required: true,
+                            message: 'please input Batch No'
                         }
                     ]}
                 >
@@ -76,26 +86,31 @@ const AddProvideClassVideo = () => {
                     label="Cover Image"
                     rules={[
                         {
-                            required:true,
-                            message:'please input Cover Image'
+                            required: true,
+                            message: 'please input Cover Image'
                         }
                     ]}
                 >
-                    <Input className='py-2' placeholder='cover image' type='file' />
+                    <Input onChange={(e) => {
+                        setImage(e.target.files[0])
+                    }} accept='image/*' className='py-2' placeholder='cover image' type='file' />
                 </Form.Item>
                 <Form.Item
                     name={'video'}
                     label="Upload Video"
                     rules={[
                         {
-                            required:true,
-                            message:'please input video'
+                            required: true,
+                            message: 'please input video'
                         }
                     ]}
                 >
-                    <Input className='py-2' accept='video/*' placeholder='cover image' type='file' />
+                    <Input onChange={(e) => {
+                        setVideo(e.target.files[0])
+                    }}  className='py-2' accept='video/*' placeholder='cover image' type='file' />
                 </Form.Item>
                 <div className='flex justify-center items-center gap-4 col-span-2'>
+                    {/* develope by siyam  */}
                     <Link to={-1} className='px-14 py-2 border-red-500 border text-red-500 bg-[#F7D4D8] rounded-md'>cancel</Link>
                     <button className='px-14 py-2 border-blue-500 border text-white rounded-md bg-blue-500'>Submit</button>
                 </div>

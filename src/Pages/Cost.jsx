@@ -9,6 +9,7 @@ import { FaEdit, FaFileExcel, FaPlus, FaRegFilePdf } from 'react-icons/fa'
 import { SiMicrosoftword } from 'react-icons/si'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { CiCircleMinus } from 'react-icons/ci'
+import usePostRequest from '../Hooks/usePostRequest'
 const data = [
     {
         key: '1',
@@ -22,6 +23,8 @@ const Cost = () => {
     const [open, setOpen] = useState(false)
     const [openPrintModal, setOpenPrintModal] = useState(false)
     const [exportType, setExportType] = useState('pdf')
+    const [date, setDate] = useState(new Date)
+    const { mutate, isLoading, data, error } = usePostRequest('includeCost', '/include/cost');
     const columns = [
         {
             title: '#Sl',

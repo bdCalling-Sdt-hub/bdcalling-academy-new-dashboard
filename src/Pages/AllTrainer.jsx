@@ -10,55 +10,10 @@ import { AiOutlinePrinter } from "react-icons/ai"
 import useGetRequest from "../Hooks/useGetRequest"
 import { imageUrl } from "../AxiosConfig/useAxiosConfig"
 
-const paymentHistory = [
-    {
-        "_id": "1",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 500,
-        "date": "2024-05-01",
-        "totalPayment": 5000
-    },
-    {
-        "_id": "2",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 700,
-        "date": "2024-05-05",
-        "totalPayment": 7000
-    },
-    {
-        "_id": "3",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 600,
-        "date": "2024-05-10",
-        "totalPayment": 6000
-    },
-    {
-        "_id": "4",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 650,
-        "date": "2024-05-15",
-        "totalPayment": 6500
-    },
-    {
-        "_id": "5",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 550,
-        "date": "2024-05-20",
-        "totalPayment": 5500
-    }
-]
+
 const AllTrainer = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
+    const [page2, setPage2] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [openPaymentModal, setopenPaymentModal] = useState(false)
@@ -66,8 +21,19 @@ const AllTrainer = () => {
     const [filterdData, setFilterdData] = useState({})
     const [formFor, setFormFor] = useState('add')
     //query
-    console.log(filterdData)
     const [requestingTeacher, Teacher, TeacherError,] = useGetRequest('teacher', `/teachers?page=${page}`)
+    const [requestingPaymentHistory, PaymentHistory, PaymentHistoryError,] = useGetRequest('teacher', `/show-transactions?page=${page2}&teacher_id=${filterdData?._id}`)
+    const data = PaymentHistory?.data?.map((item, i) => {
+        return {
+            "key": i + 1,
+            "_id": item?.teacher_id,
+            "paymentType": item?.teacher?.payment_type,
+            "method": item?.payment_type,
+            "amount": item?.teacher?.payment,
+            "date": item?.payment_date,
+            "totalPayment": item?.amount
+        }
+    })
     const AdminData = Teacher?.teacher?.data?.map(item => {
         return {
             _id: item?.id,
@@ -101,13 +67,8 @@ const AllTrainer = () => {
     const columns = [
         {
             title: 'S.no',
-            dataIndex: '_id',
-            key: '_id',
-        },
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
+            dataIndex: 'key',
+            key: 'key',
         },
         {
             title: 'payment Type',
@@ -206,7 +167,14 @@ const AllTrainer = () => {
                             <AiOutlinePrinter />
                         </button>
                     </div>
-                    <Table dataSource={paymentHistory} columns={columns} />
+                    <Table dataSource={data} pagination={{
+                        showSizeChanger: false,
+                        onChange: (page, pageSize) => {
+                            setPage2(page);
+                        },
+                        total: PaymentHistory?.total || 0,
+                        pageSize: 10
+                    }} columns={columns} />
                 </div>
             </Modal>
         </>

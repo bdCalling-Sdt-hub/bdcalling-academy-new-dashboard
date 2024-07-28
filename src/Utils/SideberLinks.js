@@ -148,10 +148,6 @@ export const SideberLink = [
                 link: '/students-journey'
             },
             {
-                menu: 'Trainer Review',
-                link: '/trainer-review'
-            },
-            {
                 menu: 'Successful Students',
                 link: '/successful-students'
             },
@@ -165,6 +161,10 @@ export const SideberLink = [
             {
                 menu: 'All Students',
                 link: '/all-sales-students'
+            },
+            {
+                menu: 'Add Batch',
+                link: '/add-sales-student-batch'
             },
             {
                 menu: 'Create Routine',
@@ -181,10 +181,10 @@ export const SideberLink = [
         icon: AiTwotoneIdcard,
         link: false,
         dropDown: [
-            {
-                menu: 'Trainer Attendance',
-                link: '/trainer-attendance'
-            },
+            // {
+            //     menu: 'Trainer Attendance',
+            //     link: '/trainer-attendance'
+            // },
             {
                 menu: 'Students Attendance',
                 link: '/students-attendance'
@@ -217,5 +217,235 @@ export const SideberLink = [
         menu: 'Settings',
         icon: IoSettings,
         link: '/settings'
+    },
+]
+export const AdminSideberLink = [
+    {
+        menu: 'Dashboard',
+        icon: MdDashboard,
+        link: '/'
+    },
+    {
+        menu: 'User',
+        icon: FaUserGroup,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Create Super Admin',
+                link: '/create-super-admin'
+            },
+            {
+                menu: 'Create Admin',
+                link: '/create-admin'
+            },
+            {
+                menu: 'Create Mentors',
+                link: '/create-mentors'
+            },
+        ]
+    },
+    {
+        menu: 'All Students Type',
+        icon: FaUserGroup,
+        link: false,
+        dropDown: [
+            {
+                menu: 'All Students',
+                link: '/all-students'
+            },
+            {
+                menu: 'Events Base Students',
+                link: '/events-base-students'
+            },
+            {
+                menu: 'Authenticate Students',
+                link: '/authenticate-students'
+            },
+            {
+                menu: 'Teacher Base Students',
+                link: '/teacher-base-students'
+            },
+        ]
+    },
+    {
+        menu: 'Admitted Students',
+        icon: IoBookOutline,
+        link: '/admitted-students'
+    },
+    {
+        menu: 'Dropout Students',
+        icon: FaUserGraduate,
+        link: '/dropout-students'
+    },
+    {
+        menu: 'Add category',
+        icon: BiCategoryAlt,
+        link: '/add-category'
+    },
+    {
+        menu: 'Add Course',
+        icon: BsCollection,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Offline Course',
+                link: '/offline-course'
+            },
+            {
+                menu: 'Online Course',
+                link: '/online-course'
+            },
+            {
+                menu: 'Video Course',
+                link: '/video-course'
+            },
+        ]
+    },
+    {
+        menu: 'Request Trainer',
+        icon: FaRegUserCircle,
+        link: false,
+        dropDown: [
+            {
+                menu: 'All Trainer',
+                link: '/all-trainer'
+            },
+            {
+                menu: 'Request Trainer ',
+                link: '/request-trainer'
+            },
+            {
+                menu: 'Trainer Review',
+                link: '/trainer-review'
+            },
+        ]
+    },
+    {
+        menu: 'Add Batch',
+        icon: IoBookOutline,
+        link: '/add-batch'
+    },
+    {
+        menu: 'Class Routine',
+        icon: HiOutlineIdentification,
+        link: '/class-routine'
+    },
+    {
+        menu: 'Add Events',
+        icon: CiCalendarDate,
+        link: '/add-events'
+    },
+    {
+        menu: 'Include Cost',
+        icon: IoWalletOutline,
+        link: '/cost'
+    },
+    {
+        menu: 'Wallet',
+        icon: CiWallet,
+        link: '/wallet'
+    },
+    {
+        menu: 'Successful Students',
+        icon: FaUsers,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Success Stories',
+                link: '/success-stories'
+            },
+            {
+                menu: 'Students Journey ',
+                link: '/students-journey'
+            },
+            {
+                menu: 'Successful Students',
+                link: '/successful-students'
+            },
+        ]
+    },
+    {
+        menu: 'Sales Students',
+        icon: FaRegUserCircle,
+        link: false,
+        dropDown: [
+            {
+                menu: 'All Students',
+                link: '/all-sales-students'
+            },
+            {
+                menu: 'Add Batch',
+                link: '/add-sales-student-batch'
+            },
+            {
+                menu: 'Create Routine',
+                link: '/create-routine'
+            },
+            {
+                menu: 'Admitted Students',
+                link: '/sales-admitted-student'
+            },
+        ]
+    },
+    {
+        menu: 'Show Batch',
+        icon: AiTwotoneIdcard,
+        link: false,
+        dropDown: [
+            // {
+            //     menu: 'Trainer Attendance',
+            //     link: '/trainer-attendance'
+            // },
+            {
+                menu: 'Students Attendance',
+                link: '/students-attendance'
+            },
+            {
+                menu: 'Exam Results',
+                link: '/exam-result'
+            },
+            {
+                menu: 'Assignment Results',
+                link: '/assignment-result'
+            },
+            {
+                menu: 'Provide class video',
+                link: '/provide-class-video'
+            },
+        ]
+    },
+    {
+        menu: 'Students Reviews',
+        icon: CiSettings,
+        link: '/students-reviews'
+    },
+    {
+        menu: 'Our Gallery',
+        icon: CiImageOn,
+        link: '/students-gallery'
+    },
+    {
+        menu: 'Settings',
+        icon: IoSettings,
+        link: '/settings'
+    },
+]
+export const studentSideberLink = [
+    {
+        menu: 'Dashboard',
+        icon: MdDashboard,
+        link: '/student/student-dashboard'
+    },
+    {
+        menu: 'Course Video',
+        icon: FaUserGroup,
+        link: '/student/student-course-video'
+    },
+]
+export const mentorsSideberLink = [
+    {
+        menu: 'Dashboard',
+        icon: MdDashboard,
+        link: '/student-dashboard'
     },
 ]

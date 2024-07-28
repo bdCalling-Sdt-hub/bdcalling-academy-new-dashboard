@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { DatePicker,  Modal,  Table } from 'antd'
+import { DatePicker, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
-import {  MdOutlineArrowBackIosNew } from 'react-icons/md'
+import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
+import useGetRequest from '../Hooks/useGetRequest'
 const data = [
     {
         "_id": "1",
@@ -182,6 +183,8 @@ const DropoutStudents = () => {
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [filterData, setFilterData] = useState({})
+    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show/dropout/student`)
+    console.log(Students)
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
@@ -354,7 +357,7 @@ const DropoutStudents = () => {
                             <p className=' text-sm font-semibold'>Total Paymet :</p>
                             <p className='text-end text-sm font-semibold'>12000Tk</p>
                         </div>
-                        <button onClick={()=>{
+                        <button onClick={() => {
                             setopenRefundModal(false)
                         }} className='btn-primary max-w-32 mx-auto mt-7'>
                             Confirm
@@ -414,7 +417,7 @@ const DropoutStudents = () => {
                         <div className='md:grid md:grid-cols-2 lg:grid-cols-3 justify-start items-start md:items-center gap-3 flex flex-col'>
                             <div className='w-full'>
                                 <p className='text-[#333333] my-1'>Course Name</p>
-                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`3Danimation`}  {...register("courseName")}  id="">
+                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`3Danimation`}  {...register("courseName")} id="">
                                     <option value="3Danimation">3Danimation</option>
                                     <option value="3Danimation">3Danimation</option>
                                     <option value="3Danimation">3Danimation</option>
@@ -444,7 +447,7 @@ const DropoutStudents = () => {
                                 <input placeholder='24ADFFG' className='w-full p-2 border rounded-md outline-none ' type="text" {...register("batch")} id="" />
                             </div>
                         </div>
-                        <button onClick={()=>{
+                        <button onClick={() => {
                             setopenExchangeUpModal(false)
                             setOpenPaymentModal(true)
                         }} className='btn-primary max-w-32 mx-auto mt-7'>
@@ -522,7 +525,7 @@ const DropoutStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 setOpenPaymentModal(false)
                             }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm
@@ -623,7 +626,7 @@ const DropoutStudents = () => {
                                 <p className=' text-sm font-semibold'>Total Paymet :</p>
                                 <p className='text-end text-sm font-semibold'>13000Tk</p>
                             </div>
-                            <button onClick={()=>{
+                            <button onClick={() => {
                                 setOpenPaymentModal(false)
                             }} className='btn-primary max-w-32 mx-auto mt-7'>
                                 Confirm

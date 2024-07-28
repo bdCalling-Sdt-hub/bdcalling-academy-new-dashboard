@@ -2,8 +2,10 @@ import { DatePicker, Form, Input, Select, TimePicker } from 'antd';
 import useGetRequest from '../../Hooks/useGetRequest';
 import { useState } from 'react';
 import usePostRequest from '../../Hooks/usePostRequest';
+import { useLocation } from 'react-router-dom';
 const ClassRoutineForm = () => {
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const location = useLocation()
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `${location?.pathname === '/create-routine'?'/phoenix-batches':'/batches'}`)
     const [batchID, setBatchID] = useState(undefined)
     const [requestingSingleBatch, SingleBatch, SingleBatchError,] = useGetRequest('singleBatch', `/batches/${batchID}`)
     const [requestingModule, Module, ModuleError,] = useGetRequest('module', `/show-module?course_id=${SingleBatch?.data?.course_id}`)
@@ -16,14 +18,13 @@ const ClassRoutineForm = () => {
     const ModulesOptions = Module?.data?.data?.[0]?.course_module?.map((item) => {
         return { value: item?.id, label: item?.module_title }
     })
-    
+
     const [form] = Form.useForm();
     const onFinish = (values) => {
         const data = {
             course_id: SingleBatch?.data?.course_id,
             batch_id: values?.batch,
             course_module_id: values?.module,
-            course_id: SingleBatch?.data?.course_id,
             date: date,
             time: `${time[0]}-${time[1]}`
         }

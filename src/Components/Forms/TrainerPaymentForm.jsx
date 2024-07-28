@@ -2,15 +2,24 @@ import { DatePicker, Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import PageHeading from '../Shared/PageHeading';
 import { imageUrl } from '../../AxiosConfig/useAxiosConfig';
+import usePostRequest from '../../Hooks/usePostRequest';
 const TrainerPaymentForm = ({ filterdData, setopenPaymentModal, setopenPaymentHistoryModal }) => {
+    const { mutate, isLoading, data, error } = usePostRequest('TeacherPayments', '/teacher-payments');
     const [date, setDate] = useState('')
     const [form] = Form.useForm();
     const onFinish = (values) => {
         console.log('Success:', values);
         const data = {
-            teacher_id:filterdData?._id,
-            // course_module_id:
+            teacher_id: filterdData?._id,
+            amount: values?.total,
+            payment_date: date,
+            payment_type: filterdData?.item?.payment_method,
         }
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        mutate(formData)
     };
 
     const onChange = (field, date, dateString) => {
@@ -22,55 +31,7 @@ const TrainerPaymentForm = ({ filterdData, setopenPaymentModal, setopenPaymentHi
             form.setFieldValue({ category: filterdData?.item?.category?.category_name })
         }
     }, [filterdData, form])
-    // {
-    //     _id: 20,
-    //     profile: 'adminAsset/image/1645853331.png',
-    //     name: 'mentor test update',
-    //     designation: 'Web Development trainer',
-    //     expert: 'php expert',
-    //     userName: 'mentor test update',
-    //     email: 'teacher123@gmail.com',
-    //     password: '',
-    //     category: 1,
-    //     item: {
-    //       id: 20,
-    //       user_id: 88,
-    //       course_category_id: 1,
-    //       phone_number: '65465465',
-    //       designation: 'Web Development trainer',
-    //       expert: 'php expert',
-    //       image: 'adminAsset/image/1645853331.png',
-    //       payment_type: 'daily',
-    //       payment_method: 'bkash',
-    //       payment: 100,
-    //       created_by: 'super admin',
-    //       status: 'active',
-    //       created_at: '2024-07-18T05:07:32.000000Z',
-    //       updated_at: '2024-07-18T06:32:57.000000Z',
-    //       user: {
-    //         id: 88,
-    //         name: 'mentor test update',
-    //         email: 'teacher123@gmail.com',
-    //         email_verified_at: '2024-07-18T05:07:32.000000Z',
-    //         role: 'MENTOR',
-    //         otp: '0',
-    //         image: null,
-    //         user_status: '0',
-    //         designation: null,
-    //         expertise: null,
-    //         phone_number: null,
-    //         created_at: '2024-07-18T05:07:32.000000Z',
-    //         updated_at: '2024-07-18T06:31:38.000000Z'
-    //       },
-    //       category: {
-    //         id: 1,
-    //         category_name: 'Web Development',
-    //         created_at: '2024-06-10T06:36:11.000000Z',
-    //         updated_at: '2024-06-10T06:36:11.000000Z'
-    //       }
-    //     },
-    //     phone_number: '65465465'
-    //   }
+
     return (
         <>
             <PageHeading text={`Trainers Payment`} />

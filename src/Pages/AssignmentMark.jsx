@@ -6,6 +6,7 @@ import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
 import { FaEdit } from 'react-icons/fa'
+import useGetRequest from '../Hooks/useGetRequest'
 const data = [
     {
         "_id": "1",
@@ -208,6 +209,8 @@ const AssignmentMark = () => {
     const [openEditModal, setOpenEditModal] = useState(false)
     const [filterData, setFilterData] = useState({})
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [requestingAssignMentResult, AssignMentResult, AssignMentResultError,] = useGetRequest('assignment', `/assignments`)
+    console.log(AssignMentResult)
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
