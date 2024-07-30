@@ -250,7 +250,7 @@ const TeacherBaseStudents = () => {
     })
     useEffect(() => {
         if (isLoading, updateLoading, DeleteLoading) return
-        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch();setFilterData({})
     }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
     //delete users
     const handleDelete = () => {

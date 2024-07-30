@@ -4,8 +4,12 @@ import ProfileImage from '../assets/corporate-user-icon.webp'
 import { Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { CgFileDocument } from 'react-icons/cg'
+import useGetRequest from '../Hooks/useGetRequest'
+import { useParams } from 'react-router-dom'
 const StudentsCourse = () => {
+    const { id } = useParams()
     const [rating, setRating] = useState(5)
+    const [requestingModule, Module, ModuleError,] = useGetRequest('all-module', `/course-modul-video/${id}`)
     return (
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>

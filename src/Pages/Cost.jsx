@@ -54,7 +54,14 @@ const Cost = () => {
         }
     ];
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const data = {
+            costing: JSON.stringify(values?.costing)
+        }
+        const formData = new FormData()
+        Object.keys(data).map(key=>{
+            formData.append(key,data[key])
+        })
+        mutate(formData)
     };
     const onChange = (date, dateString) => {
         console.log(date, dateString);
@@ -91,18 +98,18 @@ const Cost = () => {
                     layout='vertical'
                     className='mt-3'
                 >
-                    <Form.Item
+                    {/* <Form.Item
                         label="Date"
                         name="date"
                     >
                         <DatePicker className='w-1/2' onChange={onChange} />
-                    </Form.Item>
+                    </Form.Item> */}
                     <p><span className='text-red-500'>*</span> Cost Details</p>
                     <Form.List name="costing">
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
-                                    <div className='flex items-center justify-between gap-2 '>
+                                    <div key={key} className='flex items-center justify-between gap-2 '>
                                         <div className=' w-[59%]'>
                                             <Form.Item
                                                 {...restField}
@@ -125,7 +132,6 @@ const Cost = () => {
                                             <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => remove(name)} />
                                         </div>
                                     </div>
-
                                 ))}
                                 <Form.Item>
                                     <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>

@@ -1,6 +1,6 @@
 import { DatePicker, Form, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
 import dayjs from 'dayjs';
@@ -22,7 +22,6 @@ const UpdateBatch = () => {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const onFinish = (values) => {
-        console.log(values.trainer)
         const data = {
             course_id: values?.CourseName,
             batch_name: values?.batch,
@@ -33,7 +32,7 @@ const UpdateBatch = () => {
             discount_price: values?.discountPrice,
             teacher_user_ids: JSON.stringify(values.trainer),
             image: Image,
-            _method:'PUT'
+            _method: 'PUT'
         }
         const formData = new FormData()
         Object.keys(data).map(key => {
@@ -66,10 +65,14 @@ const UpdateBatch = () => {
             discountPrice: Batch?.data?.discount_price,
             trainer: Batch?.data?.teachers?.map(item => item?.id),
             seat: Batch?.data?.seat_left,
-            startDate:dayjs(Batch?.data?.start_date, 'YYYY-MM-DD'),
-            endDate:dayjs(Batch?.data?.end_date, 'YYYY-MM-DD')
+            startDate: dayjs(Batch?.data?.start_date, 'YYYY-MM-DD'),
+            endDate: dayjs(Batch?.data?.end_date, 'YYYY-MM-DD')
         })//defaultValue={dayjs('2019-09-03', dateFormat)}
     }, [form, Batch])
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (updateData) navigate(-1)
+    }, [updateData])
     return (
         <div id='addBatch'>
             <Form
@@ -171,7 +174,7 @@ const UpdateBatch = () => {
                         <input type='number' className='outline-none w-full border p-[10px] rounded-md' placeholder="20" />
                     </Form.Item>
                     <Form.Item
-                    name={`endDate`}
+                        name={`endDate`}
                         label={<span className="text-lg font-bold text-[#333333]">Enter end Date</span>}
                     >
                         <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {

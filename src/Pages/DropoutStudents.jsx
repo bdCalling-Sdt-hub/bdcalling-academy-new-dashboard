@@ -8,6 +8,7 @@ import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 import useGetRequest from '../Hooks/useGetRequest'
+import SelectInput from '../Components/Input/SelectInput'
 const data = [
     {
         "_id": "1",
@@ -177,16 +178,27 @@ const data = [
 ]
 
 const DropoutStudents = () => {
+    const [page, setPage] = useState(1)
     const [openExchangeUpModal, setopenExchangeUpModal] = useState(false)
     const [openRefundModal, setopenRefundModal] = useState(false)
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register: registerFilter, handleSubmit: handleSubmitFilter, formState: { errorsFilter } } = useForm();
+    const [filterBy, setFilterBy] = useState({})
     const [filterData, setFilterData] = useState({})
-    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show/dropout/student`)
+    const [dob, setDob] = useState()
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    // { name: 'Olga Powers', number: '483', category: '2', dob: '2024-07-18' }
+    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show/dropout/student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
     console.log(Students)
-    const onSubmit = data => console.log(data);
+    const CategoryOptions = Category?.data?.data?.map(item => {
+        return { name: item?.category_name, value: item?.category_name }
+    })
+    const onSubmit = data => { };
+    const onSubmitFilter = data => { setFilterBy({ ...data, ...dob }) };
     const onChange = (date, dateString) => {
+        setDob({ dob: dateString })
     };
     const columns = [
         {
@@ -286,22 +298,21 @@ const DropoutStudents = () => {
                 <div className='w-full'>
                     <PageHeading text={`All Dropout Students`} />
                 </div>
-
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
+            <form onSubmit={handleSubmitFilter(onSubmitFilter)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
                 <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
                 <div className='max-w-44 min-w-44'>
-                    <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
+                    <Input rules={{ ...registerFilter("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
                 <div className='max-w-44 min-w-44'>
-                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
+                    <Input rules={{ ...registerFilter("BatchID", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Batch ID`} />
                 </div>
-                <select name='category' className='p-2 border-none outline-none rounded-3xl text-gray-400'>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                    <option value={`category`}>select a category</option>
-                </select>
+                <div className='max-w-44 min-w-44'>
+                    <Input type={`number`} rules={{ ...registerFilter("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
+                </div>
+                <div>
+                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...registerFilter("category", { required: false }) }} />
+                </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
                 </button>
@@ -633,7 +644,6 @@ const DropoutStudents = () => {
                             </button>
                         </>
                     }
-
                 </div>
             </Modal>
         </>

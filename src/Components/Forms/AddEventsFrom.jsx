@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import Input from '../Input/Input';
 import SelectInput from '../Input/SelectInput';
 import TextArea from '../Input/TextArea';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PageHeading from '../Shared/PageHeading';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { FaEdit, FaPlus } from 'react-icons/fa';
@@ -20,6 +20,7 @@ const AddEventsFrom = ({ type }) => {
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.course_name }
     }) || []
+    const navigate = useNavigate()
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -48,6 +49,9 @@ const AddEventsFrom = ({ type }) => {
         formData.append('image', image)
         mutate(formData)
     };
+    useEffect(() => {
+        if (data) navigate(-1)
+    }, [data])
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>
             <div className='start-center gap-2 '>

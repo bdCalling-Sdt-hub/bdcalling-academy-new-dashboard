@@ -39,7 +39,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
     };
     const onFullPaymentSubmit = data => {
         const paymentData = {
-            student_id: AdmitValues?.studentID,
+            student_id: AdmitValues?._id,
             batch_id: AdmitValues?.batchNo,
             course_fee: course?.price,
             discount_price: data?.discount,

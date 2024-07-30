@@ -7,7 +7,7 @@ import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
 import { FaEdit } from 'react-icons/fa'
-import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
+import { MdEditSquare } from 'react-icons/md'
 import UpdateInput from '../Components/Input/UpdateInput'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
@@ -34,12 +34,10 @@ const AllStudents = () => {
     const [inputType, setInputType] = useState('password')
     const [text, setText] = useState(true)
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [search, setSearch] = useState({ name: '', phone_number: '', category_name: '' })
     const [AdmitValues, setAdmitValues] = useState(null)
     const [singleCourse, setSingleCourse] = useState(null)
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
@@ -247,7 +245,7 @@ const AllStudents = () => {
     })
     useEffect(() => {
         if (isLoading, updateLoading, DeleteLoading) return
-        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
     }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
     //delete users
     const handleDelete = () => {

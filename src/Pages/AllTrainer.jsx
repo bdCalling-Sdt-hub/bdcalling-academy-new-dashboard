@@ -21,7 +21,7 @@ const AllTrainer = () => {
     const [filterdData, setFilterdData] = useState({})
     const [formFor, setFormFor] = useState('add')
     //query
-    const [requestingTeacher, Teacher, TeacherError,] = useGetRequest('teacher', `/teachers?page=${page}`)
+    const [requestingTeacher, Teacher, TeacherError,refetch] = useGetRequest('teacher', `/teachers?page=${page}`)
     const [requestingPaymentHistory, PaymentHistory, PaymentHistoryError,] = useGetRequest('teacher', `/show-transactions?page=${page2}&teacher_id=${filterdData?._id}`)
     const data = PaymentHistory?.data?.map((item, i) => {
         return {
@@ -101,12 +101,12 @@ const AllTrainer = () => {
             <div className="between-center gap-2">
                 <div className="start-center gap-4 cursor-pointer">
                     <PageHeading text={`All Trainer List`} />
-                    <select className="w-[200px] p-2 border outline-none" name="">
+                    {/* <select className="w-[200px] p-2 border outline-none" name="">
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
-                    </select>
+                    </select> */}
                 </div>
                 <div className="flex justify-end items-center w-fit">
                     <button onClick={() => {
@@ -117,7 +117,7 @@ const AllTrainer = () => {
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.map((item, index) => <TrainerCard key={index} item={item} handelEdit={handelEdit} setFormFor={setFormFor} handelPayment={handelPayment} />)
+                    AdminData?.map((item, index) => <TrainerCard refetch={refetch} key={index} item={item} handelEdit={handelEdit} setFormFor={setFormFor} handelPayment={handelPayment} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
@@ -141,7 +141,7 @@ const AllTrainer = () => {
                 open={OpenAddModal}
                 width={900}
             >
-                <TrainerAddForm formFor={formFor} filteredData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
+                <TrainerAddForm refetch={refetch} formFor={formFor} filteredData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
             </Modal>
             <Modal
                 centered

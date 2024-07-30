@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useDeleteRequest from '../../Hooks/useDeleteRequest';
 import toast from 'react-hot-toast';
 import { imageUrl } from '../../AxiosConfig/useAxiosConfig';
 
-const TrainerCard = ({ item, handelEdit, handelPayment, setFormFor }) => {
+const TrainerCard = ({ item, handelEdit, handelPayment, setFormFor, refetch }) => {
     const { profile, name, expert, designation, _id } = item
     const { mutate: DeleteTeacher, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest(`teacher${_id}`, `/teachers/${_id}`);
     const handleDelete = () => {
@@ -24,6 +24,9 @@ const TrainerCard = ({ item, handelEdit, handelPayment, setFormFor }) => {
             </div>
         ));
     }
+    useEffect(() => {
+        refetch()
+    }, [DeleteData])
     return (
         <div className="w-full h-full p-6 bg-white card-shadow rounded center-center gap-2 flex-col px-8">
             <div className="h-24 w-24 rounded-full overflow-hidden">

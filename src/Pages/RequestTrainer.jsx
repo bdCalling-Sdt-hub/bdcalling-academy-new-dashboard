@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { DatePicker, Modal, Table } from 'antd'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { useForm } from 'react-hook-form'
 import { FaCheck } from 'react-icons/fa6'
-import { RxCross1 } from 'react-icons/rx'
+import { RxCross1, RxCross2 } from 'react-icons/rx'
 import { FiEdit } from 'react-icons/fi'
 import LeaveForm from '../Components/Forms/LeaveForm'
 import useGetRequest from '../Hooks/useGetRequest'
@@ -14,12 +14,18 @@ import usePostRequest from '../Hooks/usePostRequest'
 
 
 const RequestTrainer = () => {
+    const [page, setPage] = useState(1)
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [dob, setDob] = useState()
+    const { register: registerFilter, handleSubmit: handleSubmitFilter, formState: { errorsFilter } } = useForm();
+    const [filterBy, setFilterBy] = useState({})
+    // { number: '955', designation: 'Quo est enim cupidi', dob: '2024-07-31' }
     const onSubmit = data => console.log(data);
+    const onSubmitFilter = data => { setFilterBy({ ...data, ...dob }) };
     const [openLeaveModal, setOpenLeaveModal] = useState(false);
     const { mutate, isLoading, data, error } = usePostRequest('approve', '/approve-leave-application');
     const { mutate: Reject, isLoading: isLoadingReject, data: Rejectdata, error: Rejecterror } = usePostRequest('approve', '/reject-leave-application');
-    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError,] = useGetRequest('trainer', `/admin-show-leave-application`)
+    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError,] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.designation && `&designation=${filterBy?.designation}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)
     const requestList = TrainerRequest?.data?.data?.map((item, i) => {
         return {
             "Name": item?.user?.name,
@@ -38,7 +44,6 @@ const RequestTrainer = () => {
             "key": i + 1
         }
     })
-    console.log(requestList)
     const [filterdData, setFilterdData] = useState({})
     const handelEdit = (id) => {
         setImage(null)
@@ -51,6 +56,7 @@ const RequestTrainer = () => {
     }
     const [image, setImage] = useState(null);
     const onChange = (date, dateString) => {
+        setDob({ dob: dateString })
     };
     const columns = [{
         title: '#Sl',
@@ -96,7 +102,7 @@ const RequestTrainer = () => {
         title: 'Status',
         dataIndex: '_id',
         render: (_, record) => {
-            return <button className={`transition-all text-base font-medium px-6 py-[6px] ${record?.Status=='approved'?'bg-[#2BA24C]':record?.Status=='pending'? 'bg-yellow-500':'bg-red-500'}  rounded-md text-white center-center max-w-36`}> {record?.Status}</button>
+            return <button className={`transition-all text-base font-medium px-6 py-[6px] ${record?.Status == 'approved' ? 'bg-[#2BA24C]' : record?.Status == 'pending' ? 'bg-yellow-500' : 'bg-red-500'}  rounded-md text-white center-center max-w-36`}> {record?.Status}</button>
         }
         ,
         key: '_id',
@@ -107,7 +113,7 @@ const RequestTrainer = () => {
             <div className="start-center gap-3 text-2xl">
                 <FiEdit className="text-[#2492EB] cursor-pointer hover:scale-105 active:scale-95 transition-all" onClick={() => {
                     handelEdit(record.id)
-                }} /> 
+                }} />
                 {/* <RxCross1 className='text-red-600 cursor-pointer hover:scale-105 active:scale-95 transition-all' onClick={() => {
                     // console.log(record._id)
                 }} /> */}
@@ -129,20 +135,29 @@ const RequestTrainer = () => {
         if (status === 'reject') Reject(formData)
         if (status === 'pending') setOpenLeaveModal(false)
     }
+    useEffect(() => {
+        if (isLoading || isLoadingReject) return
+        if ((data || Rejectdata) && (!Rejecterror || !error)) setOpenLeaveModal(false)
+    }, [data, Rejectdata, error, Rejecterror, isLoadingReject, isLoading])
     return (
         <>
             <PageHeading text={`Trainer Request To class off`} />
             <div className='between-center gap-2 flex-wrap'>
-                <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
+                <form onSubmit={handleSubmitFilter(onSubmitFilter)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
                     <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
                     <div className='max-w-44 min-w-44'>
-                        <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-[30px]`} placeholder={`+8801566026301`} />
+                        <Input type={`number`} rules={{ ...registerFilter("number", { required: false }) }} classNames={`rounded-[30px]`} placeholder={`+8801566026301`} />
                     </div>
                     <div className='max-w-44 min-w-44'>
-                        <Input rules={{ ...register("designation", { required: false }) }} classNames={`rounded-[30px]`} placeholder={`designation`} />
+                        <Input rules={{ ...registerFilter("designation", { required: false }) }} classNames={`rounded-[30px]`} placeholder={`designation`} />
                     </div>
                     <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                         <IoSearch />
+                    </button>
+                    <button type='button' onClick={()=>{
+                        setFilterBy({})
+                    }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
+                        <RxCross2 />
                     </button>
                 </form>
                 {/* <div className='flex justify-end items-end gap-3'>

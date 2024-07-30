@@ -6,8 +6,10 @@ import { CiCalendarDate, CiImageOn, CiSettings, CiWallet } from "react-icons/ci"
 import { FaRegUserCircle, FaUsers } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
-import { IoBookOutline, IoSettings, IoWalletOutline } from "react-icons/io5";
+import { IoBookOutline, IoBookSharp, IoSettings, IoWalletOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
+import { PiCertificate } from "react-icons/pi";
+import { TbStarsFilled } from "react-icons/tb";
 export const SideberLink = [
     {
         menu: 'Dashboard',
@@ -441,11 +443,38 @@ export const studentSideberLink = [
         icon: FaUserGroup,
         link: '/student/student-course-video'
     },
+    {
+        menu: 'Trainer Feedback',
+        icon: IoBookSharp,
+        link: '/student/student-course'
+    },
+    {
+        menu: 'Review',
+        icon: TbStarsFilled,
+        link: '/student/trainer-feedback'
+    },
+    {
+        menu: 'Certificate',
+        icon: PiCertificate,
+        link: '/student/certificates'
+    },
 ]
 export const mentorsSideberLink = [
     {
         menu: 'Dashboard',
         icon: MdDashboard,
-        link: '/student-dashboard'
+        link: '/teacher/teacher-dashboard'
+    },
+    {
+        menu: 'Module',
+        icon: FaUserGroup,
+        link: '/teacher/teacher-dashboard',
+        dropDown: [
+            {
+                menu: 'Dashboard',
+                icon: MdDashboard,
+                link: '/teacher/teacher-dashboard'
+            },
+        ]
     },
 ]

@@ -5,7 +5,7 @@ import ClassRoutineForm from '../Components/Forms/ClassRoutineForm'
 import { DatePicker, Form, Input, Modal, Select, Table, TimePicker } from 'antd'
 import { FaSearch } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
-import { RxCross1 } from 'react-icons/rx'
+import { RxCross1, RxCross2 } from 'react-icons/rx'
 import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import toast from 'react-hot-toast'
@@ -15,22 +15,29 @@ import useDeleteRequest from '../Hooks/useDeleteRequest'
 const ClassRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
-    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}`)
-    console.log(Routine)
-    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}`);
+    const [filterBy, setFilterBy] = useState()
+    // {
+    //     moduleName: 'Vera Cherry',
+    //     trainer: 'Quia modi molestiae ',
+    //     date: '2024-07-31'
+    //   }
+    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id${filterBy?.batch_id}`}`)
+    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
         return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
     })
     const [form] = Form.useForm();
+    const [date, setDate] = useState(undefined)
+    const [filterDate, setFilterDate] = useState()
     const onFinish = (values) => {
-        console.log('Success:', values);
+        setFilterBy({ ...values, date: filterDate });
     };
     const [openEditModal, setOpenEditModal] = useState(false)
     const [time, setTime] = useState([])
-    const [date, setDate] = useState(undefined)
+
     const onChange = (field, date, dateString) => {
-        // console.log(field, date, dateString);
+        setFilterDate(dateString);
     };
     const columns = [
         {
@@ -132,12 +139,12 @@ const ClassRoutine = () => {
                         <div className='flex justify-start items-center gap-4'>
                             <Form.Item
                                 label={false}
-                                name="CourseName">
-                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Exam..." />
+                                name="moduleName">
+                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="module Name..." />
                             </Form.Item>
                             <Form.Item
                                 label={false}
-                                name="trainer">
+                                name="batch_id">
                                 <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
                             </Form.Item>
                             <Form.Item
@@ -148,16 +155,21 @@ const ClassRoutine = () => {
                                 }} />
                             </Form.Item>
                             <Form.Item >
-                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)]' type="submit" >
+                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)] mr-3' type="submit" >
                                     <FaSearch />
+                                </button>
+                                <button type='button' onClick={() => {
+                                    setFilterBy({})
+                                }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
+                                    <RxCross2 />
                                 </button>
                             </Form.Item>
                         </div>
                     </Form>
                     <Table dataSource={routineData} pagination={{
                         total: Routine?.data?.total || 0,
-                        pageSize:10,
-                        onChange:(page,pageSize)=>setPage(page)
+                        pageSize: 10,
+                        onChange: (page, pageSize) => setPage(page)
                     }} columns={columns} />
                 </div>
             </div>

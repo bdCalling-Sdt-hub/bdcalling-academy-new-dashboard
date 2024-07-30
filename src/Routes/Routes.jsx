@@ -78,6 +78,9 @@ import TrainerFeedback from "../Pages/TrainerFeedback";
 import SendStudentReview from "../Pages/SendStudentReview";
 import StudentCertificates from "../Pages/StudentCertificates";
 import StudentProfile from "../Pages/StudentProfile";
+import TeacherDashBoard from "../Pages/TeacherDashBoard";
+import AllStudentAttendance from "../Pages/AllStudentAttendance";
+import StudentRoutes from "../PrivetRoute/StudentRoutes";
 
 export const router = createBrowserRouter([
     {
@@ -340,7 +343,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/student',
-        element: <Dashboard />,
+        element:<StudentRoutes><Dashboard /></StudentRoutes>,
         children: [
             {
                 path: '/student/student-dashboard',
@@ -351,7 +354,7 @@ export const router = createBrowserRouter([
                 element: <StudentCourseVideo />
             },
             {
-                path: '/student/student-course',
+                path: '/student/student-course/:id',
                 element: <StudentsCourse />
             },
             {
@@ -378,6 +381,21 @@ export const router = createBrowserRouter([
                 path: '/student/profile',
                 element: <StudentProfile />
             },
+        ]
+    },
+    {
+        path: '/teacher',
+        element: <Dashboard />,
+        children: [
+            {
+                path: '/teacher/teacher-dashboard',
+                element: <TeacherDashBoard />
+            },
+            {
+                path: '/teacher/all-student-attendance',
+                element: <AllStudentAttendance />
+            },
+
         ]
     },
     {

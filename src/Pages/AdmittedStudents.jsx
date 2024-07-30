@@ -35,15 +35,14 @@ const AdmittedStudents = () => {
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
-    const [inputType, setInputType] = useState('password')
     const [text, setText] = useState(true)
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
+    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');

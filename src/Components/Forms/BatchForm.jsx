@@ -1,5 +1,5 @@
 import { DatePicker, Form, Select } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
@@ -52,6 +52,9 @@ const BatchForm = () => {
     const onCourseSelect = (value) => {
         console.log(`selected ${value}`);
     };
+    useEffect(() => {
+        if (data) navigate(-1)
+    }, [data])
     return (
         <div id='addBatch'>
             <Form

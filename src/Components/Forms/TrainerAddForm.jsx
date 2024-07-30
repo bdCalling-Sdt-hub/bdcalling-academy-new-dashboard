@@ -4,10 +4,10 @@ import { FaEdit } from 'react-icons/fa';
 import useGetRequest from '../../Hooks/useGetRequest'
 import usePostRequest from '../../Hooks/usePostRequest';
 import usePatchRequest from '../../Hooks/usePatchRequest';
-const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFor }) => {
+const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFor, refetch }) => {
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const { mutate, isLoading, data, error } = usePostRequest('TeacherAdd', '/teachers');
-    const { mutate: updateTeacher, isLoading: updateLoading, data: updateData, } = usePatchRequest('TeacherAdd', `/teachers/${filteredData?._id}`);
+    const { mutate: updateTeacher, isLoading: updateLoading, data: updateData, error: updateError } = usePatchRequest('TeacherAdd', `/teachers/${filteredData?._id}`);
     const CourseOptions = Category?.data?.data?.map(item => {
         return { label: item?.category_name, value: item?.id }
     }) || []
@@ -23,6 +23,7 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFo
             formData.append('image', image)
         }
         if (formFor == 'add') {
+            formData.append('email', email)
             mutate(formData)
         } else {
             formData.append('_method', 'PUT')
@@ -42,9 +43,9 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFo
     }, [filteredData, form]);
 
     useEffect(() => {
-        if (isLoading) return
-        if (data && !error) setOpenAddModal(false)
-    }, [data, isLoading, error])
+        if (isLoading || updateLoading) return
+        if ((data && !error) || (!updateError && updateData)) setOpenAddModal(false); refetch()
+    }, [data, isLoading, error, updateData, updateLoading, updateError])
     return (
         <Form
             form={form}

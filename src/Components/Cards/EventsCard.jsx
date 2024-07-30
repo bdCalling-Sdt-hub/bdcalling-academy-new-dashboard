@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CiCalendarDate } from 'react-icons/ci';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 import { IoMdTime } from 'react-icons/io';
@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import useDeleteRequest from '../../Hooks/useDeleteRequest';
 import toast from 'react-hot-toast';
 
-const EventsCard = ({ item }) => {
+const EventsCard = ({ item, refetch }) => {
     const { id, img, date, time, status, location, courseName } = item;
     const { mutate: DeleteEvent, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Events', `/event/${id}`);
     const handleDelete = () => {
@@ -27,6 +27,9 @@ const EventsCard = ({ item }) => {
             </div>
         ));
     }
+    useEffect(() => {
+        if (DeleteData) refetch()
+    }, [DeleteData])
     return (
         <div className='p-4 bg-white rounded-md card-shadow'>
             <div className='w-full h-[250px] rounded-md overflow-hidden'>
@@ -41,7 +44,7 @@ const EventsCard = ({ item }) => {
             <p className='text-[#333333] text-lg font-medium py-3' >{courseName}</p>
             <div className='between-center'>
                 <button onClick={handleDelete} className='text-[var(--primary-bg)] border border-[var(--primary-bg)] rounded-md py-[6px] px-4 hover:scale-105 active:scale-95 transition-all'>Delete Events</button>
-                <Link to={`/update-event/1`} className='max-w-36 btn-primary'>Edit Events</Link>
+                <Link to={`/update-event/${id}`} className='max-w-36 btn-primary'>Edit Events</Link>
             </div>
         </div>
     )

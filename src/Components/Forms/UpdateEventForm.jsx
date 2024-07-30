@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import Input from '../Input/Input';
 import SelectInput from '../Input/SelectInput';
 import TextArea from '../Input/TextArea';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import PageHeading from '../Shared/PageHeading';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { FaEdit, FaPlus } from 'react-icons/fa';
@@ -14,6 +14,7 @@ const EventTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline'
 
 const UpdateEventForm = () => {
     const { id } = useParams()
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [filterData, setFilterData] = useState({})
     const [image, setImage] = useState(null);
@@ -52,22 +53,13 @@ const UpdateEventForm = () => {
         formData.append('image', image)
         mutate(formData)
     };
-    // {
-    //     id: 1,
-    //     course_name: 'Laravel',
-    //     date: '2024-05-11',
-    //     time: '10:30:00',
-    //     end_time: '11:30:00',
-    //     locations: 'Dhaka',
-    //     descriptions: 'welcome to our family',
-    //     status: '0',
-    //     created_at: '2024-06-12T08:44:58.000000Z',
-    //     updated_at: '2024-06-12T08:44:58.000000Z'
-    //   }
+    useEffect(() => {
+        if (data) navigate(-1)
+    }, [data])
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>
             <div className='start-center gap-2 '>
-                <PageHeading text={`All Events`} /> <MdOutlineKeyboardArrowRight className='text-2xl' /> <PageHeading text={`Add Event `} />
+                <PageHeading text={`All Events`} /> <MdOutlineKeyboardArrowRight className='text-2xl' /> <PageHeading text={`Update Event `} />
             </div>
             <div className='relative w-[500px] h-[260px] rounded-xl my-6 mt-0'>
                 <img className='w-full h-full object-cover rounded-xl' src={image ? URL.createObjectURL(image) : "https://i.ibb.co/TmVrjpR/Rectangle-6469-1.png"} alt="" />

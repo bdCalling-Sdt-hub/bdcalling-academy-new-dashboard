@@ -31,7 +31,10 @@ const TrainerPaymentForm = ({ filterdData, setopenPaymentModal, setopenPaymentHi
             form.setFieldValue({ category: filterdData?.item?.category?.category_name })
         }
     }, [filterdData, form])
-
+    useEffect(() => {
+        if (isLoading) return
+        if (data && !error) setopenPaymentModal(false)
+    }, [isLoading, data, error])
     return (
         <>
             <PageHeading text={`Trainers Payment`} />

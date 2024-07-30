@@ -1,8 +1,7 @@
 import React from 'react'
 import { useUserData } from '../Providers/UserProviders/UserProvider'
 import { Navigate, useLocation } from 'react-router-dom'
-
-const PrivetRoute = ({ children }) => {
+const StudentRoutes = ({ children }) => {
     const { useData, loading, isError } = useUserData();
     const location = useLocation()
     if (!localStorage.getItem('token')) {
@@ -16,10 +15,10 @@ const PrivetRoute = ({ children }) => {
     }
     if (useData?.role === 'ADMIN') return
     if (useData?.role === 'MENTOR') return <Navigate to={'/teacher/teacher-dashboard'}></Navigate>
-    if (useData?.role === 'STUDENT') return <Navigate to={'/student/student-dashboard'}></Navigate>
-    if (useData?.role === 'SUPER ADMIN') return children
+    if (useData?.role === 'STUDENT') return children
+    if (useData?.role === 'SUPER ADMIN') return <Navigate Navigate to={'/'} ></Navigate >
     localStorage.removeItem('token')
     return <Navigate state={location.pathname} to={`/login`}></Navigate>
 }
 
-export default PrivetRoute
+export default StudentRoutes
