@@ -1,9 +1,10 @@
 import { DatePicker, Form, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
 const BatchForm = () => {
+    const navigate = useNavigate()
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses`)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
     const { mutate, isLoading, data, error } = usePostRequest('mentors', '/batches');

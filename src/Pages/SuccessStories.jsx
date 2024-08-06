@@ -7,14 +7,13 @@ import useGetRequest from '../Hooks/useGetRequest'
 
 const SuccessStories = () => {
     const [current, setCurrent] = useState(3);
-    const [requestingStory, Story, StoryError,] = useGetRequest('Profile', `/success/story`)
+    const [requestingStory, Story, StoryError,] = useGetRequest('Story', `/success/story`)
     console.log(Story)
     const onChange = (page) => {
         setCurrent(page);
     };
     const onShowSizeChange = (current, size) => {
         setCurrent(1)
-        console.log(current, size)
     }
     return (
         <div className='mt-4'>
@@ -31,7 +30,7 @@ const SuccessStories = () => {
             </div>
             <div className='grid grid-cols-2 gap-8 mt-4'>
                 {
-                    [...Array(7).keys()].map((item) => <div className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
+                    Story?.data?.map((item) => <div className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
                         <div className='w-full h-full absolute left-0 top-0'>
                             <img src="https://i.ibb.co/M51Zmpf/Rectangle-87-1.png" alt="" className='w-full h-full object-cover' />
                         </div>
@@ -47,7 +46,7 @@ const SuccessStories = () => {
                 }
             </div>
             <div className='text-center my-5'>
-                <Pagination current={current} onChange={onChange} onShowSizeChange={onShowSizeChange} total={500} />
+                <Pagination current={current} onChange={onChange} pageSize={8} showSizeChanger={false} total={Story?.total || 0} />
             </div>
         </div>
     )

@@ -81,6 +81,23 @@ import StudentProfile from "../Pages/StudentProfile";
 import TeacherDashBoard from "../Pages/TeacherDashBoard";
 import AllStudentAttendance from "../Pages/AllStudentAttendance";
 import StudentRoutes from "../PrivetRoute/StudentRoutes";
+import SalseStudentBatch from "../Pages/SalseStudentBatch";
+import UpdateSalseBatch from "../Components/Forms/UpdateSalseBatch";
+import TeacherStudentAttendance from "../Pages/TeacherStudentAttendance";
+import TeacherAllModule from "../Pages/TeacherAllModule";
+import ExamSchedule from "../Pages/ExamSchedule";
+import CreateAssignments from "../Pages/CreateAssignments";
+import TeacherProvideClassVideo from "../Pages/TeacherProvideClassVideo";
+import TeacherClassRoutine from "../Pages/TeacherClassRoutine";
+import ClassLeaveRequest from "../Pages/ClassLeaveRequest";
+import TeacherStudentsAttendance from "../Pages/TeacherStudentsAttendance";
+import TeacherExamResult from "../Pages/TeacherExamResult";
+import TeacherAllStudent from "../Pages/TeacherAllStudent";
+import TeacherProfile from "../Pages/TeacherProfile";
+import TeacherEditProfile from "../Pages/TeacherEditProfile";
+import TeacherAddModule from "../Pages/TeacherAddModule";
+import TeacherUpdateVideo from "../Pages/TeacherUpdateVideo";
+import TeacherRoutes from "../PrivetRoute/TeacherRoutes";
 
 export const router = createBrowserRouter([
     {
@@ -197,7 +214,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/add-sales-student-batch',
+                element: <SalseStudentBatch />
+            },
+            {
+                path: '/add-sales-student-batch/add',
                 element: <AddSalesStudentBatch />
+            },
+            {
+                path: '/add-sales-student-batch/update/:id',
+                element: <UpdateSalseBatch />
             },
             {
                 path: '/all-admitted-student/:id',
@@ -343,7 +368,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/student',
-        element:<StudentRoutes><Dashboard /></StudentRoutes>,
+        element: <StudentRoutes><Dashboard /></StudentRoutes>,
         children: [
             {
                 path: '/student/student-dashboard',
@@ -370,7 +395,7 @@ export const router = createBrowserRouter([
                 element: <TrainerFeedback />
             },
             {
-                path: '/student/send-feedback',
+                path: '/student/student-feedback',
                 element: <SendStudentReview />
             },
             {
@@ -385,7 +410,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/teacher',
-        element: <Dashboard />,
+        element: <TeacherRoutes> <Dashboard /></TeacherRoutes>,
         children: [
             {
                 path: '/teacher/teacher-dashboard',
@@ -393,7 +418,64 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/teacher/all-student-attendance',
-                element: <AllStudentAttendance />
+                // element: <AllStudentAttendance />
+                element: <TeacherStudentAttendance />
+            },
+            {
+                path: '/teacher/all-module',
+                element: <TeacherAllModule />
+            },
+            {
+                path: '/teacher/all-exam-schedule',
+                element: <ExamSchedule />
+            },
+            {
+                path: '/teacher/all-assignments-schedule',
+                element: <CreateAssignments />
+            },
+            {
+                path: '/teacher/provided-class-video',
+                element: <TeacherProvideClassVideo />
+            },
+            {
+                path: '/teacher/add-provided-class-video',
+                element: <AddProvideClassVideo />
+            },
+            {
+                path: '/teacher/class-routine',
+                element: <TeacherClassRoutine />
+            },
+            {
+                path: '/teacher/class-leave-request',
+                element: <ClassLeaveRequest />
+            },
+            {
+                path: '/teacher/student-attendance',
+                element: <TeacherStudentsAttendance />
+            },
+            {
+                path: '/teacher/exam-result',
+                element: <TeacherExamResult />
+            },
+            {
+                path: '/teacher/all-student',
+                element: <TeacherAllStudent />
+            },
+            {
+                path: '/teacher/personal-information',
+                element: <TeacherProfile />
+            },
+            {
+                path: '/teacher/edit-profile',
+                element: <TeacherEditProfile />
+            },
+            {
+                path: '/teacher/add-module',
+                element: <TeacherAddModule />
+            },
+            {
+                path: '/teacher/update-module/:id',
+                element: <TeacherUpdateVideo />
             },
 
         ]

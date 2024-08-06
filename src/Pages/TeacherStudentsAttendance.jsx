@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 import { SiMicrosoftword } from 'react-icons/si'
 import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
-const StudentsAttendance = () => {
+const TeacherStudentsAttendance = () => {
     const [page, setPage] = useState(0)
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openPrintModal, setOpenPrintModal] = useState(false)
@@ -175,5 +175,4 @@ const StudentsAttendance = () => {
         </>
     )
 }
-
-export default StudentsAttendance
+export default TeacherStudentsAttendance

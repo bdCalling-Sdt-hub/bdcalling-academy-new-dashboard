@@ -4,7 +4,8 @@ import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
-const Profile = () => {
+
+const TeacherProfile = () => {
     const [requestingProfile, Profile, ProfileError,] = useGetRequest('Profile', `/profile`)
     return (
         <div className='mt-4'>
@@ -15,7 +16,7 @@ const Profile = () => {
                     </Link>
                     <p className='text-lg font-semibold'>Personal Information</p>
                 </div>
-                <Link to={`/edit-profile`} className='flex justify-center items-center w-fit gap-3 px-8 py-2 bg-blue-400 text-white rounded-md'>
+                <Link to={`/teacher/edit-profile`} className='flex justify-center items-center w-fit gap-3 px-8 py-2 bg-blue-400 text-white rounded-md'>
                     <FaEdit />
                     Edit Profile
                 </Link>
@@ -67,4 +68,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default TeacherProfile

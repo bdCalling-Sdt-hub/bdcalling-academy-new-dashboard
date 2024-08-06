@@ -10,29 +10,27 @@ import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
-
-
-
-const CreateRoutine = () => {
+const TeacherClassRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const [filterBy, setFilterBy] = useState()
     const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
-    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}`);
+    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
         return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
     })
     const [form] = Form.useForm();
+    const [date, setDate] = useState(undefined)
+    const [filterDate, setFilterDate] = useState()
     const onFinish = (values) => {
-        console.log(values)
-        setFilterBy({ ...values, });
+        setFilterBy({ ...values, date: filterDate });
     };
     const [openEditModal, setOpenEditModal] = useState(false)
     const [time, setTime] = useState([])
-    const [date, setDate] = useState(undefined)
+
     const onChange = (field, date, dateString) => {
-        // console.log(field, date, dateString);
+        setFilterDate(dateString);
     };
     const columns = [
         {
@@ -117,11 +115,11 @@ const CreateRoutine = () => {
         <>
             <PageHeading text={`Class Routine`} />
             <div className='start-center gap-2 text-[var(--primary-bg)]'>
-                <p className='text-[#333333] font-medium'>Home</p> <MdOutlineKeyboardArrowRight className='text-xl' /> <p>Class Routine Schedule</p>
+                <p className='text-[#333333] font-medium'>Home</p> <MdOutlineKeyboardArrowRight className='text-xl' /> <p>Class Routine</p>
             </div>
             <div className='start-start gap-6 my-8'>
                 <div className='card-shadow p-4 rounded-md w-[500px]'>
-                    <p className='text-2xl font-semibold mb-4'>Add New Class Routine</p>
+                    <p className='text-2xl font-semibold mb-4'>Add New Routine</p>
                     <ClassRoutineForm />
                 </div>
                 <div id='allStudent' className='card-shadow p-4 rounded-md w-full'>
@@ -135,7 +133,7 @@ const CreateRoutine = () => {
                             <Form.Item
                                 label={false}
                                 name="moduleName">
-                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Exam..." />
+                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="module Name..." />
                             </Form.Item>
                             <Form.Item
                                 label={false}
@@ -150,12 +148,12 @@ const CreateRoutine = () => {
                                 }} />
                             </Form.Item> */}
                             <Form.Item >
-                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)]' type="submit" >
+                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)] mr-3' type="submit" >
                                     <FaSearch />
                                 </button>
                                 <button type='button' onClick={() => {
                                     setFilterBy({})
-                                }} className='text-2xl p-[10px] bg-[red] ml-2 text-white rounded-full'>
+                                }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
                                     <RxCross2 />
                                 </button>
                             </Form.Item>
@@ -224,5 +222,4 @@ const CreateRoutine = () => {
     )
 }
 
-
-export default CreateRoutine
+export default TeacherClassRoutine

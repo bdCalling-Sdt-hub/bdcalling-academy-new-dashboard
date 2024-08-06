@@ -145,7 +145,7 @@ const UploadGallery = () => {
                         isDragging ? <p className=''>Drop ...</p> :
                             <label htmlFor='image' className='flex flex-col gap-2 justify-center items-center cursor-pointer'>
                                 <img className='w-14 h-14' src={video} alt="Video Icon" />
-                                <p>Drag & Drop Video file</p>
+                                <p>Drag & Drop Image file</p>
                                 <p>or</p>
                                 <p className='bg-blue-400 text-white px-4 py-2 rounded-md'>
                                     Choose File

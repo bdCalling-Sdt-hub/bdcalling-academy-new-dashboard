@@ -4,12 +4,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import useGetRequest from '../../Hooks/useGetRequest';
 import dayjs from 'dayjs';
 import usePatchRequest from '../../Hooks/usePatchRequest';
-const UpdateBatch = () => {
+const UpdateSalseBatch = () => {
     const { id } = useParams()
-    const [requestingBatch, Batch, BatchError, refetch] = useGetRequest('singleBatch', `/batches/${id}`)
+    const [requestingBatch, Batch, BatchError, refetch] = useGetRequest('singleBatch', `/phoenix-batches/${id}`)
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
-    const { mutate: updateBatch, isLoading: updateLoading, data: updateData, } = usePatchRequest('Batch', `/batches/${id}`);
+    const { mutate: updateBatch, isLoading: updateLoading, data: updateData, } = usePatchRequest('Batch', `/phoenix-batches/${id}`);
     const CourseOptions = Course?.data?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
@@ -60,8 +60,6 @@ const UpdateBatch = () => {
         form.setFieldsValue({
             batch: Batch?.data?.batch_name,
             CourseName: Batch?.data?.course_id,
-            coupon: Batch?.data?.coupon,
-            discountPrice: Batch?.data?.discount_price,
             trainer: Batch?.data?.teachers?.map(item => item?.id),
             seat: Batch?.data?.seat_left,
             startDate: dayjs(Batch?.data?.start_date, 'YYYY-MM-DD'),
@@ -123,17 +121,6 @@ const UpdateBatch = () => {
                         }} id='batchImage' onChange={handleChange} type='file' placeholder="*Required Field" />
                     </Form.Item>
                     <Form.Item
-                        label={<span className="text-lg font-bold text-[#333333]">Enter Coupon Code</span>}
-                        name="coupon"
-                        rules={[
-                            {
-                                required: false,
-                                message: 'Please input your username!',
-                            },
-                        ]}>
-                        <input className='outline-none w-full border p-[10px] rounded-md' placeholder="N/A" />
-                    </Form.Item>
-                    <Form.Item
                         label={<span className="text-lg font-bold text-[#333333]">Trainer</span>}
                         name="trainer"
                         rules={[
@@ -145,12 +132,6 @@ const UpdateBatch = () => {
                         <Select style={{
                             minHeight: '43px'
                         }} mode="multiple" className='min-h-[43px]' defaultValue={`chooes a value`} options={MentorsOptions} />
-                    </Form.Item>
-                    <Form.Item
-                        label={<span className="text-lg font-bold text-[#333333]">Enter discount price</span>}
-                        name="discountPrice"
-                    >
-                        <input type='number' className='outline-none w-full border p-[10px] rounded-md' placeholder="477" />
                     </Form.Item>
                     <Form.Item
                         name={`startDate`}
@@ -192,4 +173,4 @@ const UpdateBatch = () => {
     );
 };
 
-export default UpdateBatch
+export default UpdateSalseBatch

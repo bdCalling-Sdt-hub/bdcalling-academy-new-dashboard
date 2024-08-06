@@ -8,7 +8,6 @@ import { useUserData } from "../../Providers/UserProviders/UserProvider";
 import { imageUrl } from "../../AxiosConfig/useAxiosConfig";
 const Navber = () => {
     const { useData , loading ,isError} = useUserData();
-    console.log(useData)
     const { register } = useForm();
     const inputHandeler = (e) => {
         // console.log(e.target.value)

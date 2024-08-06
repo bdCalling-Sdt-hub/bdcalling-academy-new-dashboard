@@ -210,10 +210,6 @@ const AdmittedStudents = () => {
         const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-
-    const CategoryOptions2 = Category?.data?.data?.map(item => {
-        return { name: item?.category_name, value: item?.category_name }
-    })
     useEffect(() => {
         if (isLoading, updateLoading, DeleteLoading) return
         if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()

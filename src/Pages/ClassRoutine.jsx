@@ -16,12 +16,7 @@ const ClassRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const [filterBy, setFilterBy] = useState()
-    // {
-    //     moduleName: 'Vera Cherry',
-    //     trainer: 'Quia modi molestiae ',
-    //     date: '2024-07-31'
-    //   }
-    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id${filterBy?.batch_id}`}`)
+    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
     const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
@@ -147,13 +142,13 @@ const ClassRoutine = () => {
                                 name="batch_id">
                                 <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
                             </Form.Item>
-                            <Form.Item
+                            {/* <Form.Item
                                 label={false}
                             >
                                 <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
                                     onChange('start', date, dateString)
                                 }} />
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item >
                                 <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)] mr-3' type="submit" >
                                     <FaSearch />

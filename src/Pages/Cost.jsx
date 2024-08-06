@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import Input from '../Components/Input/Input'
 import { useForm } from 'react-hook-form'
@@ -10,14 +10,13 @@ import { SiMicrosoftword } from 'react-icons/si'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { CiCircleMinus } from 'react-icons/ci'
 import usePostRequest from '../Hooks/usePostRequest'
-const data = [
-    {
-        key: '1',
-        date: '12-08-2023',
-        cost: '5000Tk'
-    },
-]
+import useGetRequest from '../Hooks/useGetRequest'
+import usePatchRequest from '../Hooks/usePatchRequest'
 const Cost = () => {
+    const [page, setPage] = useState(1)
+    const [form] = Form.useForm()
+    const [filterData, setFilterData] = useState({})
+    const [FormFor, setFormFor] = useState('add')
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => console.log(data);
     const [open, setOpen] = useState(false)
@@ -25,6 +24,23 @@ const Cost = () => {
     const [exportType, setExportType] = useState('pdf')
     const [date, setDate] = useState(new Date)
     const { mutate, isLoading, data, error } = usePostRequest('includeCost', '/include/cost');
+    const { mutate: updateCost, isLoading: updateLoading, data: updateData, error: updateError } = usePatchRequest('includeCost', `/include/cost/${filterData?.id}`);
+    // console.log(updateError)
+    const [requestingCost, Cost, CostError, refetch] = useGetRequest('Cost', `/include/cost?page=${page}`);
+    console.log(Cost)
+    const CostData = Cost?.data?.map((item, i) => {
+        return {
+            key: i + 1,
+            id: item?.id,
+            date: item?.created_at?.split('T')[0],
+            cost: `${item?.costing?.reduce((acc, curr) => Number(acc) + Number(curr?.cost), 0)} TK`
+        }
+    }) || []
+    const handleFilterItem = (id) => {
+        const filter = Cost?.data.filter(item => item?.id === id)
+        setFilterData(filter[0])
+    }
+    // console.log(filterData)
     const columns = [
         {
             title: '#Sl',
@@ -47,25 +63,66 @@ const Cost = () => {
             key: 'key',
             render: (_, record) => {
                 return (<div className='flex justify-start items-center gap-4 text-2xl'>
-                    <button onClick={() => setOpenPrintModal(true)} className='text-green-600 cursor-pointer'><LuPrinter /></button>
-                    <button onClick={() => setOpen(true)} className='text-blue-400 cursor-pointer'><FaEdit /></button>
+                    <button onClick={() => { setOpenPrintModal(true); handleFilterItem(record?.id) }} className='text-green-600 cursor-pointer'><LuPrinter /></button>
+                    <button onClick={() => { setOpen(true); handleFilterItem(record?.id); setFormFor('update') }} className='text-blue-400 cursor-pointer'><FaEdit /></button>
                 </div>)
             }
         }
     ];
+
     const onFinish = (values) => {
         const data = {
             costing: JSON.stringify(values?.costing)
         }
         const formData = new FormData()
-        Object.keys(data).map(key=>{
-            formData.append(key,data[key])
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
         })
-        mutate(formData)
+        if (FormFor === 'add') {
+            mutate(formData)
+        } else {
+            formData.append('id', filterData?.id)
+            formData.append('_method', 'PUT');
+            updateCost(formData)
+        }
     };
     const onChange = (date, dateString) => {
         console.log(date, dateString);
     };
+    useEffect(() => {
+        form.setFieldsValue({ costing: filterData?.costing })
+    }, [filterData]);
+
+    const [totalCost, setTotalCost] = useState(0);
+    const updateTotalCost = (fields) => {
+        const newTotalCost = fields.reduce((acc, field) => Number(acc) + Number(field?.cost || 0), 0);
+        setTotalCost(newTotalCost);
+    };
+
+    const handleChangePrice = (e, name) => {
+        const fields = form.getFieldValue('costing');
+        const updatedFields = fields.map((field, index) => {
+            if (index === name[0]) {
+                return { ...field, cost: parseFloat(e.target.value) || 0 };
+            }
+            return field;
+        });
+
+        form.setFieldsValue({ costing: updatedFields });
+        updateTotalCost(updatedFields);
+    };
+
+    const handleRemoveField = (name, remove) => {
+        const fields = form.getFieldValue('costing');
+        const updatedFields = fields.filter((_, index) => index !== name);
+        form.setFieldsValue({ costing: updatedFields });
+        remove(name);
+        updateTotalCost(updatedFields);
+    };
+    useEffect(() => {
+        if (isLoading || updateLoading) return
+        if ((updateData && !updateError) || (data && !error)) setOpen(false); setTotalCost(0); refetch()
+    }, [data, updateData, updateError, error, isLoading, updateLoading])
     return (
         <div>
             <div className='start-center gap-2 '>
@@ -82,10 +139,15 @@ const Cost = () => {
                     </button>
                 </form>
                 <div className="flex justify-end items-center w-full gap-3">
-                    <button onClick={() => setOpen(true)} className="btn-primary max-w-40"><FaPlus />Add Cost</button>
+                    <button onClick={() => { setOpen(true); setFormFor('add'); setFilterData({}) }} className="btn-primary max-w-40"><FaPlus />Add Cost</button>
                 </div>
             </div>
-            <Table dataSource={data} columns={columns} />
+            <Table dataSource={CostData} columns={columns} pagination={{
+                total: Cost?.total || 0,
+                onChange: (page, pagesize) => setPage(page),
+                showSizeChanger: false,
+                pageSize: 10
+            }} />
             <Modal
                 open={open}
                 onCancel={() => setOpen(false)}
@@ -94,9 +156,11 @@ const Cost = () => {
                 width={700}
             >
                 <Form
+                    form={form}
                     onFinish={onFinish}
                     layout='vertical'
                     className='mt-3'
+                    initialValues={{ costing: [{}] }}
                 >
                     {/* <Form.Item
                         label="Date"
@@ -114,22 +178,22 @@ const Cost = () => {
                                             <Form.Item
                                                 {...restField}
                                                 name={[name, 'reason']}
-                                                rules={[{ required: true, message: 'Missing first name' }]}
+                                                rules={[{ required: true, message: 'please Input Reason Or delete this field ' }]}
                                             >
-                                                <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="First Name" />
+                                                <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Reason" />
                                             </Form.Item>
                                         </div>
                                         <div className=' w-[38%]'>
                                             <Form.Item
                                                 {...restField}
                                                 name={[name, 'cost']}
-                                                rules={[{ required: true, message: 'Missing last name' }]}
+                                                rules={[{ required: true, message: 'please Input cost Or delete this field ' }]}
                                             >
-                                                <input className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Last Name" />
+                                                <input name={[name, 'cost']} onChange={(e) => handleChangePrice(e, name)} type='number' className={`border w-full h-full p-2 rounded-md outline-none`} placeholder="Cost" />
                                             </Form.Item>
                                         </div>
-                                        <div className=' h-full flex justify-center items-center text-2xl -mt-5'>
-                                            <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => remove(name)} />
+                                        <div className=' h-full flex justify-center items-center text-2xl -mt-5' >
+                                            <CiCircleMinus className='cursor-pointer hover:text-red-500' onClick={() => handleRemoveField(name, remove)} />
                                         </div>
                                     </div>
                                 ))}
@@ -166,15 +230,16 @@ const Cost = () => {
                         </div>
                     </div> */}
                     <div className='flex justify-end items-center gap-3 py-1'>
-                        <p>Total Cost</p> <p>Tk 3,000</p>
+                        <p>Total Cost</p> <p>Tk {totalCost}</p>
                     </div>
                     <div className='text-center'>
                         <button className='px-14 rounded-md py-2 bg-[#2492EB] text-white'>
-                            Create
+                            {FormFor === 'add' ? 'Create' : 'Update'}
                         </button>
                     </div>
                 </Form>
             </Modal>
+
             <Modal
                 centered
                 footer={false}

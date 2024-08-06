@@ -7,8 +7,8 @@ import { FaRegUserCircle, FaUsers } from "react-icons/fa";
 import { FaUserGraduate, FaUserGroup } from "react-icons/fa6";
 import { HiOutlineIdentification } from "react-icons/hi";
 import { IoBookOutline, IoBookSharp, IoSettings, IoWalletOutline } from "react-icons/io5";
-import { MdDashboard } from "react-icons/md";
-import { PiCertificate } from "react-icons/pi";
+import { MdCoPresent, MdDashboard } from "react-icons/md";
+import { PiCertificate, PiStudentThin } from "react-icons/pi";
 import { TbStarsFilled } from "react-icons/tb";
 export const SideberLink = [
     {
@@ -199,10 +199,10 @@ export const SideberLink = [
                 menu: 'Assignment Results',
                 link: '/assignment-result'
             },
-            {
-                menu: 'Provide class video',
-                link: '/provide-class-video'
-            },
+            // {
+            //     menu: 'Provide class video',
+            //     link: '/provide-class-video'
+            // },
         ]
     },
     {
@@ -446,7 +446,7 @@ export const studentSideberLink = [
     {
         menu: 'Trainer Feedback',
         icon: IoBookSharp,
-        link: '/student/student-course'
+        link: '/student/student-feedback'
     },
     {
         menu: 'Review',
@@ -466,15 +466,73 @@ export const mentorsSideberLink = [
         link: '/teacher/teacher-dashboard'
     },
     {
+        menu: 'Attendance',
+        icon: MdCoPresent,
+        link: '/teacher/all-student-attendance'
+    },
+    {
         menu: 'Module',
         icon: FaUserGroup,
-        link: '/teacher/teacher-dashboard',
+        link: false,
         dropDown: [
             {
-                menu: 'Dashboard',
+                menu: 'All Module',
                 icon: MdDashboard,
-                link: '/teacher/teacher-dashboard'
+                link: '/teacher/all-module'
+            },
+            {
+                menu: 'Exam Schedule',
+                icon: MdDashboard,
+                link: '/teacher/all-exam-schedule'
+            },
+            {
+                menu: 'Create assignments',
+                icon: MdDashboard,
+                link: '/teacher/all-assignments-schedule'
+            },
+            {
+                menu: 'Provided Class Video',
+                icon: MdDashboard,
+                link: '/teacher/provided-class-video'
             },
         ]
+    },
+    {
+        menu: 'Batch List',
+        icon: FaUserGroup,
+        link: false,
+        dropDown: [
+            {
+                menu: 'Class Routine',
+                icon: MdDashboard,
+                link: '/teacher/class-routine'
+            },
+            {
+                menu: 'Class Leave Request',
+                icon: MdDashboard,
+                link: '/teacher/class-leave-request'
+            },
+            {
+                menu: 'Students Attendance ',
+                icon: MdDashboard,
+                link: '/teacher/student-attendance'
+            },
+            {
+                menu: 'Provide Exam Result',
+                icon: MdDashboard,
+                link: '/teacher/exam-result'
+            },
+        ]
+    },
+
+    {
+        menu: 'All Student',
+        icon: PiStudentThin,
+        link: '/teacher/all-student'
+    },
+    {
+        menu: 'Personal Information',
+        icon: FaRegUserCircle,
+        link: '/teacher/personal-information'
     },
 ]
