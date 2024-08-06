@@ -6,10 +6,10 @@ import { RiDeleteBin5Line } from 'react-icons/ri'
 import Input from '../Components/Input/Input'
 import { addNewFields, removeNewFields } from '../Utils/InputPlusActions'
 import { Link } from 'react-router-dom'
+import { formatQuestions } from '../Utils/FormateMcq'
 
-const VideoCourseExamQuestion = () => {
+const VideoCourseExamQuestion = ({ setFormFor, ExamName ,setQuestions}) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
     const initialQuestions = [
         { _id: '437834' },
     ]
@@ -19,6 +19,12 @@ const VideoCourseExamQuestion = () => {
         const newAnswers = correctAnswers.filter(item => !(item.hasOwnProperty(questionId)))
         setCorrectAnswer([...newAnswers, { [questionId]: ans }])
     }
+    const onSubmit = data => {
+        const formate = formatQuestions(correctAnswers, data)
+        setQuestions(formate)
+        setFormFor('video')
+    };
+
     return (
         <>
             <PageHeading text={`Provide Class video `} />
@@ -51,7 +57,7 @@ const VideoCourseExamQuestion = () => {
 
                             </div>
                             <button type='button' onClick={() => {
-                                removeNewFields(totalQuestions, setTotalQuestions, item?._id)
+                                removeNewFields(totalQuestions, setTotalQuestions, item?._id, setCorrectAnswer, correctAnswers)
                             }} className="border border-[red] text-[red] text-xl p-[10px] mt-8 px-3 rounded-md hover:scale-105 active:scale-95 transition-all">
                                 <RiDeleteBin5Line />
                             </button>
@@ -60,11 +66,11 @@ const VideoCourseExamQuestion = () => {
                 }
                 <div className='flex justify-end items-center gap-3'>
                     <button onClick={() => {
-                        addNewFields(totalQuestions, setTotalQuestions)
+                        addNewFields(totalQuestions, setTotalQuestions, setCorrectAnswer, correctAnswers)
                     }} className='btn-primary max-w-[95%] mx-auto mt-6 ' type='button'>Add Another Field</button>
                 </div>
                 <div className=' text-center'>
-                    <Link to={-1} className='max-w-44 mt-6 mx-4 bg-[#F7D4D8] border border-[#FA1131] text-[#FA1131] py-2 px-10 rounded-md hover:scale-105 active:scale-95'>Cancel</Link>
+                    <button type='button' onClick={() => setFormFor('video')} className='max-w-44 mt-6 mx-4 bg-[#F7D4D8] border border-[#FA1131] text-[#FA1131] py-2 px-10 rounded-md hover:scale-105 active:scale-95'>Cancel</button>
                     <button className=' max-w-44 mt-6 mx-4 bg-[var(--primary-bg)] text-white py-2 px-10 rounded-md hover:scale-105 active:scale-95'>Submit</button>
                 </div>
 

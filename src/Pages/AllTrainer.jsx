@@ -1,319 +1,54 @@
 import { FaPlus } from "react-icons/fa6"
 import PageHeading from "../Components/Shared/PageHeading"
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Modal, Table } from "antd"
-import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { Modal, Pagination, Table } from "antd"
 import TrainerCard from "../Components/Cards/TrainerCard"
 import TrainerAddForm from "../Components/Forms/TrainerAddForm"
 import TrainerPaymentForm from "../Components/Forms/TrainerPaymentForm"
-import { AiOutlinePrinter, AiTwotonePrinter } from "react-icons/ai"
-const AdminData = [
-    {
-        _id: '1',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-        category: 'super admin',
-    },
-    {
-        _id: '2',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'UX/UI Design trainer',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
+import { AiOutlinePrinter } from "react-icons/ai"
+import useGetRequest from "../Hooks/useGetRequest"
+import { imageUrl } from "../AxiosConfig/useAxiosConfig"
 
-        category: 'super admin',
-    },
-    {
-        _id: '3',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '4',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '5',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '6',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '7',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '8',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '9',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '10',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '11',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '12',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '13',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '14',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '15',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '16',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '19',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '20',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '21',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-]
-const paymentHistory = [
-    {
-        "_id": "1",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 500,
-        "date": "2024-05-01",
-        "totalPayment": 5000
-    },
-    {
-        "_id": "2",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 700,
-        "date": "2024-05-05",
-        "totalPayment": 7000
-    },
-    {
-        "_id": "3",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 600,
-        "date": "2024-05-10",
-        "totalPayment": 6000
-    },
-    {
-        "_id": "4",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 650,
-        "date": "2024-05-15",
-        "totalPayment": 6500
-    },
-    {
-        "_id": "5",
-        "category": "part time",
-        "paymentType": "per class",
-        "method": "bkash",
-        "amount": 550,
-        "date": "2024-05-20",
-        "totalPayment": 5500
-    }
-]
 
 const AllTrainer = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
-    const totalData = AdminData.length
-    const [itemPerPage, setItemPerPage] = useState(8)
-    const totalPage = Math.ceil(totalData / itemPerPage)
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
+    const [page2, setPage2] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [openPaymentModal, setopenPaymentModal] = useState(false)
     const [openPaymentHistoryModal, setopenPaymentHistoryModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
+    const [formFor, setFormFor] = useState('add')
+    //query
+    const [requestingTeacher, Teacher, TeacherError,refetch] = useGetRequest('teacher', `/teachers?page=${page}`)
+    const [requestingPaymentHistory, PaymentHistory, PaymentHistoryError,] = useGetRequest('teacher', `/show-transactions?page=${page2}&teacher_id=${filterdData?._id}`)
+    const data = PaymentHistory?.data?.map((item, i) => {
+        return {
+            "key": i + 1,
+            "_id": item?.teacher_id,
+            "paymentType": item?.teacher?.payment_type,
+            "method": item?.payment_type,
+            "amount": item?.teacher?.payment,
+            "date": item?.payment_date,
+            "totalPayment": item?.amount
+        }
+    })
+    const AdminData = Teacher?.teacher?.data?.map(item => {
+        return {
+            _id: item?.id,
+            profile: item?.image,
+            name: item?.user?.name,
+            designation: item?.designation,
+            expert: item?.expert,
+            userName: item?.user?.name,
+            email: item?.user?.email,
+            password: item?.user?.password || '',
+            category: item?.course_category_id,
+            item: item,
+            phone_number: item?.phone_number
+        }
+    })
     const handelEdit = (id) => {
         setImage(null)
         const newData = AdminData.filter(item => item._id === id)
@@ -332,13 +67,8 @@ const AllTrainer = () => {
     const columns = [
         {
             title: 'S.no',
-            dataIndex: '_id',
-            key: '_id',
-        },
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
+            dataIndex: 'key',
+            key: 'key',
         },
         {
             title: 'payment Type',
@@ -371,12 +101,12 @@ const AllTrainer = () => {
             <div className="between-center gap-2">
                 <div className="start-center gap-4 cursor-pointer">
                     <PageHeading text={`All Trainer List`} />
-                    <select className="w-[200px] p-2 border outline-none" name="">
+                    {/* <select className="w-[200px] p-2 border outline-none" name="">
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
                         <option value="all Trainer">All Trainer</option>
-                    </select>
+                    </select> */}
                 </div>
                 <div className="flex justify-end items-center w-fit">
                     <button onClick={() => {
@@ -387,23 +117,13 @@ const AllTrainer = () => {
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <TrainerCard key={index} item={item} handelEdit={handelEdit} handelPayment={handelPayment} />)
+                    AdminData?.map((item, index) => <TrainerCard refetch={refetch} key={index} item={item} handelEdit={handelEdit} setFormFor={setFormFor} handelPayment={handelPayment} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
-                <button onClick={() => {
-                    navigate(`/create-admin?page=${Number(page) - 1}`)
-                    setPage(Number(page) - 1)
-                }} disabled={page == '0'} className={`rounded-sm bg-[var(--primary-bg)] m-1 h-10 w-16 block text-white`}>prev</button>
-                {
-                    [...Array(totalPage).keys()].map(item => <Link key={item} onClick={() => setPage(item)} to={`/create-admin?page=${item}`}>
-                        <button className={`rounded-sm m-1 h-10 w-10 block ${page == item ? 'bg-[var(--primary-bg)] text-white' : 'bg-white'}`} key={item}>{item + 1}</button>
-                    </Link>)
-                }
-                <button disabled={page == totalPage - 1} onClick={() => {
-                    navigate(`/create-admin?page=${Number(page) + 1}`)
-                    setPage(Number(page) + 1)
-                }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
+                <Pagination defaultCurrent={page} total={Teacher?.teacher?.total} pageSize={8} showSizeChanger={false} onChange={(page, pageSize) => {
+                    setPage(page)
+                }} />
             </div>
             <Modal
                 centered
@@ -421,7 +141,7 @@ const AllTrainer = () => {
                 open={OpenAddModal}
                 width={900}
             >
-                <TrainerAddForm filteredData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
+                <TrainerAddForm refetch={refetch} formFor={formFor} filteredData={filterdData} image={image} setImage={setImage} setOpenAddModal={setOpenAddModal} />
             </Modal>
             <Modal
                 centered
@@ -434,7 +154,7 @@ const AllTrainer = () => {
                     <div className='flex justify-between items-end mb-6'>
                         <div className='start-center gap-2'>
                             <div className='w-28 h-28 relative'>
-                                <img className='w-fuh-full h-full object-cover rounded-full' src={filterdData?.profile || "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
+                                <img className='w-fuh-full h-full object-cover rounded-full' src={filterdData?.profile ? `${imageUrl}/${filterdData?.profile}` : "https://i.ibb.co/d4RSbKx/Ellipse-980.png"} alt="" />
                             </div>
                             <div>
                                 <p className='text-2xl font-semibold text-[#333333] my-[2px]'>{filterdData?.name}</p>
@@ -447,7 +167,14 @@ const AllTrainer = () => {
                             <AiOutlinePrinter />
                         </button>
                     </div>
-                    <Table dataSource={paymentHistory} columns={columns} />
+                    <Table dataSource={data} pagination={{
+                        showSizeChanger: false,
+                        onChange: (page, pageSize) => {
+                            setPage2(page);
+                        },
+                        total: PaymentHistory?.total || 0,
+                        pageSize: 10
+                    }} columns={columns} />
                 </div>
             </Modal>
         </>

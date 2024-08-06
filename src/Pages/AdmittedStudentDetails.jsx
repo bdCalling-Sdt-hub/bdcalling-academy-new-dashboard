@@ -1,20 +1,21 @@
 import React from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdArrowForwardIos } from 'react-icons/md'
+import { useParams } from 'react-router-dom'
 
 const AdmittedStudentDetails = () => {
     const data = [
         {
             'Full Name': 'siyam',
             'Mobile': '+2148619056484',
-            'Email':'shaharulsiyam@gmail.com',
-            'Batch ID':'B32982',
-            'Gender':'male',
-            'Date of Birth':'02/26/2002',
-            'Department':'Frontend ',
-            'Blood Group':'o+',
-            'Address':'Dhaka',
-            'Religion':'islam'
+            'Email': 'shaharulsiyam@gmail.com',
+            'Batch ID': 'B32982',
+            'Gender': 'male',
+            'Date of Birth': '02/26/2002',
+            'Department': 'Frontend ',
+            'Blood Group': 'o+',
+            'Address': 'Dhaka',
+            'Religion': 'islam'
         }
     ];
     return (

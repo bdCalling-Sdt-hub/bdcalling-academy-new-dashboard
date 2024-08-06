@@ -1,326 +1,163 @@
-import { FaEye, FaEyeSlash, FaPlus } from "react-icons/fa6"
+import { FaPlus } from "react-icons/fa6"
 import PageHeading from "../Components/Shared/PageHeading"
 import AdminCard from "../Components/Cards/AdminCard"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Modal } from "antd"
+import { Modal, Pagination } from "antd"
 import { useForm } from "react-hook-form"
-import UpdateInput from "../Components/Input/UpdateInput"
-import { FaEdit } from "react-icons/fa"
 import CreateUsersForm from "../Components/Forms/CreateUsersForm"
-const AdminData = [
-    {
-        _id: '1',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '2',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '3',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '4',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '5',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '6',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '7',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '8',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '9',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '10',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '11',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '12',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '13',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '14',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '15',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '16',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '19',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '20',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-    {
-        _id: '21',
-        profile: 'https://i.ibb.co/YW6R8wc/Ellipse-977.png',
-        name: 'Md. Shamim Miah',
-        designation: 'Department Head AGM',
-        expert: 'Certified Lead Generation-Data Entry Expert',
-        userName: 'john doe',
-        number: +898236092374,
-        email: 'bgcalling@gmail.com',
-        password: '204iwef',
-
-        category: 'super admin',
-    },
-]
-const CategoryOptions = ['Admin', 'Super Admin','Mentor']
+import usePostRequest from "../Hooks/usePostRequest"
+import useGetRequest from "../Hooks/useGetRequest"
+import ProfileImage from '../assets/corporate-user-icon.webp'
+import { imageUrl } from "../AxiosConfig/useAxiosConfig"
+import usePatchRequest from "../Hooks/usePatchRequest"
+import useDeleteRequest from "../Hooks/useDeleteRequest"
+import toast from "react-hot-toast"
 const CreateMentors = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
-    const totalData = AdminData.length
-    const [itemPerPage, setItemPerPage] = useState(8)
-    const totalPage = Math.ceil(totalData / itemPerPage)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm()
-    const onSubmit = (data) => console.log(data)
+    const { register, handleSubmit, formState: { errors } } = useForm()
+    const [creatingUser, setCreatingUser] = useState(true)
+    const { mutate, isLoading, data, error } = usePostRequest('mentors', '/teachers');
+    const { mutate: updateAdmin, isLoading: updateLoading, data: updateData, } = usePatchRequest('mentors', `/teachers/${filterdData?._id}`);
+    const { mutate: DeleteAdmin, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('mentors', `/teachers/${filterdData?._id}`);
+    const [requestingUser, Admins, adminError, refetch, isError] = useGetRequest('mentors', `/teachers?page=${page}`)
+    const CategoryOptions = Category?.data?.data?.map(item => {
+        return { name: item?.category_name, value: item?.id }
+    })
+    const AdminData = Admins?.teacher?.data?.map((item) => {
+        return {
+            _id: item?.id,
+            profile: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
+            name: item?.user?.name,
+            designation: item?.designation,
+            expert: item?.expert,
+            userName: item?.user?.name,
+            number: item?.phone_number,
+            email: item?.user?.email,
+        }
+    },)
+    // console.log(AdminData)
+    // add and update user 
+    const onSubmit = (value) => {
+        if (creatingUser) {
+            const AdminData = {
+                name: value?.name,
+                role: 'MENTOR',
+                password_confirmation: value?.Cpassword,
+                password: value?.password,
+                email: value?.email,
+                designation: value?.designation,
+                expert: value?.expert,
+                phone_number: value?.number,
+                course_category_id: value?.category
+            }
+            const formData = new FormData()
+            Object.keys(AdminData).map(key => {
+                formData.append(key, AdminData[key])
+            })
+            if (image) {
+                formData.append('image', image)
+            }
+            mutate(formData)
+        } else {
+            const AdminData = {
+                name: value?.name,
+                role: 'MENTOR',
+                email: value?.email,
+                designation: value?.designation,
+                expertise: value?.expert,
+                _method: 'PUT',
+                phone_number: value?.number,
+                course_category_id: value?.category
+            }
+            const formData = new FormData()
+            Object.keys(AdminData).map(key => {
+                formData.append(key, AdminData[key])
+            })
+            if (image) {
+                formData.append('image', image)
+            }
+            updateAdmin(formData)
+        }
+    }
+
+    // reset form 
+    useEffect(() => {
+        if (isLoading || updateLoading || DeleteLoading) return
+        if (data || updateData || DeleteData) {
+            setFilterdData({})
+            setOpenAddModal(false)
+            refetch()
+        }
+    }, [data, isLoading, updateData, updateLoading, DeleteData, DeleteLoading])
+
+    // filter targeted element
     const handelEdit = (id) => {
+        setCreatingUser(false)
         setImage(null)
         const newData = AdminData.filter(item => item._id === id)
         setFilterdData(newData[0])
         setOpenAddModal(true)
     }
+    const handleDelete = (id) => {
+        const newData = AdminData.filter(item => item._id === id)
+        setFilterdData(newData[0])
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete {filterdData?.name}</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteAdmin()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
+    }
+    // update form inputs 
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
     const [image, setImage] = useState(null);
-
     return (
         <>
             <div className="between-center gap-2">
                 <div className="start-center gap-4 cursor-pointer">
                     <PageHeading text={`Mentors List`} />
-                    <select className="w-[200px] p-2 border outline-none" name="">
+                    {/* <select className="w-[200px] p-2 border outline-none" name="">
                         <option value="all mentors">All Mentors</option>
                         <option value="all mentors">All Mentors</option>
                         <option value="all mentors">All Mentors</option>
                         <option value="all mentors">All Mentors</option>
-                    </select>
+                    </select> */}
                 </div>
                 <div className="flex justify-end items-center w-fit">
                     <button onClick={() => {
                         setFilterdData({})
                         setOpenAddModal(true)
+                        setCreatingUser(true)
                     }} className="btn-primary min-w-[150px]"><FaPlus /> Add Mentor</button>
                 </div>
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map((item, index) => <AdminCard key={index} item={item}  handelEdit={handelEdit} />)
+                    AdminData?.map((item, index) => <AdminCard handleDelete={handleDelete} key={index} item={item} handelEdit={handelEdit} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
-                <button onClick={() => {
-                    navigate(`/create-mentors?page=${Number(page) - 1}`)
-                    setPage(Number(page) - 1)
-                }} disabled={page == '0'} className={`rounded-sm bg-[var(--primary-bg)] m-1 h-10 w-16 block text-white`}>prev</button>
-                {
-                    [...Array(totalPage).keys()].map(item => <Link key={item} onClick={() => setPage(item)} to={`/create-mentors?page=${item}`}>
-                        <button className={`rounded-sm m-1 h-10 w-10 block ${page == item ? 'bg-[var(--primary-bg)] text-white' : 'bg-white'}`} key={item}>{item + 1}</button>
-                    </Link>)
-                }
-                <button disabled={page == totalPage - 1} onClick={() => {
-                    navigate(`/create-mentors?page=${Number(page) + 1}`)
-                    setPage(Number(page) + 1)
-                }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
+
+                <Pagination defaultCurrent={page} pageSize={8} total={Admins?.teacher?.total} showSizeChanger={false} onChange={(page, pageSize) => {
+                    setPage(page)
+                }} />
             </div>
             <Modal
                 centered
@@ -329,7 +166,7 @@ const CreateMentors = () => {
                 open={OpenAddModal}
                 width={600}
             >
-                 <CreateUsersForm setOpenAddModal={setOpenAddModal} image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
+                <CreateUsersForm creatingUser={creatingUser} setOpenAddModal={setOpenAddModal} image={image} setImage={setImage} filterdData={filterdData} inputHandeler={inputHandeler} register={register}
                     handleSubmit={handleSubmit} errors={errors} onSubmit={onSubmit} CategoryOptions={CategoryOptions} />
             </Modal>
         </>

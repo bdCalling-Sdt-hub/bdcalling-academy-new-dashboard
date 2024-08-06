@@ -1,209 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import ClassRoutineForm from '../Components/Forms/ClassRoutineForm'
-import { DatePicker, Form, Table, TimePicker } from 'antd'
+import { DatePicker, Form, Input, Modal, Select, Table, TimePicker } from 'antd'
 import { FaSearch } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
-import { RxCross1 } from 'react-icons/rx'
-const routineData = [
-    {
-        "examName": "Mobile Application UI Design",
-        "trainer": "John Doe",
-        "batchNo": "B123",
-        "time": "10:00 AM - 1:00 PM",
-        "days": "Saturday",
-        "date": "2024-06-10"
-    },
-    {
-        "examName": "Web Development Fundamentals",
-        "trainer": "Jane Smith",
-        "batchNo": "W101",
-        "time": "2:00 PM - 5:00 PM",
-        "days": "Sunday",
-        "date": "2024-06-11"
-    },
-    {
-        "examName": "Data Science Basics",
-        "trainer": "Alice Johnson",
-        "batchNo": "D456",
-        "time": "9:00 AM - 12:00 PM",
-        "days": "Monday",
-        "date": "2024-06-12"
-    },
-    {
-        "examName": "Digital Marketing Strategies",
-        "trainer": "Bob Brown",
-        "batchNo": "M789",
-        "time": "3:00 PM - 6:00 PM",
-        "days": "Tuesday",
-        "date": "2024-06-13"
-    },
-    {
-        "examName": "Cloud Computing Essentials",
-        "trainer": "Charlie Davis",
-        "batchNo": "C101",
-        "time": "11:00 AM - 2:00 PM",
-        "days": "Wednesday",
-        "date": "2024-06-14"
-    },
-    {
-        "examName": "Cybersecurity Basics",
-        "trainer": "Diana Evans",
-        "batchNo": "S102",
-        "time": "1:00 PM - 4:00 PM",
-        "days": "Thursday",
-        "date": "2024-06-15"
-    },
-    {
-        "examName": "Machine Learning Introduction",
-        "trainer": "Ethan Green",
-        "batchNo": "ML103",
-        "time": "4:00 PM - 7:00 PM",
-        "days": "Friday",
-        "date": "2024-06-16"
-    },
-    {
-        "examName": "Artificial Intelligence Overview",
-        "trainer": "Fiona Harris",
-        "batchNo": "AI104",
-        "time": "10:00 AM - 1:00 PM",
-        "days": "Saturday",
-        "date": "2024-06-17"
-    },
-    {
-        "examName": "Blockchain Technology",
-        "trainer": "George Johnson",
-        "batchNo": "BC105",
-        "time": "2:00 PM - 5:00 PM",
-        "days": "Sunday",
-        "date": "2024-06-18"
-    },
-    {
-        "examName": "Internet of Things (IoT)",
-        "trainer": "Hannah King",
-        "batchNo": "IOT106",
-        "time": "9:00 AM - 12:00 PM",
-        "days": "Monday",
-        "date": "2024-06-19"
-    },
-    {
-        "examName": "Big Data Analytics",
-        "trainer": "Ian Lewis",
-        "batchNo": "BD107",
-        "time": "3:00 PM - 6:00 PM",
-        "days": "Tuesday",
-        "date": "2024-06-20"
-    },
-    {
-        "examName": "DevOps Practices",
-        "trainer": "Jack Martinez",
-        "batchNo": "DO108",
-        "time": "11:00 AM - 2:00 PM",
-        "days": "Wednesday",
-        "date": "2024-06-21"
-    },
-    {
-        "examName": "Mobile Game Development",
-        "trainer": "Karen Nelson",
-        "batchNo": "MG109",
-        "time": "1:00 PM - 4:00 PM",
-        "days": "Thursday",
-        "date": "2024-06-22"
-    },
-    {
-        "examName": "UI/UX Design Principles",
-        "trainer": "Leo Olson",
-        "batchNo": "UX110",
-        "time": "4:00 PM - 7:00 PM",
-        "days": "Friday",
-        "date": "2024-06-23"
-    },
-    {
-        "examName": "Software Testing Methods",
-        "trainer": "Mia Peterson",
-        "batchNo": "ST111",
-        "time": "10:00 AM - 1:00 PM",
-        "days": "Saturday",
-        "date": "2024-06-24"
-    },
-    {
-        "examName": "Graphic Design Basics",
-        "trainer": "Noah Quinn",
-        "batchNo": "GD112",
-        "time": "2:00 PM - 5:00 PM",
-        "days": "Sunday",
-        "date": "2024-06-25"
-    },
-    {
-        "examName": "IT Project Management",
-        "trainer": "Olivia Roberts",
-        "batchNo": "PM113",
-        "time": "9:00 AM - 12:00 PM",
-        "days": "Monday",
-        "date": "2024-06-26"
-    },
-    {
-        "examName": "Networking Fundamentals",
-        "trainer": "Paul Smith",
-        "batchNo": "NW114",
-        "time": "3:00 PM - 6:00 PM",
-        "days": "Tuesday",
-        "date": "2024-06-27"
-    },
-    {
-        "examName": "Agile Methodologies",
-        "trainer": "Quinn Taylor",
-        "batchNo": "AM115",
-        "time": "11:00 AM - 2:00 PM",
-        "days": "Wednesday",
-        "date": "2024-06-28"
-    },
-    {
-        "examName": "Business Intelligence",
-        "trainer": "Ryan Wilson",
-        "batchNo": "BI116",
-        "time": "1:00 PM - 4:00 PM",
-        "days": "Thursday",
-        "date": "2024-06-29"
-    }
-]
+import { RxCross1, RxCross2 } from 'react-icons/rx'
+import useGetRequest from '../Hooks/useGetRequest'
+import usePatchRequest from '../Hooks/usePatchRequest'
+import toast from 'react-hot-toast'
+import useDeleteRequest from '../Hooks/useDeleteRequest'
+
 
 const ClassRoutine = () => {
+    const [page, setPage] = useState(1)
+    const [filterData, setFilterData] = useState({})
+    const [filterBy, setFilterBy] = useState()
+    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
+    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
+    const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
+    const routineData = Routine?.data?.data?.map(item => {
+        return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
+    })
     const [form] = Form.useForm();
+    const [date, setDate] = useState(undefined)
+    const [filterDate, setFilterDate] = useState()
     const onFinish = (values) => {
-        console.log('Success:', values);
+        setFilterBy({ ...values, date: filterDate });
     };
-
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [time, setTime] = useState([])
 
     const onChange = (field, date, dateString) => {
-        // console.log(field, date, dateString);
+        setFilterDate(dateString);
     };
     const columns = [
         {
-            title: 'Exam Name',
-            dataIndex: 'examName',
-            key: 'examName',
+            title: 'Module Name',
+            dataIndex: 'moduleName',
+            key: 'moduleName',
         },
         {
-            title: 'Trainer Name',
-            dataIndex: 'trainer',
-            key: 'trainer',
+            title: 'Batch',
+            dataIndex: 'batch',
+            key: 'batch',
         },
         {
-            title: 'Batch No',
-            dataIndex: 'batchNo',
-            key: 'batchNo',
+            title: 'Batch ID ',
+            dataIndex: 'batchID',
+            key: 'batchID',
         },
         {
             title: 'Select Time',
             dataIndex: 'time',
             key: 'time',
-        },
-        {
-            title: 'Days',
-            dataIndex: 'days',
-            key: 'days',
         },
         {
             title: 'Select Date',
@@ -215,13 +65,54 @@ const ClassRoutine = () => {
             dataIndex: 'examName',
             render: (_, record) => <div className='start-center gap-4 text-2xl'>
                 <FiEdit className="text-[#2492EB] cursor-pointer hover:scale-105 active:scale-95 transition-all" onClick={() => {
+                    setFilterData(record)
+                    setOpenEditModal(true)
                 }} /> <RxCross1 className='text-red-600 cursor-pointer hover:scale-105 active:scale-95 transition-all' onClick={() => {
                     // console.log(record._id)
+                    setFilterData(record)
+                    handleDelete()
                 }} />
             </div>,
             key: 'exam',
         },
     ];
+    const onDateSelect = (field, date, dateString) => {
+        setDate(dateString);
+    };
+    const onTimeSelect = (time, timeString) => {
+        setTime(timeString)
+    }
+    const onUpdateRoutine = (values) => {
+        const data = {
+            date: date,
+            time: `${time[0]}-${time[1]}`
+        }
+
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        formData.append('_method', 'PUT')
+        updateRoutine(formData)
+    };
+    const handleDelete = () => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete this routine</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteRoutine()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
+    }
     return (
         <>
             <PageHeading text={`Class Routine`} />
@@ -243,31 +134,92 @@ const ClassRoutine = () => {
                         <div className='flex justify-start items-center gap-4'>
                             <Form.Item
                                 label={false}
-                                name="CourseName">
-                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Exam..." />
+                                name="moduleName">
+                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="module Name..." />
                             </Form.Item>
                             <Form.Item
                                 label={false}
-                                name="CourseName">
+                                name="batch_id">
                                 <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
                             </Form.Item>
-                            <Form.Item
+                            {/* <Form.Item
                                 label={false}
                             >
                                 <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
                                     onChange('start', date, dateString)
                                 }} />
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item >
-                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)]' type="submit" >
+                                <button className='text-white p-3 rounded-full text-xl bg-[var(--primary-bg)] mr-3' type="submit" >
                                     <FaSearch />
+                                </button>
+                                <button type='button' onClick={() => {
+                                    setFilterBy({})
+                                }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
+                                    <RxCross2 />
                                 </button>
                             </Form.Item>
                         </div>
                     </Form>
-                    <Table dataSource={routineData} columns={columns} />
+                    <Table dataSource={routineData} pagination={{
+                        total: Routine?.data?.total || 0,
+                        pageSize: 10,
+                        onChange: (page, pageSize) => setPage(page)
+                    }} columns={columns} />
                 </div>
             </div>
+            <Modal
+                onCancel={() => setOpenEditModal(false)}
+                open={openEditModal}
+                centered
+                footer={false}
+            >
+                <Form
+                    layout={'vertical'}
+                    form={form}
+                    onFinish={onUpdateRoutine}
+                >
+
+                    <div>
+                        <span className="text-base font-bold text-[#333333]">Course name</span>
+                        <p className='mb-2 text-base p-2 border rounded-md text-gray-400 select-none cursor-not-allowed'>{filterData?.moduleName}</p>
+                    </div>
+                    <div>
+                        <span className="text-base font-bold text-[#333333]">batch</span>
+                        <p className='mb-2 text-base p-2 border rounded-md text-gray-400 select-none cursor-not-allowed'>{filterData?.batch}</p>
+                    </div>
+                    <Form.Item
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input time',
+                            },
+                        ]}
+                        label={<span className="text-base font-bold text-[#333333]">Select Time</span>}
+                        name="time">
+                        <TimePicker.RangePicker onChange={onTimeSelect} className='w-full h-[43px]' />
+                    </Form.Item>
+                    <Form.Item
+                        name={`date`}
+                        label={<span className="text-base font-bold text-[#333333]">Select Date</span>}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input date',
+                            },
+                        ]}>
+                        <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
+                            onDateSelect('date', date, dateString)
+                        }} />
+                    </Form.Item>
+                    <Form.Item >
+                        <div className='start-center gap-4' >
+                            <input type="submit" value={`Save`} className='btn-primary max-w-44 cursor-pointer' />
+
+                        </div>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </>
     )
 }
