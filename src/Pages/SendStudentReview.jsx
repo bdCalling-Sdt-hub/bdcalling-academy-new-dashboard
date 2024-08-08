@@ -2,10 +2,15 @@ import { Form, Modal } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import React, { useState } from 'react'
 import { FaStar } from 'react-icons/fa'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const SendStudentReview = () => {
     const [rating, setRating] = useState(5)
     const [open, setOpen] = useState(false)
+
+    const [loading, data , error] = useGetRequest('studentReview','/show-student-feedback');
+    console.log(data)
+
     return (
         <div>
             <div className='flex justify-between items-center gap-2'>

@@ -6,25 +6,38 @@ import TextArea from 'antd/es/input/TextArea'
 import { CgFileDocument } from 'react-icons/cg'
 import useGetRequest from '../Hooks/useGetRequest'
 import { useParams } from 'react-router-dom'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 const StudentsCourse = () => {
     const { id } = useParams()
     const [rating, setRating] = useState(5)
-    const [requestingModule, Module, ModuleError,] = useGetRequest('all-module', `/course-modul-video/${id}`)
+
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
+    const [videoUrl, setVideoUrl] = useState(Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[0]?.video_url)
+
+    const handleNextVideoButton =()=>{
+        
+    }
+
+    const handlePreviousButton =()=>{
+        
+    }
+    console.log(Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[0]?.video_url)
     return (
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>
                 <div className='card-shadow h-[500px] card-shadow rounded-md overflow-hidden mb-3'>
+                    <iframe className='w-full h-[400px]' src={videoUrl} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
                 <div className='between-center gap-2'>
                     <div className='start-center gap-2'>
-                        <img className='w-10 h-10 rounded-full' src={ProfileImage} alt="" />
+                        {/* <img className='w-10 h-10 rounded-full' src={`http://192.168.10.232:7000/adminAsset/image/379582754.jpeg`} alt="No Image" /> */}
                         <p><span className='text-gray-400'>Trainer:</span> Ashraful Islam</p>
                     </div>
                     <div className='flex justify-end items-center gap-2'>
-                        <button className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={()=>handlePreviousButton()} className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
                             <FaArrowLeft />  Previous
                         </button>
-                        <button className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={()=>handleNextVideoButton()} className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
                             Next <FaArrowRight />
                         </button>
                     </div>
