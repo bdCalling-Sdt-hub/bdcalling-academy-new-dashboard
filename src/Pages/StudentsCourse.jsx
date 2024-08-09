@@ -38,7 +38,7 @@ const StudentsCourse = () => {
         const data = {
             rating_value: rating,
             course_id: Course?.[0]?.batch?.course_id,
-            student_id: Course?.[0]?.student_id,
+            // student_id: Course?.[0]?.student_id,
             batch_id: Course?.[0]?.batch_id,
             message: values.message,
         };

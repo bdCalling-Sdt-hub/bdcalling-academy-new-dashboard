@@ -1,13 +1,14 @@
 import React from 'react'
 
 const TrainerFeedback = () => {
+
     return (
         <div>
             <p className='text-2xl font-semibold my-6'>Trainer All Feedback</p>
             <div className='grid grid-cols-3 gap-5'>
                 {
-                    [...Array(6).keys()].map(item => {
-                        return <div className='card-shadow p-4 rounded-md' key={item}>
+                    reviews.map(item => {
+                        return <div className='card-shadow p-4 rounded-md' key={item?.id}>
                             <div className='flex justify-start items-center gap-2'>
                                 <img className='h-10 w-10 rounded-full' src="https://i.ibb.co/1GH871B/blank-profile-picture-973460-960-720.webp" alt="" />
                                 <p>shaharul siyam</p>
