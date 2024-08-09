@@ -8,6 +8,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import usePostRequest from '../Hooks/usePostRequest';
 import VideoCourseExamQuestion from './VideoCourseExamQuestion';
 import toast from 'react-hot-toast';
+import useGetRequest from '../Hooks/useGetRequest';
+import { Select } from 'antd';
 function generateRandomNumber() {
     const randomNumber = Array.from({ length: 5 }, () => Math.floor(Math.random() * 10)).join('');
     return randomNumber;
@@ -15,19 +17,21 @@ function generateRandomNumber() {
 
 
 const TeacherAddModule = () => {
-    const { id } = useParams()
+    // const { id } = useParams()
     const [query, setQuery] = useState(new URLSearchParams(window.location.search));
     const { mutate: addModule, isLoading: moduleLoading, data: moduleData, error: moduleError } = usePostRequest('module', '/add-module');
+    const [batchID, setBatchID] = useState()
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Teacher_Batch', `/teacher-batch`)
+    const BatchOptions = Batch?.map(item => {
+        return { label: item?.batch_name, value: item?.id }
+    }) || []
     const [formFor, setFormFor] = useState('video')
-    // const totalexam = [
-    //     { id: '34562', },
-    // ]
+
     const totalVideo = [
         { id: '34562', },
     ]
     const navigate = useNavigate()
     const [totalVideos, settotalVideos] = useState(totalVideo)
-    // const [totalExams, settotalExams] = useState(totalexam)
     const [deleteID, setDeleteID] = useState([])
     const [ExamName, setExamName] = useState(null)
     const [Questions, setQuestions] = useState([])
@@ -57,9 +61,10 @@ const TeacherAddModule = () => {
                 })
             })
         })
+        const singleBatch = Batch.filter(item => item.id == batchID)
         const module_class = videos.filter(item => (item.name !== '' && item.video !== ''))
         const moduleData = {
-            course_id: id,
+            course_id: singleBatch?.[0]?.course_id,
             module_class: JSON.stringify(module_class),
             module_title: data?.moduleName
         }
@@ -78,7 +83,7 @@ const TeacherAddModule = () => {
             return
         }
         if (moduleData && !moduleError) {
-            return navigate(`/${query.get('redirect')}?type=${query.get('type')}&course=${query.get('course')}`)
+            return navigate(-1)
         }
     }, [moduleLoading, moduleError, moduleData])
     const inputHandeler = (e, name) => {
@@ -91,8 +96,12 @@ const TeacherAddModule = () => {
                 <p className='text-[#333333] font-medium '>Home</p> <MdOutlineKeyboardArrowRight className='text-xl' /> <p>Students Provide Class video </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='p-6 bg-white rounded-md my-3'>
+
                 <div className='grid-2'>
-                    <Input status={errors} lebel={`Course Name`} classNames={`border pointer-events-none`} defaultValue={query.get('course')} placeholder={`Certified graphics designer`} rules={{ ...register("courseName", { required: true }) }} />
+                    <div>
+                        <p className='mb-2'>Batch</p>
+                        <Select onChange={(value) => setBatchID(value)} options={BatchOptions} placeholder='select batch' className='outline-none w-full h-[43px]  rounded-md' />
+                    </div>
                     <Input status={errors} lebel={`Module Name`} classNames={`border`} placeholder={`introduction & design theory`} rules={{ ...register("moduleName", { required: true }) }} />
                     {
                         totalVideos.map(item => <div className='col-span-2 grid-2' key={item?.id}>

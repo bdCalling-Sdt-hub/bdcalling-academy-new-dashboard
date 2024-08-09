@@ -68,7 +68,7 @@ const TeacherUpdateVideo = () => {
             return
         }
         if (moduleData && !moduleError) {
-            return navigate(`/${query.get('redirect')}?type=${query.get('type')}&course=${query.get('course')}`)
+            return navigate(-1)
         }
     }, [moduleLoading, moduleError, moduleData])
     useEffect(() => {
@@ -88,8 +88,9 @@ const TeacherUpdateVideo = () => {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='p-6 bg-white rounded-md my-3'>
                 <div className='grid-2'>
-                    <Input status={errors} lebel={`Course Name`} classNames={`border pointer-events-none`} defaultValue={query.get('course')} placeholder={`Certified graphics designer`} rules={{ ...register("courseName", { required: false }) }} />
-                    <Input status={errors} lebel={`Module Name`} defaultValue={Module?.data?.module_title || ''} classNames={`border`} placeholder={`introduction & design theory`} rules={{ ...register("moduleName", { required: true }) }} />
+                    <div className='col-span-2'>
+                        <Input status={errors} lebel={`Module Name`} defaultValue={Module?.data?.module_title || ''} classNames={`border`} placeholder={`introduction & design theory`} rules={{ ...register("moduleName", { required: true }) }} />
+                    </div>
                     {
                         totalVideos.map(item => <div className='col-span-2 grid-2' key={item?.id}>
                             <Input status={errors} lebel={`Enter  Video name`} classNames={`border`} placeholder={`Introduction to Dart & Dart Cheatsheet`} defaultValue={item?.name || ''} rules={{ ...register(`videoName-${item?.id}`, { required: true }) }} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowLeft, FaArrowRight, FaPlay, FaStar } from 'react-icons/fa'
 import ProfileImage from '../assets/corporate-user-icon.webp'
 import { Form } from 'antd'
@@ -6,25 +6,86 @@ import TextArea from 'antd/es/input/TextArea'
 import { CgFileDocument } from 'react-icons/cg'
 import useGetRequest from '../Hooks/useGetRequest'
 import { useParams } from 'react-router-dom'
+import { useUserData } from '../Providers/UserProviders/UserProvider'
+import usePostRequest from '../Hooks/usePostRequest'
+
+
+
 const StudentsCourse = () => {
     const { id } = useParams()
-    const [rating, setRating] = useState(5)
-    const [requestingModule, Module, ModuleError,] = useGetRequest('all-module', `/course-modul-video/${id}`)
+    const [rating, setRating] = useState(0)
+    const [form] = Form.useForm();
+    const [formData, setData] = useState(null);
+
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
+    const { mutate, isLoading, data, error } = usePostRequest('review', '/reviews');
+    const { useData, loading, isError } = useUserData();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const videoUrl = Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[currentIndex]?.video_url;
+    const handleNextVideoButton = () => {
+        if (currentIndex < Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+        }
+    }
+
+    const handlePreviousButton = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+        }
+    }
+    const handleUserReviewFormValue = (values) => {
+        const data = {
+            rating_value: rating,
+            course_id: Course?.[0]?.batch?.course_id,
+            // student_id: Course?.[0]?.student_id,
+            batch_id: Course?.[0]?.batch_id,
+            message: values.message,
+        };
+
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        mutate(formData)
+    }
+
+    
+
+    useEffect(() => {
+        if (formData) {
+            form.resetFields();
+            setRating(0); 
+        }
+    }, [data])
     return (
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>
                 <div className='card-shadow h-[500px] card-shadow rounded-md overflow-hidden mb-3'>
+
+                    {videoUrl && (
+                        <iframe
+                            className="w-full object-contain h-full"
+                            src={videoUrl}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        ></iframe>
+                    )}
+
+
                 </div>
                 <div className='between-center gap-2'>
                     <div className='start-center gap-2'>
-                        <img className='w-10 h-10 rounded-full' src={ProfileImage} alt="" />
                         <p><span className='text-gray-400'>Trainer:</span> Ashraful Islam</p>
                     </div>
                     <div className='flex justify-end items-center gap-2'>
-                        <button className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={() => handlePreviousButton()} disabled={currentIndex === 0} className={` flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             <FaArrowLeft />  Previous
                         </button>
-                        <button className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={() => handleNextVideoButton()} disabled={currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1} className={`flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             Next <FaArrowRight />
                         </button>
                     </div>
@@ -35,23 +96,32 @@ const StudentsCourse = () => {
                     </button>
                 </div>
                 <p className="text-2xl font-medium my-6 uppercase">WRITE YOUR OWN REVIEW</p>
-                <p>Course Rating:</p>
-                <div className='start-center text-2xl  gap-1 my-1'>
-                    {
-                        [...Array(5).keys()].map(item => {
-                            return <FaStar onClick={() => {
-                                setRating(item + 1)
-                            }} key={item} className={`${item < rating ? "text-yellow-500" : "text-gray-400"} cursor-pointer`} />
-                        })
-                    }
-                </div>
                 <Form
                     layout='vertical'
-                    onFinish={(values) => {
-                    }}
+                    onFinish={handleUserReviewFormValue}
                 >
+
+
                     <Form.Item
-                        name={`feedback`}
+                        name='rating' // Add rating to form fields
+                        label={<span className='text-base'>Course Rating:</span>}
+                    >
+                        <div className='start-center text-2xl gap-1 my-1'>
+                            {
+                                [...Array(5).keys()].map(item => (
+                                    <FaStar
+                                        onClick={() => setRating(item + 1)}
+                                        key={item}
+                                        className={`${item < rating ? "text-yellow-500" : "text-gray-400"} cursor-pointer`}
+                                    />
+                                ))
+                            }
+                        </div>
+                        {/* Use a hidden input to pass rating value */}
+                        <input type='hidden' name='rating' value={rating} />
+                    </Form.Item>
+                    <Form.Item
+                        name={`message`}
                         label={<span className='text-base'>Review Message</span>}
                     >
                         <TextArea style={{
@@ -75,13 +145,13 @@ const StudentsCourse = () => {
                         <p className='text-base'>02:30 Hours</p>
                     </div>
                     {
-                        [...Array(8).keys()].map((item, i) => {
-                            return <div className='between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2' key={i}>
-                                <div className='start-center gap-2'>
-                                    <button className='text-blue-500 text-lg p-2 rounded-full bg-blue-100'>
+                        Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.map((item, i) => {
+                            return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex === i ? "bg-blue-500 text-white" : ""} `} onClick={() => setCurrentIndex(i)} key={i}>
+                                <div className='start-center gap-2 '>
+                                    <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
                                         <FaPlay />
                                     </button>
-                                    <p>Mentor Introducing</p>
+                                    <p>{item?.name}</p>
                                 </div>
                                 <p>1:00</p>
                             </div>
@@ -94,7 +164,7 @@ const StudentsCourse = () => {
                             </button>
                             <p>Mentor Introducing</p>
                         </div>
-                        <p className='text-green-600'>6/10</p>
+                        <p className='text-green-600'>{currentIndex + 1}/{Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length}</p>
                     </div>
                 </div>
             </div>
