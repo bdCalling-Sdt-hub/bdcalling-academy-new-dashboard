@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowLeft, FaArrowRight, FaPlay, FaStar } from 'react-icons/fa'
 import ProfileImage from '../assets/corporate-user-icon.webp'
 import { Form } from 'antd'
@@ -7,37 +7,56 @@ import { CgFileDocument } from 'react-icons/cg'
 import useGetRequest from '../Hooks/useGetRequest'
 import { useParams } from 'react-router-dom'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import VideoPlayer from '../Components/VideoPlayer/videoPlayer'
+
+
+
 const StudentsCourse = () => {
     const { id } = useParams()
     const [rating, setRating] = useState(5)
 
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
-    const [videoUrl, setVideoUrl] = useState(Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[0]?.video_url)
-
-    const handleNextVideoButton =()=>{
-        
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const videoUrl = Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[currentIndex]?.video_url;
+    const handleNextVideoButton = () => {
+        if (currentIndex < Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+          }
     }
 
-    const handlePreviousButton =()=>{
-        
+    const handlePreviousButton = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+          }
     }
-    console.log(Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[0]?.video_url)
     return (
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>
                 <div className='card-shadow h-[500px] card-shadow rounded-md overflow-hidden mb-3'>
-                    <iframe className='w-full h-[400px]' src={videoUrl} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                    {videoUrl && (
+                        <iframe
+                            className="w-full object-contain h-full"
+                            src={videoUrl}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        ></iframe>
+                    )}
+
+                   
                 </div>
                 <div className='between-center gap-2'>
                     <div className='start-center gap-2'>
-                        {/* <img className='w-10 h-10 rounded-full' src={`http://192.168.10.232:7000/adminAsset/image/379582754.jpeg`} alt="No Image" /> */}
                         <p><span className='text-gray-400'>Trainer:</span> Ashraful Islam</p>
                     </div>
                     <div className='flex justify-end items-center gap-2'>
-                        <button onClick={()=>handlePreviousButton()} className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={() => handlePreviousButton()} disabled={currentIndex === 0} className={` flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             <FaArrowLeft />  Previous
                         </button>
-                        <button onClick={()=>handleNextVideoButton()} className='flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 '>
+                        <button onClick={() => handleNextVideoButton()} disabled={currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1} className={`flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                             Next <FaArrowRight />
                         </button>
                     </div>
@@ -88,13 +107,13 @@ const StudentsCourse = () => {
                         <p className='text-base'>02:30 Hours</p>
                     </div>
                     {
-                        [...Array(8).keys()].map((item, i) => {
-                            return <div className='between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2' key={i}>
-                                <div className='start-center gap-2'>
-                                    <button className='text-blue-500 text-lg p-2 rounded-full bg-blue-100'>
+                        Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.map((item, i) => {
+                            return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex === i ? "bg-blue-500 text-white" :""} `} onClick={()=>setCurrentIndex(i)}  key={i}>
+                                <div className='start-center gap-2 '>
+                                    <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
                                         <FaPlay />
                                     </button>
-                                    <p>Mentor Introducing</p>
+                                    <p>{item?.name}</p>
                                 </div>
                                 <p>1:00</p>
                             </div>
@@ -107,7 +126,7 @@ const StudentsCourse = () => {
                             </button>
                             <p>Mentor Introducing</p>
                         </div>
-                        <p className='text-green-600'>6/10</p>
+                        <p className='text-green-600'>{currentIndex + 1}/{Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length}</p>
                     </div>
                 </div>
             </div>
