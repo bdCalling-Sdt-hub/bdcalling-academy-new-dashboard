@@ -6,29 +6,58 @@ import TextArea from 'antd/es/input/TextArea'
 import { CgFileDocument } from 'react-icons/cg'
 import useGetRequest from '../Hooks/useGetRequest'
 import { useParams } from 'react-router-dom'
-import { imageUrl } from '../AxiosConfig/useAxiosConfig'
-import VideoPlayer from '../Components/VideoPlayer/videoPlayer'
+import { useUserData } from '../Providers/UserProviders/UserProvider'
+import usePostRequest from '../Hooks/usePostRequest'
 
 
 
 const StudentsCourse = () => {
     const { id } = useParams()
-    const [rating, setRating] = useState(5)
+    const [rating, setRating] = useState(0)
+    const [form] = Form.useForm();
+    const [formData, setData] = useState(null);
 
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
+    const { mutate, isLoading, data, error } = usePostRequest('review', '/reviews');
+    const { useData, loading, isError } = useUserData();
     const [currentIndex, setCurrentIndex] = useState(0);
+
     const videoUrl = Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[currentIndex]?.video_url;
     const handleNextVideoButton = () => {
         if (currentIndex < Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1) {
             setCurrentIndex(currentIndex + 1);
-          }
+        }
     }
 
     const handlePreviousButton = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
-          }
+        }
     }
+    const handleUserReviewFormValue = (values) => {
+        const data = {
+            rating_value: rating,
+            course_id: Course?.[0]?.batch?.course_id,
+            student_id: Course?.[0]?.student_id,
+            batch_id: Course?.[0]?.batch_id,
+            message: values.message,
+        };
+
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        mutate(formData)
+    }
+
+    
+
+    useEffect(() => {
+        if (formData) {
+            form.resetFields();
+            setRating(0); 
+        }
+    }, [data])
     return (
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>
@@ -46,7 +75,7 @@ const StudentsCourse = () => {
                         ></iframe>
                     )}
 
-                   
+
                 </div>
                 <div className='between-center gap-2'>
                     <div className='start-center gap-2'>
@@ -67,23 +96,32 @@ const StudentsCourse = () => {
                     </button>
                 </div>
                 <p className="text-2xl font-medium my-6 uppercase">WRITE YOUR OWN REVIEW</p>
-                <p>Course Rating:</p>
-                <div className='start-center text-2xl  gap-1 my-1'>
-                    {
-                        [...Array(5).keys()].map(item => {
-                            return <FaStar onClick={() => {
-                                setRating(item + 1)
-                            }} key={item} className={`${item < rating ? "text-yellow-500" : "text-gray-400"} cursor-pointer`} />
-                        })
-                    }
-                </div>
                 <Form
                     layout='vertical'
-                    onFinish={(values) => {
-                    }}
+                    onFinish={handleUserReviewFormValue}
                 >
+
+
                     <Form.Item
-                        name={`feedback`}
+                        name='rating' // Add rating to form fields
+                        label={<span className='text-base'>Course Rating:</span>}
+                    >
+                        <div className='start-center text-2xl gap-1 my-1'>
+                            {
+                                [...Array(5).keys()].map(item => (
+                                    <FaStar
+                                        onClick={() => setRating(item + 1)}
+                                        key={item}
+                                        className={`${item < rating ? "text-yellow-500" : "text-gray-400"} cursor-pointer`}
+                                    />
+                                ))
+                            }
+                        </div>
+                        {/* Use a hidden input to pass rating value */}
+                        <input type='hidden' name='rating' value={rating} />
+                    </Form.Item>
+                    <Form.Item
+                        name={`message`}
                         label={<span className='text-base'>Review Message</span>}
                     >
                         <TextArea style={{
@@ -108,7 +146,7 @@ const StudentsCourse = () => {
                     </div>
                     {
                         Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.map((item, i) => {
-                            return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex === i ? "bg-blue-500 text-white" :""} `} onClick={()=>setCurrentIndex(i)}  key={i}>
+                            return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex === i ? "bg-blue-500 text-white" : ""} `} onClick={() => setCurrentIndex(i)} key={i}>
                                 <div className='start-center gap-2 '>
                                     <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
                                         <FaPlay />
