@@ -277,18 +277,14 @@ const AllStudents = () => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        formData.forEach(element => {
-            console.log(element)
-        })
-        // return
         followUpMessage(formData)
     }
 
     // const handle admit student
     const HandleAdmitStudent = async (value) => {
         setAdmitValues({ ...filterData, batchNo: value?.batchNo, method: value?.method })
-        const filterCourse = Course?.data?.filter(item => item?.id == value.courseName)
-        setSingleCourse(filterCourse[0])
+        const FilterCourse = Batch?.data?.data?.filter((item) => item.id == value?.batchNo)
+        setSingleCourse(FilterCourse[0])
         const paymentData = {
             student_id: filterData?._id,
             batch_id: value?.batchNo,
@@ -297,7 +293,7 @@ const AllStudents = () => {
             phone_number: value?.phone_number,
             gender: value?.gender,
             religion: value?.religion,
-            dob: value?.date,
+            dob: value?.dob,
             blood_group: value?.blood,
             address: value?.address,
             category_id: value?.category
@@ -344,8 +340,6 @@ const AllStudents = () => {
                     <IoSearch />
                 </button>
             </form>
-
-
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>Add Student List</h3>
                 {
@@ -481,18 +475,23 @@ const AllStudents = () => {
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
                             {/* <Input classNames={`border rounded`} rules={{ ...registerAdmit('courseName', { required: true }) }} lebel={`Course Name*`} status={AdmitError} placeholder={`ux/Ui`} /> */}
-                            <SelectInput lebel={`Course Name`} classNames={`border`} status={AdmitError} options={CourseOptions} rules={{ ...registerAdmit("courseName", { required: true }) }} />
+                            {/* <SelectInput lebel={`Course Name`} classNames={`border`} status={AdmitError} options={CourseOptions} rules={{ ...registerAdmit("courseName", { required: true }) }} /> */}
+                            <SelectInput defaultValue={filterData?.method} lebel={`Payment method`} classNames={`border`} status={AdmitError} options={[
+                                { name: 'Bkash', value: 'Bkash' },
+                                { name: 'Nagad', value: 'Nagad' },
+                                { name: 'Cash', value: 'Cash' },
+                            ]} rules={{ ...registerAdmit("method", { required: true }) }} />
                             <SelectInput lebel={`Course Category`} classNames={`border`} status={AdmitError} options={CategoryOptions} rules={{ ...registerAdmit("category", { required: true }) }} />
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
-                            <UpdateInput defaultValue={filterData?.dob} handler={inputHandeler} type={`date`} classNames={`border rounded`} rules={{ ...registerAdmit('date', { required: true }) }} lebel={`Date of Birth*`} status={AdmitError} placeholder={`*Required Field`} />
+                            <UpdateInput defaultValue={filterData?.dob} handler={inputHandeler} type={`date`} classNames={`border rounded`} rules={{ ...registerAdmit('dob', { required: true }) }} lebel={`Date of Birth*`} status={AdmitError} placeholder={`*Required Field`} />
                             <SelectInput defaultValue={filterData?.gender} lebel={`Gender`} classNames={`border`} status={AdmitError} options={[
                                 { name: 'male', value: 'male' },
                                 { name: 'female', value: 'female' },
                             ]} rules={{ ...registerAdmit("gender", { required: true }) }} />
                         </div>
                         <div className='grid-2 gap-2 mb-2'>
-                            <UpdateInput defaultValue={filterData?.blood_group} handler={inputHandeler} classNames={`border rounded`} rules={{ ...registerAdmit('blood', { required: true }) }} lebel={`Blood Group*`} status={AdmitError} placeholder={`*Required Field`} />
+                            <UpdateInput defaultValue={filterData?.blood_group} handler={inputHandeler} classNames={`border rounded`} rules={{ ...registerAdmit('blood_group', { required: true }) }} lebel={`Blood Group*`} status={AdmitError} placeholder={`*Required Field`} />
                             <SelectInput defaultValue={filterData?.religion} lebel={`Religion`} classNames={`border`} status={AdmitError} options={[
                                 { name: 'Islam', value: 'islam' },
                                 { name: 'Buddhism', value: 'buddhism' },
@@ -501,13 +500,8 @@ const AllStudents = () => {
                                 { name: 'Other', value: 'other' },
                             ]} rules={{ ...registerAdmit("religion", { required: true }) }} />
                         </div>
-                        <div className='grid-2 gap-2 mb-2'>
+                        <div className=''>
                             <UpdateInput defaultValue={filterData?.address} handler={inputHandeler} classNames={`border rounded`} rules={{ ...registerAdmit('address', { required: true }) }} lebel={`Address*`} status={AdmitError} placeholder={`*Required Field`} />
-                            <SelectInput defaultValue={filterData?.method} lebel={`Payment method`} classNames={`border`} status={AdmitError} options={[
-                                { name: 'Bkash', value: 'Bkash' },
-                                { name: 'Nagad', value: 'Nagad' },
-                                { name: 'Cash', value: 'Cash' },
-                            ]} rules={{ ...registerAdmit("method", { required: true }) }} />
                         </div>
                         <button className='btn-primary max-w-44 mx-auto mt-6'>
                             {isAdmitLoading ? 'loading....' : "Next"}

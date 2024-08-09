@@ -49,7 +49,7 @@ const TeacherAllStudent = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=teacher&page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=teacher&page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
@@ -153,13 +153,9 @@ const TeacherAllStudent = () => {
             dataIndex: 'email',
             key: 'email'
         },
-        {
-            title: 'Course Category',
-            dataIndex: 'course',
-            key: 'course'
-        },
+
         // {
-        //     title: 'Date Of admission',
+        //     title: 'Date Of Birth',
         //     dataIndex: 'date',
         //     key: 'date'
         // },
@@ -194,13 +190,13 @@ const TeacherAllStudent = () => {
             title: 'Actions',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     handelFilterData(record._id)
                     setImage(null)
                     setOpenAdmitModal(true)
                 }} className='p-1 bg-[#FFC60B] rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
                     Admit
-                </button>
+                </button> */}
                 <button onClick={() => {
                     setText(false)
                     handelFilterData(record?._id)
@@ -223,15 +219,6 @@ const TeacherAllStudent = () => {
         const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-    // const [colorType, setColorType] = useState(['blue'])
-    // const colorHandeler = (color) => {
-    //     if (colorType.find(item => item == color)) {
-    //         const newColor = colorType.filter(item => item != color)
-    //         setColorType([...newColor])
-    //     } else {
-    //         setColorType([...colorType, color])
-    //     }
-    // }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -245,9 +232,6 @@ const TeacherAllStudent = () => {
     }
     const CategoryOptions = Category?.data?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
-    })
-    const CategoryOptions2 = Category?.data?.data?.map(item => {
-        return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {
         if (isLoading, updateLoading, DeleteLoading) return
@@ -342,10 +326,7 @@ const TeacherAllStudent = () => {
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
                 <div className='max-w-44 min-w-44 col-span-2'>
-                    <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
-                </div>
-                <div className='col-span-2'>
-                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions2} rules={{ ...register("category", { required: false }) }} />
+                    <Input type={`text`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
                 </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
@@ -360,7 +341,7 @@ const TeacherAllStudent = () => {
                         {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
                         {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
                         {filterBy?.category && <> <strong>category</strong> : {filterBy?.category} </>}
-                        {filterBy?.dob && <> <strong>date of birth</strong> : {filterBy?.dob} </>}
+                        {/* {filterBy?.dob && <> <strong>date of birth</strong> : {filterBy?.dob} </>} */}
                         <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
                             <RxCross2 />
                         </button>

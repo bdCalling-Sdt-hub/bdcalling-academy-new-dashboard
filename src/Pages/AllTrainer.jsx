@@ -112,6 +112,7 @@ const AllTrainer = () => {
                     <button onClick={() => {
                         setFilterdData({})
                         setOpenAddModal(true)
+                        setFormFor('add')
                     }} className="btn-primary min-w-[150px]"><FaPlus /> Add Trainer</button>
                 </div>
             </div>

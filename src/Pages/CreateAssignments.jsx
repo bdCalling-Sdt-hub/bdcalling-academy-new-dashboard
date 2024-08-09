@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import ClassRoutineForm from '../Components/Forms/ClassRoutineForm'
@@ -10,33 +10,33 @@ import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
+import AssignmentForms from '../Components/Forms/AssignmentForms'
+import dayjs from 'dayjs';
+
 const CreateAssignments = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
-    const [filterBy, setFilterBy] = useState()
-    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
-    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
-    const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
+    const [filterBy, setFilterBy] = useState({})
+    const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/assignments?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
+    const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/assignments/${filterData?.key}`);
+    const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/assignments/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
-        return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
+        return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, assignment_name: item?.assignment_name, question_link: item?.question_link }
     })
     const [form] = Form.useForm();
     const [date, setDate] = useState(undefined)
-    const [filterDate, setFilterDate] = useState()
     const onFinish = (values) => {
-        setFilterBy({ ...values, date: filterDate });
+
+        setFilterBy({ ...values, });
     };
     const [openEditModal, setOpenEditModal] = useState(false)
     const [time, setTime] = useState([])
 
-    const onChange = (field, date, dateString) => {
-        setFilterDate(dateString);
-    };
     const columns = [
         {
-            title: 'Module Name',
-            dataIndex: 'moduleName',
-            key: 'moduleName',
+            title: 'Assignment Name',
+            dataIndex: 'assignment_name',
+            key: 'assignment_name',
         },
         {
             title: 'Batch',
@@ -82,10 +82,11 @@ const CreateAssignments = () => {
     }
     const onUpdateRoutine = (values) => {
         const data = {
-            date: date,
-            time: `${time[0]}-${time[1]}`
+            date: date || filterData?.date,
+            time: time || filterData?.time,
+            assignment_name: values?.assignment_name,
+            question_link: values?.question_link,
         }
-
         const formData = new FormData()
         Object.keys(data).map(key => {
             formData.append(key, data[key])
@@ -111,19 +112,27 @@ const CreateAssignments = () => {
             </div>
         ));
     }
+    useEffect(() => {
+        const { date, time, ...othersValue } = filterData
+        form.setFieldsValue({ time: dayjs(time, 'HH:mm'), date: dayjs(date, 'YYYY-MM-DD'), ...othersValue })
+    }, [filterData])
+    useEffect(() => {
+        if (updateLoading || DeleteLoading) return
+        if (updateData || DeleteData) refetch(); setOpenEditModal(false)
+    }, [updateData, updateLoading, DeleteData, DeleteLoading])
     return (
         <>
-            <PageHeading text={`Examination`} />
+            <PageHeading text={`Assignment`} />
             <div className='start-center gap-2 text-[var(--primary-bg)]'>
-                <p className='text-[#333333] font-medium'>Home</p> <MdOutlineKeyboardArrowRight className='text-xl' /> <p>Exam Schedule</p>
+                <p className='text-[#333333] font-medium'>Home</p> <MdOutlineKeyboardArrowRight className='text-xl' /> <p>Assignment Schedule</p>
             </div>
             <div className='start-start gap-6 my-8'>
                 <div className='card-shadow p-4 rounded-md w-[500px]'>
-                    <p className='text-2xl font-semibold mb-4'>Add New Exam</p>
-                    <ClassRoutineForm />
+                    <p className='text-2xl font-semibold mb-4'>Add New Assignment</p>
+                    <AssignmentForms />
                 </div>
                 <div id='allStudent' className='card-shadow p-4 rounded-md w-full'>
-                    <p className='text-2xl font-semibold mb-4'>All Exam Schedule</p>
+                    <p className='text-2xl font-semibold mb-4'>All Assignment Schedule</p>
                     <Form
                         layout='vertical'
                         form={form}
@@ -177,11 +186,6 @@ const CreateAssignments = () => {
                     form={form}
                     onFinish={onUpdateRoutine}
                 >
-
-                    <div>
-                        <span className="text-base font-bold text-[#333333]">Course name</span>
-                        <p className='mb-2 text-base p-2 border rounded-md text-gray-400 select-none cursor-not-allowed'>{filterData?.moduleName}</p>
-                    </div>
                     <div>
                         <span className="text-base font-bold text-[#333333]">batch</span>
                         <p className='mb-2 text-base p-2 border rounded-md text-gray-400 select-none cursor-not-allowed'>{filterData?.batch}</p>
@@ -195,7 +199,7 @@ const CreateAssignments = () => {
                         ]}
                         label={<span className="text-base font-bold text-[#333333]">Select Time</span>}
                         name="time">
-                        <TimePicker.RangePicker onChange={onTimeSelect} className='w-full h-[43px]' />
+                        <TimePicker onChange={onTimeSelect} className='w-full h-[43px]' />
                     </Form.Item>
                     <Form.Item
                         name={`date`}
@@ -209,6 +213,28 @@ const CreateAssignments = () => {
                         <DatePicker className='w-full h-[43px]' onChange={(date, dateString) => {
                             onDateSelect('date', date, dateString)
                         }} />
+                    </Form.Item>
+                    <Form.Item
+                        name={`assignment_name`}
+                        label={<span className="text-base font-bold text-[#333333]">Assignment Name</span>}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input date',
+                            },
+                        ]}>
+                        <Input className='w-full h-[43px]' placeholder='assignment name' />
+                    </Form.Item>
+                    <Form.Item
+                        name={`question_link`}
+                        label={<span className="text-base font-bold text-[#333333]">Assignment Questions Link</span>}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input date',
+                            },
+                        ]}>
+                        <Input type='url' className='w-full h-[43px]' placeholder='Assignment Questions Link' />
                     </Form.Item>
                     <Form.Item >
                         <div className='start-center gap-4' >
