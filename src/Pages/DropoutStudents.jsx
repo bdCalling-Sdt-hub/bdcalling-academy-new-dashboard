@@ -189,9 +189,7 @@ const DropoutStudents = () => {
     const [filterData, setFilterData] = useState({})
     const [dob, setDob] = useState()
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    // { name: 'Olga Powers', number: '483', category: '2', dob: '2024-07-18' }
-    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show/dropout/student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
-    console.log(Students)
+    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
     const CategoryOptions = Category?.data?.data?.map(item => {
         return { name: item?.category_name, value: item?.category_name }
     })
@@ -200,6 +198,7 @@ const DropoutStudents = () => {
     const onChange = (date, dateString) => {
         setDob({ dob: dateString })
     };
+    // const data = Students
     const columns = [
         {
             title: '#Sl',

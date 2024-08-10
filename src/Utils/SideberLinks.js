@@ -29,10 +29,6 @@ export const SideberLink = [
                 menu: 'Create Admin',
                 link: '/create-admin'
             },
-            {
-                menu: 'Create Mentors',
-                link: '/create-mentors'
-            },
         ]
     },
     {
@@ -191,14 +187,14 @@ export const SideberLink = [
                 menu: 'Students Attendance',
                 link: '/students-attendance'
             },
-            {
-                menu: 'Exam Results',
-                link: '/exam-result'
-            },
-            {
-                menu: 'Assignment Results',
-                link: '/assignment-result'
-            },
+            // {
+            //     menu: 'Exam Results',
+            //     link: '/exam-result'
+            // },
+            // {
+            //     menu: 'Assignment Results',
+            //     link: '/assignment-result'
+            // },
             // {
             //     menu: 'Provide class video',
             //     link: '/provide-class-video'
@@ -517,11 +513,11 @@ export const mentorsSideberLink = [
                 icon: MdDashboard,
                 link: '/teacher/class-leave-request'
             },
-            {
-                menu: 'Students Attendance ',
-                icon: MdDashboard,
-                link: '/teacher/student-attendance'
-            },
+            // {
+            //     menu: 'Students Attendance ',
+            //     icon: MdDashboard,
+            //     link: '/teacher/student-attendance'
+            // },
             {
                 menu: 'Provide Exam Result',
                 icon: MdDashboard,

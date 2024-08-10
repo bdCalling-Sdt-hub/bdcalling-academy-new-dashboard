@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { FaEye, FaEyeSlash, FaInfo, FaPlus, FaPrint } from 'react-icons/fa6'
+import { FaPlus } from 'react-icons/fa6'
 import { DatePicker, message, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
 import { RxCross2 } from 'react-icons/rx'
-import { FaEdit } from 'react-icons/fa'
-import { MdEditSquare, MdOutlineArrowBackIosNew } from 'react-icons/md'
-import UpdateInput from '../Components/Input/UpdateInput'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
 import useGetRequest from '../Hooks/useGetRequest'
 import usePostRequest from '../Hooks/usePostRequest'
-import SelectInput from '../Components/Input/SelectInput'
-import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import useAxiosConfig, { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
-import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
 import { CiCircleInfo } from 'react-icons/ci'
 import DuePayment from '../Components/Forms/DuePayment'
 import { RiPrinterFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 const AdmittedStudents = () => {
+    const [loading, setLoading] = useState(false)
+    const axiosConfig = useAxiosConfig()
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
@@ -42,12 +39,10 @@ const AdmittedStudents = () => {
     // query 
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
-    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
-    const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
@@ -196,12 +191,12 @@ const AdmittedStudents = () => {
                 <Link to={`/admitted-students/students-information/${record._id}/${record?.order[0]?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <CiCircleInfo />
                 </Link>
-                {/* <button onClick={() => {
+                <button onClick={() => {
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
-                </button> */}
+                </button>
             </div>,
             key: '_id'
         },
@@ -211,27 +206,40 @@ const AdmittedStudents = () => {
         setFilterData(newData[0])
     }
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading) return
-        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
+        if (isLoading, updateLoading) return
+        if (data, updateData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading])
     //delete users
+    const handleDropout = async (studentId, batchId) => {
+        const loadingToastId = toast.loading('Sending request...');
+
+        try {
+            await axiosConfig.get(`/dropout-student?student_id=${studentId}&batch_id=${batchId}`);
+            toast.success('Request successful!', { id: loadingToastId });
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || 'Something went wrong.', { id: loadingToastId });
+        }
+    };
     const handleDelete = () => {
         toast((t) => (
             <div>
-                <p className="text-xs text-red-500 text-center">are you sure you want to delete {filterData?.name}</p>
+                <p className="text-xs text-red-500 text-center">Are you sure you want to dropout {filterData?.name}?</p>
                 <div className="flex justify-center items-center gap-2 mt-4">
                     <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
-                        cancel
+                        Cancel
                     </button>
-                    <button onClick={() => {
-                        DeleteStudents()
-                        toast.dismiss(t.id)
-                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
-                        sure
+                    <button
+                        onClick={() => {
+                            handleDropout(filterData?._id, filterData?.order?.[0]?.batch_id);
+                            toast.dismiss(t.id);
+                        }}
+                        className="px-3 py-1 bg-blue-500 text-white rounded-md"
+                    >
+                        Sure
                     </button>
                 </div>
             </div>
-        ));
+        ))
     }
 
     // send followup message
