@@ -44,7 +44,7 @@ const UploadGallery = () => {
     };
 
     const handleFileChange = e => {
-        const newFiles = Array.from(e.target.files).filter(file => file.type.includes('video'));
+        const newFiles = Array.from(e.target.files).filter(file => file.type.includes('image'));
         if (newFiles.length) {
             const updatedFiles = newFiles.map((file) => ({
                 file,

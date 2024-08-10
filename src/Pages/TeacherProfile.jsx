@@ -44,7 +44,7 @@ const TeacherProfile = () => {
                     </div>
                     <div className='w-full h-full'>
                         <p className='text-base font-medium'>Phone Number:</p>
-                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.phone_number || 'Not Added'}</p>
+                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.teacher?.phone_number || 'Not Added'}</p>
                     </div>
                     <div className='w-full h-full'>
                         <p className='text-base font-medium'>Email:</p>
@@ -52,11 +52,11 @@ const TeacherProfile = () => {
                     </div>
                     <div className='w-full h-full'>
                         <p className='text-base font-medium'>Designation:</p>
-                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.designation || 'Not Added'}</p>
+                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.teacher?.designation || 'Not Added'}</p>
                     </div>
                     <div className='w-full h-full'>
                         <p className='text-base font-medium'>Expert:</p>
-                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.expertise || 'Not Added'}</p>
+                        <p className='text-base border p-2 rounded-md'>{Profile?.user?.teacher?.expertise || 'Not Added'}</p>
                     </div>
                     <div className='w-full h-full col-span-2'>
                         <p className='text-base font-medium'>Role:</p>

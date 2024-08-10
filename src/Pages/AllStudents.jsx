@@ -216,6 +216,7 @@ const AllStudents = () => {
     const handelFilterData = (id) => {
         const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
+        
     }
     // const [colorType, setColorType] = useState(['blue'])
     // const colorHandeler = (color) => {
@@ -233,7 +234,7 @@ const AllStudents = () => {
         } else {
             setImage(null)
         }
-    };
+    };      
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
