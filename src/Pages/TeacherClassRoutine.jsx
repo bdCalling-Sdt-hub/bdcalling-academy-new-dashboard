@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import ClassRoutineForm from '../Components/Forms/ClassRoutineForm'
@@ -10,11 +10,12 @@ import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
+import TeacherClassRoutineForm from '../Components/Forms/TeacherClassRoutineForm'
 const TeacherClassRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const [filterBy, setFilterBy] = useState()
-    const [requestingRoutine, Routine, routineError,] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
+    const [requestingRoutine, Routine, routineError,refetch] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
     const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
@@ -111,6 +112,10 @@ const TeacherClassRoutine = () => {
             </div>
         ));
     }
+    useEffect(() => {
+        if (updateLoading || DeleteLoading) return
+        if (updateData || DeleteData) refetch(); setOpenEditModal(false)
+    }, [updateData, updateLoading, DeleteData, DeleteLoading])
     return (
         <>
             <PageHeading text={`Class Routine`} />
@@ -120,7 +125,7 @@ const TeacherClassRoutine = () => {
             <div className='start-start gap-6 my-8'>
                 <div className='card-shadow p-4 rounded-md w-[500px]'>
                     <p className='text-2xl font-semibold mb-4'>Add New Routine</p>
-                    <ClassRoutineForm />
+                    <TeacherClassRoutineForm />
                 </div>
                 <div id='allStudent' className='card-shadow p-4 rounded-md w-full'>
                     <p className='text-2xl font-semibold mb-4'>All Class Routine</p>

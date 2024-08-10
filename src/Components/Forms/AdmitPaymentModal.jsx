@@ -18,7 +18,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
         const paymentData = {
             student_id: AdmitValues?._id,
             batch_id: AdmitValues?.batchNo,
-            course_fee: course?.price,
+            course_fee: course?.course?.price,
             discount_price: data?.discount,
             amount: String(firstInstallment),
             gateway_name: AdmitValues?.method,
@@ -41,7 +41,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
         const paymentData = {
             student_id: AdmitValues?._id,
             batch_id: AdmitValues?.batchNo,
-            course_fee: course?.price,
+            course_fee: course?.course?.price,
             discount_price: data?.discount,
             amount: totalPayment,
             gateway_name: AdmitValues?.method,
@@ -59,11 +59,11 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
         setOpenPaymentModal(false)
     };
     const inputHandler = (e, name) => {
-        if (Number(course?.price) < Number(e.target.value)) {
+        if (Number(course?.course?.price) < Number(e.target.value)) {
             toast.error("discount price can't be larger then course price")
         } else {
-            setTotalPayment(Number(course?.price) - Number(e.target.value))
-            setFirstInstallment(Number(course?.price) - Number(e.target.value))
+            setTotalPayment(Number(course?.course?.price) - Number(e.target.value))
+            setFirstInstallment(Number(course?.course?.price) - Number(e.target.value))
         }
     }
     return (
@@ -110,7 +110,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Fee:</p>
-                            <p className='text-end text-sm'>{course?.price}TK</p>
+                            <p className='text-end text-sm'>{course?.course?.price}TK</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Due Amount:</p>
@@ -147,7 +147,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                                 </div>
                                 <div className='col-span-4 w-full'>
                                     <UpdateInput handler={(e, name) => {
-                                        if (Number(course?.price) < Number(e.target.value)) {
+                                        if (Number(course?.course?.price) < Number(e.target.value)) {
                                             toast.error("discount price can't be larger then course price")
                                         } else {
                                             setFirstInstallment(Number(e.target.value))
@@ -209,7 +209,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Fee:</p>
-                            <p className='text-end text-sm'>{course?.price}</p>
+                            <p className='text-end text-sm'>{course?.course?.price}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Due Amount:</p>

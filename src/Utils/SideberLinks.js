@@ -460,7 +460,7 @@ export const studentSideberLink = [
     },
     {
         menu: 'Personal Info',
-        icon: FaRegUserCircle,
+        icon: PiCertificate,
         link: '/student/personal-information'
     },
 ]
