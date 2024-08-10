@@ -395,6 +395,10 @@ export const router = createBrowserRouter([
                 element: <TrainerFeedback />
             },
             {
+                path: '/student/personal-information',
+                element: <StudentProfile />
+            },
+            {
                 path: '/student/student-feedback',
                 element: <SendStudentReview />
             },
