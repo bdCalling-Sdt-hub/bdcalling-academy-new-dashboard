@@ -454,6 +454,11 @@ export const studentSideberLink = [
         icon: PiCertificate,
         link: '/student/certificates'
     },
+    {
+        menu: 'Personal Info',
+        icon: FaRegUserCircle,
+        link: '/student/personal-information'
+    },
 ]
 export const mentorsSideberLink = [
     {
