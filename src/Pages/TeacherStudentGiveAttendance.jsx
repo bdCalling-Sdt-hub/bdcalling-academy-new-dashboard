@@ -79,7 +79,6 @@ const TeacherStudentGiveAttendance = () => {
     const [name, setName] = useState('')
     const [requestingStudents, Students, StudentsError,] = useGetRequest('showAdmitStudent', `/show-admit-student?batch_id=${batchId}${phone_number && `&phone_number=${phone_number}`}${name && `&name=${name}`}`)
     const data = Students?.data?.[0]?.students?.map((item, i) => {
-        console.log(item)
         return {
             key: i + 1,
             id: item?.id,
@@ -120,7 +119,7 @@ const TeacherStudentGiveAttendance = () => {
     }
     const HandleSendMassage = (value) => {
         const data = {
-            user_id: filterData.studentID?.user_id,
+            user_id: filterData.studentID,
             feedback: value.comment
         }
         const formData = new FormData()

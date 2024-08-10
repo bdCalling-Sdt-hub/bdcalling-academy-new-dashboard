@@ -12,7 +12,7 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
-    const [totalPayment, setTotalPayment] = useState(course?.price || 0)
+    const [totalPayment, setTotalPayment] = useState(course?.course?.price || 0)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
         const paymentData = {

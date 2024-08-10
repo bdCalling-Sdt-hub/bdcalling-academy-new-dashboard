@@ -1,7 +1,11 @@
 import { Form, Modal, Pagination } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaEye, FaStar } from 'react-icons/fa6'
+import useGetRequest from '../Hooks/useGetRequest'
+import usePatchRequest from '../Hooks/usePatchRequest'
+import useDeleteRequest from '../Hooks/useDeleteRequest'
+import toast from 'react-hot-toast'
 const data = [
     {
         name: 'SAVANNAH NGUYEN',
@@ -47,39 +51,69 @@ const data = [
     },
 ]
 const StudentsReviews = () => {
+    const [form] = Form.useForm()
     const [open, setOpen] = useState(false)
     const [current, setCurrent] = useState(3);
-
-   
+    const [FilterData, setFilterData] = useState({})
+    const [Rating, setRating] = useState(0)
+    const [requestingReview, Review, ReviewError, refetch] = useGetRequest('Review', `/all-reviews`)
+    const { mutate: updateFeedback, isLoading: updateLoading, data: updateData, } = usePatchRequest('reviews', `/reviews/${FilterData?.id}`);
+    const { mutate: DeleteReview, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('reviews', `/reviews/${FilterData?.id}`);
+    // console.log(Review)
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const formData = new FormData()
+        formData.append('message', values?.message)
+        formData.append('_method', 'PUT')
+        updateFeedback(formData)
     };
-    const onChange = (page) => {
-        setCurrent(page);
-    };
-    const onShowSizeChange = (current, size) => {
-        setCurrent(1)
-        console.log(current, size)
+    useEffect(() => {
+        if (FilterData) {
+            setRating(FilterData?.rating)
+            form.setFieldsValue(FilterData)
+        }
+    }, [FilterData])
+    useEffect(() => {
+        if ((!updateLoading && updateData) || (DeleteData && !DeleteLoading)) {
+            refetch()
+        }
+    }, [updateLoading, updateData, DeleteData, DeleteLoading])
+    const handleDelete = () => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete this routine</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteReview()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
     }
     return (
         <div className='mt-8'>
             <div className='grid grid-cols-3 gap-3'>
                 {
-                    data?.map((item, index) => {
+                    Review?.data?.map((item, index) => {
                         return (<div className='p-4 bg-[#EBF0F5] rounded-md' key={index}>
                             <div className='flex justify-start items-center gap-2'>
-                                {[...Array(item?.rating)].map(item2 => <FaStar key={item2} className='text-2xl text-yellow-500' />)}
-                                (<p>{item?.rating}</p>)
+                                {[...Array(Number(item?.rating_value))].map(item2 => <FaStar key={item2} className='text-2xl text-yellow-500' />)}
+                                (<p>{item?.rating_value}</p>)
                             </div>
                             <div className='flex justify-between items-center gap-2 mt-3'>
-                                <p className='font-bold'>{item?.name}</p>
-                                <p>{item?.date}</p>
+                                <p className='font-bold'>{item?.student?.user?.name}</p>
+                                <p>{item?.created_at?.split('T')[0]}</p>
                             </div>
-                            <p className='py-3'>{item?.feedback}</p>
+                            <p className='py-3'>{item?.message}</p>
                             <div className='flex justify-between items-center'>
-                                <button onClick={() => setOpen(true)} className='px-6 py-2 border rounded-md text-[#2492EB] border-[#2492EB]'>Edit</button>
-                                <button className='px-6 py-2 border rounded-md text-[#5C5C5C] border-[#5C5C5C] flex justify-center items-center w-fit gap-2'>Hide <FaEye /></button>
-                                <button className='px-6 py-2 border bg-[#2492EB] rounded-md text-white border-[#2492EB]'>Publish</button>
+                                <button onClick={() => { setOpen(true); setFilterData({ rating: Number(item?.rating_value), message: item?.message, id: item?.id }) }} className='px-6 py-2 border rounded-md text-[#2492EB] border-[#2492EB]'>Edit</button>
+                                <button onClick={() => { setFilterData({ rating: Number(item?.rating_value), message: item?.message, id: item?.id }); handleDelete() }} className='px-6 py-2 border rounded-md text-[#5C5C5C] border-[#5C5C5C] flex justify-center items-center w-fit gap-2'>Hide <FaEye /></button>
+                                {/* <button className='px-6 py-2 border bg-[#2492EB] rounded-md text-white border-[#2492EB]'>Publish</button> */}
                             </div>
                         </div>)
                     })
@@ -99,15 +133,16 @@ const StudentsReviews = () => {
                         </div>
                         <div className='flex justify-start items-center gap-2'>
                             <FaStar className='text-2xl text-yellow-500' />
-                            (<p>5</p>)
+                            (<p>{Rating}</p>)
                         </div>
                     </div>
                     <Form
                         onFinish={onFinish}
                         layout='vertical'
+                        form={form}
                     >
                         <Form.Item
-                            name={`feedback`}
+                            name={`message`}
                             label={<p>Review Details</p>}
                         >
                             <TextArea style={{
@@ -116,13 +151,13 @@ const StudentsReviews = () => {
                             }} placeholder='write your review' className='h-[200px]' />
                         </Form.Item>
                         <div className='text-center'>
-                            <button onClick={() => setOpen(false)} className='bg-blue-500 px-8 rounded-md py-2 text-white'>Update</button>
+                            <button className='bg-blue-500 px-8 rounded-md py-2 text-white'>Update</button>
                         </div>
                     </Form>
                 </div>
             </Modal>
             <div className='text-center my-5'>
-                <Pagination current={current} onChange={onChange} onShowSizeChange={onShowSizeChange} total={500} />
+                <Pagination current={current} onChange={() => setCurrent(page)} showSizeChanger={false} pageSize={Review?.per_page} total={Review?.total} />
             </div>
         </div>
     )

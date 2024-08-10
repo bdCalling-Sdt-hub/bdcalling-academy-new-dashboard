@@ -4,11 +4,15 @@ import { FaEdit } from 'react-icons/fa'
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
-import usePostRequest from '../Hooks/usePostRequest'
+import usePatchRequest from '../Hooks/usePatchRequest'
+import { useUserData } from '../Providers/UserProviders/UserProvider'
+import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 
 const TeacherEditProfile = () => {
+    const { useData, loading, isError } = useUserData();
     const [requestingProfile, Profile, ProfileError,] = useGetRequest('Profile', `/profile`)
-    const { mutate, isLoading, data, error } = usePostRequest('Profile', '/profile/edit');
+    const { mutate, isLoading, data, error } = usePatchRequest('teacher', `/teachers/${useData?.teacher?.id}`);
+    const [type, setType] = useState('text')
     const [image, setImage] = useState(null)
     const {
         register,
@@ -19,19 +23,21 @@ const TeacherEditProfile = () => {
     const onSubmit = (value) => {
         const data = {
             name: value?.name || Profile?.user?.name,
-            phone_number: value?.phone || Profile?.user?.phone_number,
-            email: value?.email || Profile?.user?.email,
-            designation: value?.designation || Profile?.user?.designation,
-            expertise: value?.expert || Profile?.user?.expertise,
+            phone_number: value?.phone || Profile?.user?.teacher?.phone_number,
+            // email: value?.email || Profile?.user?.email,
+            designation: value?.designation || Profile?.user?.teacher?.designation,
+            expert: value?.expert || Profile?.user?.teacher?.expertise,
         }
-        formData.append('_method', 'PUT')
         const formData = new FormData()
+        formData.append('_method', 'PUT')
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-
+        if (image) {
+            formData.append('image', image)
+        }
+        mutate(formData)
     }
-
     return (
         <div className='mt-4'>
             <div className='flex justify-between items-center gap-2'>
@@ -73,12 +79,12 @@ const TeacherEditProfile = () => {
                         </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>User Name:</p>
-                            <input defaultValue={Profile?.user?.name} className='border w-full outline-none p-2 rounded-md' placeholder='User Name' {...register("username", { required: false })} />
-                            {errors.username && <span className='text-red-500'>This field is required</span>}
+                            <input defaultValue={Profile?.user?.name} className='border w-full outline-none p-2 rounded-md' placeholder='User Name' {...register("name", { required: false })} />
+                            {errors.name && <span className='text-red-500'>This field is required</span>}
                         </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Phone Number:</p>
-                            <input defaultValue={Profile?.user?.phone_number} className='border w-full outline-none p-2 rounded-md' placeholder='phone Number' {...register("phone", { required: false })} />
+                            <input defaultValue={Profile?.user?.teacher?.phone_number} className='border w-full outline-none p-2 rounded-md' placeholder='phone Number' {...register("phone", { required: false })} />
                             {errors.phone && <span className='text-red-500'>This field is required</span>}
                         </div>
                         <div className='w-full h-full'>
@@ -88,13 +94,32 @@ const TeacherEditProfile = () => {
                         </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Designation:</p>
-                            <input defaultValue={Profile?.user?.designation} className='border w-full outline-none p-2 rounded-md' placeholder='Designation' {...register("designation", { required: false })} />
+                            <input defaultValue={Profile?.user?.teacher?.designation} className='border w-full outline-none p-2 rounded-md' placeholder='Designation' {...register("designation", { required: false })} />
                             {errors.designation && <span className='text-red-500'>This field is required</span>}
                         </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Expert:</p>
-                            <input defaultValue={Profile?.user?.expertise} className='border w-full outline-none p-2 rounded-md' placeholder='expert' {...register("expert", { required: false })} />
+                            <input defaultValue={Profile?.user?.teacher?.expert} className='border w-full outline-none p-2 rounded-md' placeholder='expert' {...register("expert", { required: false })} />
                             {errors.expert && <span className='text-red-500'>This field is required</span>}
+                        </div>
+                        <div className='col-span-2 flex justify-between items-center gap-2'>
+                            <div className='w-[48%] h-full '>
+                                <p className='text-base font-medium'>Password</p>
+                                <input type={type} className='border w-full outline-none p-2 rounded-md' placeholder='password' {...register("password", { required: false })} />
+                                {errors.name && <span className='text-red-500'>This field is required</span>}
+                            </div>
+                            <div className='w-[48%] h-full'>
+                                <p className='text-base font-medium'>password_confirmation</p>
+                                <input type={type} placeholder='password confirmation' className='border w-full outline-none p-2 rounded-md' {...register("password_confirmation", { required: false })} />
+                                {errors.phone && <span className='text-red-500'>This field is required</span>}
+                            </div>
+                            {
+                                type === 'text' ? <button onClick={() => setType('password')} type='button' className='p-1 text-base mt-4'>
+                                    <FaEye />
+                                </button> : <button onClick={() => setType('text')} type='button' className='p-1 text-base mt-4'>
+                                    <FaEyeSlash />
+                                </button>
+                            }
                         </div>
                         {/* <div className='w-full h-full col-span-2'>
                             <p className='text-base font-medium'>Category:</p>
