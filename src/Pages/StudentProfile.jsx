@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaEdit, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { MdArrowBackIosNew } from 'react-icons/md'
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
@@ -11,6 +11,7 @@ import SelectInput from '../Components/Input/SelectInput'
 import { useForm } from 'react-hook-form'
 import ProfileImage from '../assets/corporate-user-icon.webp'
 import { useUserData } from '../Providers/UserProviders/UserProvider'
+import usePatchRequest from '../Hooks/usePatchRequest'
 const StudentProfile = () => {
     const [filterData, setFilterData] = useState({})
     const { register: registerStudent, handleSubmit: handleStudent, formState: { errors: StudentError } } = useForm();
@@ -19,7 +20,9 @@ const StudentProfile = () => {
     const [image, setImage] = useState(null);
     const [inputType, setInputType] = useState('password')
 
-    const { useData, loading, isError } = useUserData()
+
+    const { useData, loading, isError,refetch } = useUserData()
+    const { mutate: updateStudents, isLoading: updateLoading, data: updateData,  } = usePatchRequest('students', `/students/${useData?.student?.id}`);
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
@@ -31,37 +34,52 @@ const StudentProfile = () => {
             setImage(null)
         }
     };
+
     const onSubmitStudent = (values) => {
+
         const data = {
             name: filterData?.name,
             email: filterData?.email,
-            password: filterData?.password,
             phone_number: filterData?.phone_number,
             gender: filterData?.gender,
             religion: filterData?.religion,
             dob: filterData?.dob,
             blood_group: filterData?.blood_group,
-            registration_date: filterData.registration_date,
             address: filterData?.address,
-            category_id: values?.category
-            // add_by:'super admin'
         }
         const formData = new FormData()
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        if (image) {
-            formData.append('image', image)
-        }
-        if (text) {
-            mutate(formData)
+        if (filterData?.password) {
+            formData.append("password", filterData?.password)
         } else {
             formData.append('_method', 'PUT')
             updateStudents(formData)
+            
         }
     }
+    useEffect(() => {
 
-    console.log(useData)
+        setFilterData({
+            name: useData?.name,
+            email: useData?.email,
+            phone_number: useData?.student?.phone_number,
+            gender: useData?.student?.gender,
+            religion: useData?.student?.religion,
+            dob: useData?.student?.dob,
+            blood_group: useData?.student?.blood_group,
+            religion: useData?.student?.religion,
+            address: useData?.student?.religion
+        })
+        
+
+    }, [useData])
+
+    useEffect(()=>{
+        refetch()
+    },[updateData])
+
 
 
     return (
@@ -104,19 +122,15 @@ const StudentProfile = () => {
                             <p className='text-base font-medium'>Email</p>
                             <p className='text-base border p-2 rounded-md'>P{useData?.email}</p>
                         </div>
-                      
+
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Gender:</p>
-                            <p className='text-base border p-2 rounded-md'>{useData?.student?.gender ?  useData?.student?.gender : "N/A"}</p>
+                            <p className='text-base border p-2 rounded-md'>{useData?.student?.gender ? useData?.student?.gender : "N/A"}</p>
                         </div>
-                        {/* <div className='w-full h-full'>
+                        <div className='w-full h-full'>
                             <p className='text-base font-medium'>Date Of Birth:</p>
-                            <p className='text-base border p-2 rounded-md'>{}</p>
-                        </div> */}
-                        {/* <div className='w-full h-full'>
-                            <p className='text-base font-medium'>Department:</p>
-                            <p className='text-base border p-2 rounded-md'>Profile?.user?.expertise</p>
-                        </div> */}
+                            <p className='text-base border p-2 rounded-md'>{useData?.student?.dob ? useData?.student?.dob : "N/A"}</p>
+                        </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Blood Group:</p>
                             <p className='text-base border p-2 rounded-md'>{useData?.student?.blood_group ? useData?.student?.blood_group : 'N/A'}</p>
@@ -127,7 +141,7 @@ const StudentProfile = () => {
                         </div>
                         <div className='w-full h-full'>
                             <p className='text-base font-medium'>Religion:</p>
-                            <p className='text-base border p-2 rounded-md'>{useData?.student?.religion ? useData?.student?.religion  : "N/A"}</p>
+                            <p className='text-base border p-2 rounded-md'>{useData?.student?.religion ? useData?.student?.religion : "N/A"}</p>
                         </div>
                     </div>
                 </div>
@@ -139,6 +153,7 @@ const StudentProfile = () => {
                 open={openStudentAddModal}
                 width={600}
             >
+                {/*  */}
                 <form className="text-base" onSubmit={handleStudent(onSubmitStudent)}>
                     <div className="center-center">
                         <div className={`h-28 w-28 rounded-full my-4  relative`}>
@@ -155,14 +170,13 @@ const StudentProfile = () => {
                         <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Full Name`} rules={{ ...registerStudent("name", { required: true }) }} placeholder={`Full Name*`} defaultValue={filterData.name} />
                         <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Mobile*`} rules={{ ...registerStudent("phone_number", { required: true }) }} placeholder={`Phone Number*`} defaultValue={filterData.phone_number} />
                         <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full ${text ? "" : "pointer-events-none"} border`} lebel={`Email*`} type={'email'} rules={{ ...registerStudent("email", { required: true }) }} placeholder={`Email*`} defaultValue={filterData.email} />
-                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full ${text ? "" : "pointer-events-none"} border`} lebel={`Batch ID*`} type={'batchId'} rules={{ ...registerStudent("batchId", { required: true }) }} placeholder={`Batch Id*`} defaultValue={filterData.batchId} />
+
                         <SelectInput lebel={`Gender`} handler={inputHandeler} defaultValue={filterData.gender} classNames={`border`} status={StudentError} options={[
                             { name: 'Female', value: 'female' },
                             { name: 'Male', value: 'male' },
                         ]} rules={{ ...registerStudent("gender", { required: true }) }} />
                         <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Date of Birth*`} type={`date`} rules={{ ...registerStudent("dob", { required: true }) }} placeholder={`Date of Birth*`} defaultValue={filterData.dob} />
-                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Department`} type={`date`} rules={{ ...registerStudent("department", { required: true }) }} placeholder={`Department`} defaultValue={filterData.registration_date} />
-                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Blood Group`} type={`date`} rules={{ ...registerStudent("registration_date", { required: true }) }} placeholder={`Blood Group   `} defaultValue={filterData.registration_date} />
+
                         {
                             text && <div className="relative mb-3">
                                 <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Password`} type={inputType} rules={{ ...registerStudent("password", { required: false }) }} placeholder={`Password`} defaultValue={filterData?.password} />
@@ -184,7 +198,7 @@ const StudentProfile = () => {
                         <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...registerStudent("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     </div>
                     <div className="px-48 mt-8">
-                        <input value={'update'} className="btn-primary cursor-pointer capitalize" type="submit" />
+                        <input onClick={() => setOpenStudentAddModal(false)} value={'update'} className="btn-primary cursor-pointer capitalize" type="submit" />
                     </div>
                 </form>
             </Modal>
