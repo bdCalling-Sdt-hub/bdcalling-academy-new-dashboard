@@ -14,9 +14,13 @@ import { useState } from 'react'
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Select } from 'antd'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const Wallet = () => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [loading, earns, earnError,] = useGetRequest('earns', `/earnings`)
+
+    console.log(earns)
     const chartData = [
         {
             name: 'Jan',
@@ -94,9 +98,9 @@ const Wallet = () => {
     const data = [
         {
             title: 'Yearly Earning',
-            earning: '100k',
+            earning: earns?.yearly_earnings?.['2024'],
             title1: 'Yearly Cost',
-            cost: '96k',
+            cost: earns?.yearly_costs[0],
             avg: '10% Higher Then Last Years',
             icon: <img className='h-full w-full object-cover' src={earn} />
         },
@@ -185,9 +189,9 @@ const Wallet = () => {
                             </div>
                             <div className='w-full text-end flex justify-between flex-col gap-2'>
                                 <p>{item?.title}</p>
-                                <p className='text-2xl font-semibold text-[#2492EB]'>{item?.earning}</p>
+                                <p className='text-2xl font-semibold text-[#2492EB]'>{item?.earning}K</p>
                                 <div className='flex justify-end items-center gap-2'>
-                                    <p>{item?.title1}</p>
+                                    {/* <p>{item?.title1}</p> */}
                                     <button onClick={() => setOpen(!open)} className='text-2xl'>
                                         <MdOutlineKeyboardArrowDown />
                                     </button>

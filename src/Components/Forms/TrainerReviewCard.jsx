@@ -22,7 +22,6 @@ const TrainerReviewCard = ({ item ,setOpenFeedbackModal ,setFilterdData}) => {
                     setOpenFeedbackModal(true)}
                     } className='border border-[#5C5C5C] rounded-md hover:scale-105 active:scale-95 px-12 py-2 w-[30%] transition-all'>Edit</button>
                 <button className='bg-[#2492EB] border border-[#2492EB] text-white rounded-md hover:scale-105 active:scale-95 px-12 py-2 w-[30%] transition-all'>Hide</button>
-                <button className='border border-[#2492EB] text-[#2492EB] rounded-md hover:scale-105 active:scale-95 px-12 py-2 w-[30%] transition-all'>Publish</button>
             </div>
         </div>
     )
