@@ -13,7 +13,7 @@ const UserProvider = ({ children }) => {
         if (data) setUserData(data.user)
     }, [gettingProfile, data ,isError])
     return (
-        <UserData.Provider value={{ useData, setUserData, loading, setLoading ,isError }}>
+        <UserData.Provider value={{ useData, setUserData, loading, setLoading ,isError ,refetch}}>
             {children}
             <Toaster
                 position="top-center"

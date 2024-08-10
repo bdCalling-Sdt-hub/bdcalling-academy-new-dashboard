@@ -43,7 +43,7 @@ const SalesAdmittedStudent = () => {
     // query 
     console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-phoenix-students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
@@ -53,6 +53,8 @@ const SalesAdmittedStudent = () => {
     const [AllStudents, setAllStudent] = useState([])
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+
+    
     const BatchOptions = Batch?.data?.data?.map(item => {
         return { name: item?.batch_name, value: item?.id }
     }) || []

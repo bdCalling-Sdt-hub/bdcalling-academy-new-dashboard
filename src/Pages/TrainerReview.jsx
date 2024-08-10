@@ -7,7 +7,7 @@ import TrainerFeedbackForm from "../Components/Forms/TrainerFeedbackForm";
 
 const reviewData = [
     {
-        name: 'SAVANNAH NGUYEN',
+        name: 'SAVANNAH NGUYENssssss',
         date: 'MAR 08, 2024',
         review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
         rating: '5'
