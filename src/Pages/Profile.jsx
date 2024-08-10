@@ -6,6 +6,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 const Profile = () => {
     const [requestingProfile, Profile, ProfileError,] = useGetRequest('Profile', `/profile`)
+    console.log(Profile)
     return (
         <div className='mt-4'>
             <div className='flex justify-between items-center gap-2'>

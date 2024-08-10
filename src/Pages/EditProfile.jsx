@@ -5,10 +5,11 @@ import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
 import usePostRequest from '../Hooks/usePostRequest'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 
 const EditProfile = () => {
     const [requestingProfile, Profile, ProfileError,] = useGetRequest('Profile', `/profile`)
-    const { mutate, isLoading, data, error } = usePostRequest('Profile', '/profile/edit');
+    const { mutate, isLoading, data, error } = usePostRequest('Profile', `/admins/${Profile?.user?.id}`);
     const [image, setImage] = useState(null)
     const {
         register,
@@ -24,12 +25,15 @@ const EditProfile = () => {
             designation: value?.designation || Profile?.user?.designation,
             expertise: value?.expert || Profile?.user?.expertise,
         }
-        formData.append('_method', 'PUT')
         const formData = new FormData()
+        formData.append('_method', 'PUT')
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-
+        if (image) {
+            formData.append('image',image)
+        }
+        mutate(formData)
     }
 
     return (
