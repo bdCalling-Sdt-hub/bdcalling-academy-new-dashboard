@@ -206,9 +206,9 @@ const AdmittedStudents = () => {
         setFilterData(newData[0])
     }
     useEffect(() => {
-        if (isLoading, updateLoading) return
-        if (data, updateData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
-    }, [isLoading, data, updateData, updateLoading])
+        if (isLoading, updateLoading,messageLoading) return
+        if (data, updateData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading,MessageData,messageLoading])
     //delete users
     const handleDropout = async (studentId, batchId) => {
         const loadingToastId = toast.loading('Sending request...');
