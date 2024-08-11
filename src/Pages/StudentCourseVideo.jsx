@@ -101,7 +101,7 @@ const StudentCourseVideo = () => {
                 {
                     data?.map((item, i) => {
 
-                        console.log(item)
+                        // console.log(item)
                         return <div className="card-shadow w-full h-full  shadow-md p-2 " key={i}>
                             <div className="w-full h-[230px] relative">
                                 <img src={item?.image} className="w-full h-full rounded-md  object-cover" alt="" />
