@@ -4,6 +4,7 @@ import UpdateInput from '../Input/UpdateInput';
 import TextArea from '../Input/TextArea';
 const TrainerFeedbackForm = ({ filterdData, inputHandeler, register,
     handleSubmit, errors, onSubmit, rating, setrating ,setOpenFeedbackModal }) => {
+        console.log(rating)
     return (
         <form className="text-base" onSubmit={handleSubmit(onSubmit)}>
             <div className='text-center pt-8 pb-3'>

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import TrainerReviewCard from "../Components/Forms/TrainerReviewCard"
 import { Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TrainerFeedbackForm from "../Components/Forms/TrainerFeedbackForm";
 import useGetRequest from "../Hooks/useGetRequest";
@@ -139,13 +139,17 @@ const TrainerReview = () => {
 
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const [rating, setrating] = useState(filterdData?.rating_value)
+    const [rating, setrating] = useState(0)
     const [requestingReview, Review, ReviewError, refetch] = useGetRequest('trainerReview', `/trainer-reviews`)
 
     const { mutate: updateCourse, isLoading: updateLoading, data: updateData, } = usePatchRequest('courses', `/trainer-reviews/${filterdData?.id}`);
+    useEffect(() => {
+        if (filterdData?.rating_value) {
+            setrating(Number(filterdData?.rating_value))
+        }
+    }, [filterdData])
     const onSubmit = data => {
 
-        
         const formData = new FormData()
         Object.keys(CourseData).map(key => {
             formData.append(key, data[key])
@@ -160,10 +164,6 @@ const TrainerReview = () => {
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
-
-
-    console.log(Review)
-
     return (
         <>
             <div className="grid-2 py-10">
