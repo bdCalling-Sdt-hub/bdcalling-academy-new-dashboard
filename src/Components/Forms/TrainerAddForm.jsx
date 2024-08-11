@@ -37,8 +37,9 @@ const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFo
 
 
     useEffect(() => {
+        console.log(filteredData)
         if (filteredData) {
-            form.setFieldsValue({ ...filteredData });
+            form.setFieldsValue({ ...filteredData,payment_type:filteredData?.item?.payment_type, payment_method:filteredData?.item?.payment_method,payment:Number(filteredData?.item?.payment),course_category_id:filteredData?.categorys});
         }
     }, [filteredData, form]);
 

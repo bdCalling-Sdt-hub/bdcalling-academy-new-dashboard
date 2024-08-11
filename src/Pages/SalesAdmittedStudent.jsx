@@ -41,7 +41,6 @@ const SalesAdmittedStudent = () => {
     const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-    console.log(`/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-phoenix-students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
