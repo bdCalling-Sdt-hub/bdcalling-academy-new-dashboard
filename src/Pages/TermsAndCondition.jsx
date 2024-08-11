@@ -1,41 +1,30 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
 import useGetRequest from '../Hooks/useGetRequest';
+import usePostRequest from '../Hooks/usePostRequest';
 
 const TermsAndCondition = () => {
     const editor = useRef(null);
     const [requestingAbout, terms, AboutError,] = useGetRequest('terms', `/show/terms`)
     const [content, setContent] = useState(terms?.data?.terms_condition ||'');
     const [isLoading, seLoading] = useState(false)
-    
 
-    console.log(terms?.data?.terms_condition)
+
+    useEffect(() => {
+        setContent(terms?.data?.terms_condition)
+    }, [terms])
+    const { mutate, loading, data, error } = usePostRequest('terms', '/update/terms');
     const handleTerms = () => {
+        // console.log(content)
         seLoading(true)
-        dispatch(AddPrivecy({ description: content })).then((res) => {
-            seLoading(false)
-            if (res.type == 'AddPrivecy/fulfilled') {
-                Swal.fire({
-                    title: "Added",
-                    text: "New Terms has been Added.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            } else {
-                Swal.fire({
-                    title: "opps!",
-                    text: "something went's wrong",
-                    icon: "error",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
-        })
+        const formData = new FormData()
+        formData.append('id', 3)
+        formData.append('terms_condition', content)
+        mutate(formData)
     }
     const config = {
         readonly: false,
@@ -60,7 +49,7 @@ const TermsAndCondition = () => {
                     onChange={newContent => { }}
                 />
             </div>
-            <button disabled={isLoading} onClick={handleTerms} className='disabled:bg-gray-300 bg-blue-400' style={{
+            <button disabled={loading} onClick={handleTerms} className='disabled:bg-gray-300 bg-blue-400' style={{
                 display: 'block',
                 padding: '12px 24px',
                 margin: "0 auto",
