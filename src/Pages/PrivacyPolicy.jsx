@@ -1,36 +1,32 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
+import useGetRequest from '../Hooks/useGetRequest';
+import usePostRequest from '../Hooks/usePostRequest';
 const PrivacyPolicy = () => {
     const editor = useRef(null);
+    const [requestingAbout, privacy, AboutError,] = useGetRequest('privacy', `/show/privacy`)
     const [content, setContent] = useState('');
     const [isLoading, seLoading] = useState(false)
 
+
+
+    useEffect(() => {
+        setContent(privacy?.data?.privacy)
+    }, [privacy])
+    const { mutate, loading, data, error } = usePostRequest('privacy', '/privacy');
+
+
     const handleTerms = () => {
         seLoading(true)
-        dispatch(AddPrivecy({ description: content })).then((res) => {
-            seLoading(false)
-            if (res.type == 'AddPrivecy/fulfilled') {
-                Swal.fire({
-                    title: "Added",
-                    text: "New Terms has been Added.",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            } else {
-                Swal.fire({
-                    title: "opps!",
-                    text: "something went's wrong",
-                    icon: "error",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
-        })
+        seLoading(true)
+        const formData = new FormData()
+        formData.append('id', 2)
+        formData.append('privacy', content)
+        mutate(formData)
     }
     const config = {
         readonly: false,
