@@ -156,10 +156,10 @@ export const SideberLink = [
         icon: FaRegUserCircle,
         link: false,
         dropDown: [
-            {
-                menu: 'All Students',
-                link: '/all-sales-students'
-            },
+            // {
+            //     menu: 'All Students',
+            //     link: '/all-sales-students'
+            // },
             {
                 menu: 'Add Batch',
                 link: '/add-sales-student-batch'
@@ -359,10 +359,10 @@ export const AdminSideberLink = [
         icon: FaRegUserCircle,
         link: false,
         dropDown: [
-            {
-                menu: 'All Students',
-                link: '/all-sales-students'
-            },
+            // {
+            //     menu: 'All Students',
+            //     link: '/all-sales-students'
+            // },
             {
                 menu: 'Add Batch',
                 link: '/add-sales-student-batch'
