@@ -151,9 +151,9 @@ const TrainerReview = () => {
             formData.append(key, data[key])
         })
         formData.append('_method', 'PUT')
-        if (image) {
-            formData.append('image', image)
-        }
+        // if (image) {
+        //     formData.append('image', image)
+        // }
         updateCourse(formData)
     };
 
