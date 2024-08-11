@@ -34,7 +34,6 @@ const DropoutStudents = () => {
         setDob({ dob: dateString })
     };
     const data = allStudent?.map((item, i) => {
-        console.log(item)
         return {
             key: i + 1,
             "_id": item?.studentID,
