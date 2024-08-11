@@ -12,6 +12,7 @@ const Studentsgallery = () => {
     const [current, setCurrent] = useState(3);
     const [id, setId] = useState(undefined)
     const [requestingGallery, Gallery, GalleryError,] = useGetRequest('Gallery', `/gallery`)
+    // console.log(Gallery)
     const { mutate: DeleteGallery, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('gallery', `/gallery/${id}`);
     const onChange = (page) => {
         setCurrent(page);

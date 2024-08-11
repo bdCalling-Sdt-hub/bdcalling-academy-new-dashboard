@@ -12,7 +12,7 @@ const StudentsAttendance = () => {
     const [batchId, setBatchId] = useState()
     const [date, setDate] = useState()
     const [phone_number, setPhone_number] = useState('')
-    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances?auth_user=${useData?.id}${batchId && `&batch_id=${batchId}`}${date && `&date=${date}`}${phone_number && `&phone_number=${phone_number}`}`)
+    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances${batchId && `?batch_id=${batchId}`}${date && `${batchId ?"&":"?"}date=${date}`}${phone_number && `&phone_number=${phone_number}`}`)
     const columns = [
         {
             title: '#Sl',
@@ -78,9 +78,6 @@ const StudentsAttendance = () => {
                 </div>
                 <Table dataSource={data} columns={columns} />
             </>
-
-
-
         </div>
     )
 }
