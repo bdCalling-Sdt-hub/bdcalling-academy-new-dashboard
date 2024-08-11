@@ -35,33 +35,43 @@ const StudentsAttendance = () => {
             key: 'phone'
         },
         {
-            title: 'Attendance',
-            dataIndex: 'attendance',
-            key: 'attendance',
-            render: (attendance, record) => {
-                return <div className="flex justify-start items-center gap-2">
-                    {
-                        attendance === 1 ? <button className={`px-4 py-[6px] bg-green-600 text-white  capitalize`}>present</button> : <button className={`px-4 py-[6px] bg-red-600 text-white capitalize`}>absent</button>
-                    }
-
-
-
-                </div>
-            }
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date'
         },
-    ]
-    const data = Students?.data?.map((item, i) => {
-        return {
-            key: i + 1,
-            id: item?.id,
-            name: item?.student?.user?.name,
-            phone: item?.student?.phone_number,
-            email: item?.student?.user?.email,
-            batchID: item?.batch?.batch_id,
-            attendance: item?.is_present
-        }
-    })
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            render: (_, record) => <div className='flex justify-start items-center gap-2'>
+                {
+                    record?.status == 1 ? <div className='flex justify-start items-center rounded-md gap-2  font-semibold px-3 py-1 text-green-600 bg-green-100 w-fit'>
+                        <p className={``}>Present</p>
+                    </div> : <div className='flex justify-start items-center rounded-md gap-2  font-semibold px-3 py-1 text-red-600 bg-red-100 w-fit'>
+                        <p className={``}>Absent</p>
+                    </div>
+                }
+            </div>,
+            key: 'Payment status'
+        },
 
+    ];
+    const handelFilterData = (id) => {
+        const newData = data.filter(item => item._id === id)
+        setFilterData(newData[0])
+    }
+    const [colorType, setColorType] = useState(['blue'])
+    const colorHandeler = (color) => {
+        if (colorType.find(item => item == color)) {
+            const newColor = colorType.filter(item => item != color)
+            setColorType([...newColor])
+        } else {
+            setColorType([...colorType, color])
+        }
+    }
+    const inputHandeler = (e, name) => {
+        setFilterData({ ...filterData, [name]: e.target.value })
+    }
+    console.log(filterBy)
     return (
         <div>
             <p className='text-2xl font-semibold mt-6'>Students Attendance</p>

@@ -40,7 +40,7 @@ const SendStudentReview = () => {
         setRating(feedback?.rating_value)
     }, [form, feedback])
 
-
+    console.log(reviews)
 
     const handleUpdateTraineeFeedback = (value) => {
 

@@ -8,6 +8,7 @@ import usePostRequest from '../Hooks/usePostRequest';
 
 const Settings = () => {
     const [open, setOpen] = useState(false)
+    const [form] = Form.useForm();
     const [oldPasswordType, setoldPasswordType] = useState('password')
     const [newPasswordType, setnewPasswordType] = useState('password')
     const [confirmNewPasswordType, setconfirmNewPasswordType] = useState('password')
@@ -21,7 +22,12 @@ const Settings = () => {
             formData.append(key, values[key])
         })
         mutate(formData)
+        setOpen(false)
+        form.resetFields()
     };
+
+
+
     const navigate = useNavigate()
     return (
         <div className='flex flex-col justify-start items-start gap-4 mt-6'>
@@ -69,11 +75,15 @@ const Settings = () => {
                     navigate('/login')
                 }} className='text-2xl'><IoIosArrowForward /></button>
             </div>
+
+
+
             <Modal
                 open={open}
                 onCancel={() => setOpen(false)}
                 centered
                 footer={false}
+                form={form}
             >
                 <div>
                     <Form

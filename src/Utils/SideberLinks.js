@@ -456,7 +456,7 @@ export const studentSideberLink = [
     },
     {
         menu: 'Personal Info',
-        icon: FaRegUserCircle,
+        icon: PiCertificate,
         link: '/student/personal-information'
     },
 ]
@@ -481,21 +481,21 @@ export const mentorsSideberLink = [
                 icon: MdDashboard,
                 link: '/teacher/all-module'
             },
-            // {
-            //     menu: 'Exam Schedule',
-            //     icon: MdDashboard,
-            //     link: '/teacher/all-exam-schedule'
-            // },
+            {
+                menu: 'Exam Schedule',
+                icon: MdDashboard,
+                link: '/teacher/all-exam-schedule'
+            },
             {
                 menu: 'Create assignments',
                 icon: MdDashboard,
                 link: '/teacher/all-assignments-schedule'
             },
-            // {
-            //     menu: 'Provided Class Video',
-            //     icon: MdDashboard,
-            //     link: '/teacher/provided-class-video'
-            // },
+            {
+                menu: 'Provided Class Video',
+                icon: MdDashboard,
+                link: '/teacher/provided-class-video'
+            },
         ]
     },
     {
@@ -518,11 +518,11 @@ export const mentorsSideberLink = [
             //     icon: MdDashboard,
             //     link: '/teacher/student-attendance'
             // },
-            // {
-            //     menu: 'Provide Exam Result',
-            //     icon: MdDashboard,
-            //     link: '/teacher/exam-result'
-            // },
+            {
+                menu: 'Provide Exam Result',
+                icon: MdDashboard,
+                link: '/teacher/exam-result'
+            },
         ]
     },
 

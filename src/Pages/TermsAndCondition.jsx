@@ -4,12 +4,16 @@ import JoditEditor from 'jodit-react';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from 'react-icons/md';
+import useGetRequest from '../Hooks/useGetRequest';
 
 const TermsAndCondition = () => {
     const editor = useRef(null);
-    const [content, setContent] = useState('');
+    const [requestingAbout, terms, AboutError,] = useGetRequest('terms', `/show/terms`)
+    const [content, setContent] = useState(terms?.data?.terms_condition ||'');
     const [isLoading, seLoading] = useState(false)
+    
 
+    console.log(terms?.data?.terms_condition)
     const handleTerms = () => {
         seLoading(true)
         dispatch(AddPrivecy({ description: content })).then((res) => {

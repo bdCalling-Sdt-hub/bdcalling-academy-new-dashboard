@@ -4,6 +4,7 @@ import { Modal } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TrainerFeedbackForm from "../Components/Forms/TrainerFeedbackForm";
+import useGetRequest from "../Hooks/useGetRequest";
 
 const reviewData = [
     {
@@ -141,6 +142,13 @@ const TrainerReview = () => {
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
+
+
+
+    const [requestingReview, Review, ReviewError, refetch] = useGetRequest('review', `/reviews`)
+    console.log(Review)
+
+
     return (
         <>
             <div className="grid-2 py-10">

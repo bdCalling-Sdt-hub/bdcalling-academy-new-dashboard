@@ -10,7 +10,6 @@ import useGetRequest from '../Hooks/useGetRequest';
 const AboutUs = () => {
     const editor = useRef(null);
     const [requestingAbout, About, AboutError,] = useGetRequest('About', `/show/about`)
-    console.log(About)
     const [content, setContent] = useState(About?.data?.about || '');
     useEffect(() => {
         setContent(About?.data?.about)
