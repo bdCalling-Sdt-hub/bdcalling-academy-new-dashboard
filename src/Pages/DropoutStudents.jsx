@@ -30,6 +30,7 @@ const DropoutStudents = () => {
     })
     const onSubmit = data => { };
     const onSubmitFilter = data => { setFilterBy({ ...data, ...dob }) };
+
     const onChange = (date, dateString) => {
         setDob({ dob: dateString })
     };
@@ -44,7 +45,7 @@ const DropoutStudents = () => {
             "course": item?.course?.course_name,
             "Course type": item?.course?.course_type,
             "Payment status": item?.order?.status,
-            "img": item?.image?`${imageUrl}/${item?.image}`: "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
+            "img": item?.image ? `${imageUrl}/${item?.image}` : "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
         }
     })
     const columns = [
@@ -116,7 +117,7 @@ const DropoutStudents = () => {
             title: 'Actions',
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
-                <Link to={`/admitted-students/students-information/${record?._id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                <Link to={`/admitted-students`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <IoMdInformationCircleOutline />
                 </Link>
             </div>,
@@ -152,6 +153,14 @@ const DropoutStudents = () => {
         setAllStudent(result)
         // console.log(result)
     }, [Students])
+
+    const [refundAmount, setRefundAmount] = useState('');
+
+    const handleStudentRefund = () => {
+        console.log('Refund Amount:', refundAmount);
+
+        setopenRefundModal(false)
+    };
     return (
         <>
             <div className='grid-2'>
@@ -217,20 +226,27 @@ const DropoutStudents = () => {
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Student Account:</p>
-                            <p className='text-end text-sm'>15000Tk</p>
+                            <p className='text-end text-sm'>15000</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm text-red-600'>Amount deducted:</p>
-                            <p className='text-end text-sm p-1 px-3 border rounded w-fit ml-auto text-gray-400 select-none'>tk 3000</p>
+                            <p className='text-end text-sm  border rounded w-fit ml-auto text-gray-400 select-none'>
+                                <input
+                                    placeholder="Refund Amount"
+                                    value={refundAmount}
+                                    onChange={(e) => {
+                                        setRefundAmount(e.target.value);
+                                    }}
+                                    classNames=""
+                                />
+                            </p>
                         </div>
                         <hr className='w-full my-2 block' />
                         <div className='grid-2 gap-2 my-4'>
-                            <p className=' text-sm font-semibold'>Total Paymet :</p>
+                            <p className=' text-sm font-semibold'>Total Payment :</p>
                             <p className='text-end text-sm font-semibold'>12000Tk</p>
                         </div>
-                        <button onClick={() => {
-                            setopenRefundModal(false)
-                        }} className='btn-primary max-w-32 mx-auto mt-7'>
+                        <button onClick={() => handleStudentRefund()} className='btn-primary max-w-32 mx-auto mt-7'>
                             Confirm
                         </button>
                     </>

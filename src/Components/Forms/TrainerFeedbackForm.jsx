@@ -19,9 +19,11 @@ const TrainerFeedbackForm = ({ filterdData, inputHandeler, register,
                     name='rating'
                 />
             </div>
-            <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Student Name`} rules={{ ...register("name", { required: true }) }} placeholder={`name`} defaultValue={filterdData.name} />
+            {/* <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Student Name`} rules={{ ...register("name", { required: true }) }} placeholder={`name`} defaultValue={filterdData?.user?.name} /> */}
 
-            <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32`} lebel={`Review`} rules={{ ...register("Review", { required: true }) }} placeholder={`Review`} defaultValue={filterdData.review} />
+            <p className='py-2 border  rounded-md px-2 my-2'>{filterdData?.user?.name}</p>
+
+            <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32`} lebel={`Review`} rules={{ ...register("review", { required: true }) }} placeholder={`Review`} defaultValue={filterdData.review} />
             <UpdateInput status={errors} handler={inputHandeler} type={`date`} classNames={`w-full border`} lebel={`date`} rules={{ ...register("date", { required: true }) }} placeholder={`date`} defaultValue={filterdData.date} />
             <div className='text-center mt-4'>
                 <button onClick={()=>{
