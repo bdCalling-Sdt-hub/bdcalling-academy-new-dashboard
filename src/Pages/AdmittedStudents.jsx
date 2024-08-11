@@ -47,6 +47,7 @@ const AdmittedStudents = () => {
     const [AllStudents, setAllStudent] = useState([])
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    // console.log(BatchStudents)
     const BatchOptions = Batch?.data?.data?.map(item => {
         return { name: item?.batch_name, value: item?.id }
     }) || []

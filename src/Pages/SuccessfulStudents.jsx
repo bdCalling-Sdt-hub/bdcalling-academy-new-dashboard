@@ -202,8 +202,8 @@ const SuccessfulStudents = () => {
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const { register, handleSubmit, formState: { errors } } = useForm();
     // query
-    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/success/story`)
-    console.log(Stores)
+    const [requestingStudents, Students, StudentsError,] = useGetRequest('successStory', `/successful-student`)
+    console.log(Students)
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };

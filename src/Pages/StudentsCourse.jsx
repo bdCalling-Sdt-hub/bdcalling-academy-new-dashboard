@@ -171,14 +171,14 @@ const StudentsCourse = () => {
                                 <p className='text-sm'>{item?.date}</p>
                             </div>
                             {
-                                item?.video?.map((video, i) => {//${currentIndex?.id === item?.id ? "bg-blue-500 text-white" : ""}
+                                item?.video?.map((video, i) => {
                                     return <div onClick={() => {
                                         setVideoIndex({ module: index, video: i, length: item?.video?.length })
                                         setVideo(video?.video_url)
-                                    }} className={`between-center cursor-pointer ${videoIndex?.module === index && videoIndex?.video === i ? "bg-blue-500 text-white":""} card-shadow rounded-md px-3 py-1 my-2 hover:bg-blue-500 hover:text-white transition-all`} key={i}>
+                                    }} className={`between-center cursor-pointer ${videoIndex?.module === index && videoIndex?.video === i ? "bg-blue-500 text-white" : ""} card-shadow rounded-md px-3 py-1 my-2 hover:bg-blue-500 hover:text-white transition-all`} key={i}>
                                         <div className='start-center gap-2 '>
                                             <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
-                                               {videoIndex?.module === index && videoIndex?.video === i?<TbPlayerPauseFilled />:<FaPlay />} 
+                                                {videoIndex?.module === index && videoIndex?.video === i ? <TbPlayerPauseFilled /> : <FaPlay />}
                                             </button>
                                             <p>{video?.Video_name}</p>
                                         </div>
