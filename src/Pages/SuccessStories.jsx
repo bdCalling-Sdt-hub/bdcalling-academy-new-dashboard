@@ -4,6 +4,7 @@ import { FaEye, FaPlay, FaPlus } from 'react-icons/fa'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 
 const SuccessStories = () => {
     const [current, setCurrent] = useState(3);
@@ -30,23 +31,26 @@ const SuccessStories = () => {
             </div>
             <div className='grid grid-cols-2 gap-8 mt-4'>
                 {
-                    Story?.data?.map((item) => <div className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
-                        <div className='w-full h-full absolute left-0 top-0'>
-                            <img src="https://i.ibb.co/M51Zmpf/Rectangle-87-1.png" alt="" className='w-full h-full object-cover' />
+                    Story?.data?.map((item, i) => {
+                        console.log(`${imageUrl}/${item?.file}`)
+                      return <div key={i} className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
+                            <div className='w-full h-full absolute left-0 top-0'>
+                                <video src={`${imageUrl}/${item?.file}`} className='w-full h-full object-cover'></video>
+                            </div>
+                            <button className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl bg-red-500 text-white animate-pulse p-3 rounded-full'>
+                                <FaPlay />
+                            </button>
+                            <div className='flex justify-between items-center gap-2 absolute w-full h-auto bottom-0 left-0 p-2 py-6 pb-5 bg-black bg-opacity-60'>
+                                <button className='bg-white text-blue-400 p-3 py-2 rounded-md'>Delete Students Journey</button>
+                                <button className='bg-blue-400 text-white p-3 py-2 rounded-md'>Delete Students Journey</button>
+                                <button className=' bg-white text-black p-3 rounded-md'><FaEye /></button>
+                            </div>
                         </div>
-                        <button className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl bg-red-500 text-white animate-pulse p-3 rounded-full'>
-                            <FaPlay />
-                        </button>
-                        <div className='flex justify-between items-center gap-2 absolute w-full h-auto bottom-0 left-0 p-2 py-6 pb-5 bg-black bg-opacity-60'>
-                            <button className='bg-white text-blue-400 p-3 py-2 rounded-md'>Delete Students Journey</button>
-                            <button className='bg-blue-400 text-white p-3 py-2 rounded-md'>Delete Students Journey</button>
-                            <button className=' bg-white text-black p-3 rounded-md'><FaEye /></button>
-                        </div>
-                    </div>)
+                    })
                 }
             </div>
             <div className='text-center my-5'>
-                <Pagination current={current} onChange={onChange} pageSize={8} showSizeChanger={false} total={Story?.total || 0} />
+                <Pagination current={current} onChange={onChange} pageSize={Story?.per_page} showSizeChanger={false} total={Story?.total || 0} />
             </div>
         </div>
     )

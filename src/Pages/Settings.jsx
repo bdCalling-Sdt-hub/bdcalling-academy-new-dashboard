@@ -20,7 +20,6 @@ const Settings = () => {
         Object.keys(values).map(key => {
             formData.append(key, values[key])
         })
-        formData.append('_method', 'PUT')
         mutate(formData)
     };
     const navigate = useNavigate()

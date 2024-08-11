@@ -5,17 +5,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa6'
 import useGetRequest from '../Hooks/useGetRequest'
 import { Pagination } from 'antd'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 
 
 const AddEvents = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
     const navigate = useNavigate()
     const [requestingEvents, Events, EventsError, refetch, isError] = useGetRequest('Events', `/event?page=${page}`)
-    console.log(Events)
     const EventData = Events?.data?.data?.map(item => {
         return {
             "id": item?.id,
-            "img": "https://i.ibb.co/z7f84SW/Rectangle-77.png",
+            "img": `${imageUrl}/${item?.image}`,
             "date": item?.date,
             "time": item?.time,
             "end_time": item?.end_time,
