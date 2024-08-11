@@ -27,6 +27,7 @@ const TeacherStudentsAttendance = () => {
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [requestingAttendance, Attendance, AttendanceError, refetch] = useGetRequest('StudentsAttendance', `/attendances?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)//
+
     const data = Attendance?.data?.map((item, i) => {
         return {
             "key": i + 1,

@@ -229,16 +229,8 @@ export const AdminSideberLink = [
         link: false,
         dropDown: [
             {
-                menu: 'Create Super Admin',
-                link: '/create-super-admin'
-            },
-            {
                 menu: 'Create Admin',
                 link: '/create-admin'
-            },
-            {
-                menu: 'Create Mentors',
-                link: '/create-mentors'
             },
         ]
     },
@@ -398,18 +390,18 @@ export const AdminSideberLink = [
                 menu: 'Students Attendance',
                 link: '/students-attendance'
             },
-            {
-                menu: 'Exam Results',
-                link: '/exam-result'
-            },
-            {
-                menu: 'Assignment Results',
-                link: '/assignment-result'
-            },
-            {
-                menu: 'Provide class video',
-                link: '/provide-class-video'
-            },
+            // {
+            //     menu: 'Exam Results',
+            //     link: '/exam-result'
+            // },
+            // {
+            //     menu: 'Assignment Results',
+            //     link: '/assignment-result'
+            // },
+            // {
+            //     menu: 'Provide class video',
+            //     link: '/provide-class-video'
+            // },
         ]
     },
     {

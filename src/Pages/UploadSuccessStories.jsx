@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 
 const UploadSuccessStories = () => {
+    const [type, SetType] = useState(new URLSearchParams(window.location.search).get('for'))
     const [files, setFiles] = useState([]);
     const [isDragging, setIsDragging] = useState(false);
     const axiosInstance = useAxiosConfig();
@@ -61,6 +62,7 @@ const UploadSuccessStories = () => {
     const uploadFile = (fileObj) => {
         const data = new FormData();
         data.append('file', fileObj.file);
+        data.append('type', type);
 
         axiosInstance.post('/success/story', data, {
             onUploadProgress: (progressEvent) => {
@@ -123,7 +125,7 @@ const UploadSuccessStories = () => {
             <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
                 <div className='flex justify-between items-center'>
                     <div className='flex justify-start items-center gap-2'>
-                        <button onClick={()=>{
+                        <button onClick={() => {
                             navigate(-1)
                         }} className='text-2xl p-3 rounded-full bg-white' style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
                             <IoIosArrowBack />
@@ -133,7 +135,7 @@ const UploadSuccessStories = () => {
                             <p className='text-sm font-medium'>Select file(s) you want to upload</p>
                         </div>
                     </div>
-                    <button onClick={()=>navigate(-1)} className='text-2xl'>
+                    <button onClick={() => navigate(-1)} className='text-2xl'>
                         <RxCross2 />
                     </button>
                 </div>

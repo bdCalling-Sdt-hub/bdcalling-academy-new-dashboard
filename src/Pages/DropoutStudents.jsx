@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { DatePicker, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
@@ -9,173 +9,7 @@ import { Link } from 'react-router-dom'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 import useGetRequest from '../Hooks/useGetRequest'
 import SelectInput from '../Components/Input/SelectInput'
-const data = [
-    {
-        "_id": "1",
-        "name": "Alice Smith",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7890",
-        "studentID": "student1@example.com",
-        "course": "Mathematics",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "2",
-        "name": "Bob Johnson",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8901",
-        "studentID": "student2@example.com",
-        "course": "Physics",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "3",
-        "name": "Charlie Brown",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9012",
-        "studentID": "student3@example.com",
-        "course": "Chemistry",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "4",
-        "name": "David Wilson",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0123",
-        "studentID": "student4@example.com",
-        "course": "Biology",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "5",
-        "name": "Eva Martinez",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1234",
-        "studentID": "student5@example.com",
-        "course": "English",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "6",
-        "name": "Frank Garcia",
-        "Batch no": "BAC-WP2024",
-        "phone": "678-901-2345",
-        "studentID": "student6@example.com",
-        "course": "History",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "7",
-        "name": "Grace Miller",
-        "Batch no": "BAC-WP2024",
-        "phone": "789-012-3456",
-        "studentID": "student7@example.com",
-        "course": "Geography",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "8",
-        "name": "Hank Lee",
-        "Batch no": "BAC-WP2024",
-        "phone": "890-123-4567",
-        "studentID": "student8@example.com",
-        "course": "Economics",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "9",
-        "name": "Ivy Harris",
-        "Batch no": "BAC-WP2024",
-        "phone": "901-234-5678",
-        "studentID": "student9@example.com",
-        "course": "Political Science",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "10",
-        "name": "Jack Clark",
-        "Batch no": "BAC-WP2024",
-        "phone": "012-345-6789",
-        "studentID": "student10@example.com",
-        "course": "Sociology",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "11",
-        "name": "Karen Lewis",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7891",
-        "studentID": "student11@example.com",
-        "course": "Philosophy",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "12",
-        "name": "Leo Walker",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8902",
-        "studentID": "student12@example.com",
-        "course": "Art",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "13",
-        "name": "Mona Hall",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9013",
-        "studentID": "student13@example.com",
-        "course": "Music",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "14",
-        "name": "Nick Young",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0124",
-        "studentID": "student14@example.com",
-        "course": "Theater",
-        "Course type": "off line",
-        "Payment status": "paid",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "15",
-        "name": "Olivia King",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1235",
-        "studentID": "student15@example.com",
-        "course": "Dance",
-        "Course type": "off line",
-        "Payment status": "due",
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    }
-]
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 
 const DropoutStudents = () => {
     const [page, setPage] = useState(1)
@@ -188,6 +22,7 @@ const DropoutStudents = () => {
     const [filterBy, setFilterBy] = useState({})
     const [filterData, setFilterData] = useState({})
     const [dob, setDob] = useState()
+    const [allStudent, setAllStudent] = useState([])
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
     const CategoryOptions = Category?.data?.data?.map(item => {
@@ -198,12 +33,26 @@ const DropoutStudents = () => {
     const onChange = (date, dateString) => {
         setDob({ dob: dateString })
     };
-    // const data = Students
+    const data = allStudent?.map((item, i) => {
+        console.log(item)
+        return {
+            key: i + 1,
+            "_id": item?.studentID,
+            "name": item?.name,
+            "Batch no": item?.batch_id,
+            "phone": item?.phone_number,
+            "email": item?.email,
+            "course": item?.course?.course_name,
+            "Course type": item?.course?.course_type,
+            "Payment status": item?.order?.status,
+            "img": item?.image?`${imageUrl}/${item?.image}`: "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
+        }
+    })
     const columns = [
         {
             title: '#Sl',
-            dataIndex: '_id',
-            key: '_id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
@@ -224,9 +73,9 @@ const DropoutStudents = () => {
             key: 'Batch no'
         },
         {
-            title: 'Student ID',
-            dataIndex: 'studentID',
-            key: 'studentID'
+            title: 'Student Email',
+            dataIndex: 'email',
+            key: 'email'
         },
         {
             title: 'Course Name',
@@ -245,25 +94,25 @@ const DropoutStudents = () => {
                 <button onClick={() => {
                     handelFilterData(record._id)
                     setopenRefundModal(true)
-                }} disabled={record?.['Payment status'] != 'due'} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>Refund</button>
+                }} disabled={record?.['Payment status'] == 'due'} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded'>Refund</button>
             </div>,
             key: 'Payment status'
         },
-        {
-            title: 'Course Exchange',
-            dataIndex: '_id',
-            render: (_, record) => <div style={{
-                '--primary-bg': '#2BA24C'
-            }} className='start-center gap-2' >
-                <button onClick={() => {
-                    handelFilterData(record._id)
-                    setopenExchangeUpModal(true)
-                }} className='btn-primary max-w-32'>
-                    Exchange
-                </button>
-            </div >,
-            key: '_id'
-        },
+        // {
+        //     title: 'Course Exchange',
+        //     dataIndex: '_id',
+        //     render: (_, record) => <div style={{
+        //         '--primary-bg': '#2BA24C'
+        //     }} className='start-center gap-2' >
+        //         <button onClick={() => {
+        //             handelFilterData(record._id)
+        //             setopenExchangeUpModal(true)
+        //         }} className='btn-primary max-w-32'>
+        //             Exchange
+        //         </button>
+        //     </div >,
+        //     key: '_id'
+        // },
         {
             title: 'Actions',
             dataIndex: '_id',
@@ -279,18 +128,31 @@ const DropoutStudents = () => {
         const newData = data.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-    const [colorType, setColorType] = useState(['blue'])
-    const colorHandeler = (color) => {
-        if (colorType.find(item => item == color)) {
-            const newColor = colorType.filter(item => item != color)
-            setColorType([...newColor])
-        } else {
-            setColorType([...colorType, color])
-        }
-    }
-    const inputHandeler = (e, name) => {
-        setFilterData({ ...filterData, [name]: e.target.value })
-    }
+    useEffect(() => {
+        const result = [];
+        Students?.data.forEach(batch => {
+            batch.students.forEach(student => {
+                result.push({
+                    id: batch?.id,
+                    courseId: batch?.course_id,
+                    studentID: student?.id,
+                    batch_id: batch?.batch_id,
+                    course_name: batch?.course?.course_name,
+                    name: student?.user?.name,
+                    image: student.image,
+                    phone_number: student?.phone_number,
+                    order: student?.order,
+                    _id: student?.id,
+                    email: student?.user?.email,
+                    course_type: batch?.course?.course_type,
+                    messages: student?.messages,
+                    course: batch?.course
+                });
+            });
+        });
+        setAllStudent(result)
+        // console.log(result)
+    }, [Students])
     return (
         <>
             <div className='grid-2'>

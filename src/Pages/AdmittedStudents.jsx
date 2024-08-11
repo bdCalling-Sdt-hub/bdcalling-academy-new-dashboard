@@ -192,8 +192,8 @@ const AdmittedStudents = () => {
                     <CiCircleInfo />
                 </Link>
                 <button onClick={() => {
-                    handelFilterData(record._id)
-                    handleDelete()
+                    setFilterData(record)
+                    handleDelete(record?._id,record?.order?.[0]?.batch_id)
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
                 </button>
@@ -210,27 +210,27 @@ const AdmittedStudents = () => {
         if (data, updateData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
     }, [isLoading, data, updateData, updateLoading,MessageData,messageLoading])
     //delete users
-    const handleDropout = async (studentId, batchId) => {
+    const handleDropout = async (id,batchId) => {
         const loadingToastId = toast.loading('Sending request...');
 
         try {
-            await axiosConfig.get(`/dropout-student?student_id=${studentId}&batch_id=${batchId}`);
+            await axiosConfig.get(`/dropout-student?student_id=${id}&batch_id=${batchId}`);
             toast.success('Request successful!', { id: loadingToastId });
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || 'Something went wrong.', { id: loadingToastId });
         }
     };
-    const handleDelete = () => {
+    const handleDelete = (id,batchId) => {
         toast((t) => (
             <div>
-                <p className="text-xs text-red-500 text-center">Are you sure you want to dropout {filterData?.name}?</p>
+                <p className="text-xs text-red-500 text-center">Are you sure you want to dropout?</p>
                 <div className="flex justify-center items-center gap-2 mt-4">
                     <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
                         Cancel
                     </button>
                     <button
                         onClick={() => {
-                            handleDropout(filterData?._id, filterData?.order?.[0]?.batch_id);
+                            handleDropout(id,batchId);
                             toast.dismiss(t.id);
                         }}
                         className="px-3 py-1 bg-blue-500 text-white rounded-md"
@@ -351,7 +351,7 @@ const AdmittedStudents = () => {
                 onCancel={() => setOpenPaymentModal(false)}
                 width={700}
             >
-                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={filterData} />
+                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={filterData} refetch={refetch} />
             </Modal>
             {/* admit modal  */}
             {/* Follow up Modal  */}

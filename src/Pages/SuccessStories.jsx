@@ -1,6 +1,6 @@
 import { Pagination } from 'antd'
 import React, { useEffect, useState } from 'react'
-import {  FaPlus } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import { MdDelete, MdKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
@@ -10,8 +10,8 @@ import useDeleteRequest from '../Hooks/useDeleteRequest'
 
 const SuccessStories = () => {
     const [id, setId] = useState('')
-    const [current, setCurrent] = useState(3);
-    const [requestingStory, Story, StoryError, refetch] = useGetRequest('Story', `/success/story`)
+    const [current, setCurrent] = useState(1);
+    const [requestingStory, Story, StoryError, refetch] = useGetRequest('Story', `/success/story?type=story&page=${current}`)
     const { mutate, isLoading, data, error } = useDeleteRequest('success', `/success/story/${id}`);
     const onChange = (page) => {
         setCurrent(page);
@@ -46,7 +46,7 @@ const SuccessStories = () => {
                         <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>Success Stories</p>
                     </div>
                 </div>
-                <Link to={`/upload-success-stories`} className='w-fit flex justify-end items-center bg-blue-400 text-white gap-2 px-6 py-2 rounded-md'>
+                <Link to={`/upload-success-stories?for=story`} className='w-fit flex justify-end items-center bg-blue-400 text-white gap-2 px-6 py-2 rounded-md'>
                     <FaPlus /> Add Stories
                 </Link>
             </div>
@@ -57,7 +57,7 @@ const SuccessStories = () => {
                             <video autoPlay controls className='w-full h-full object-cover'>
                                 <source src={`${imageUrl}/${item?.file}`} />
                             </video>
-                            <button onClick={() => {setId(item?.id);handleDelete()}} className='absolute top-2 right-2  text-xl bg-red-500 text-white p-1 rounded-full'>
+                            <button onClick={() => { setId(item?.id); handleDelete() }} className='absolute top-2 right-2  text-xl bg-red-500 text-white p-1 rounded-full'>
                                 <MdDelete />
                             </button>
                             {/* <div className='flex justify-between items-center gap-2 absolute w-full h-auto bottom-0 left-0 p-2 py-6 pb-5 bg-black bg-opacity-60'>

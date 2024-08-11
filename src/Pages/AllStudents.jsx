@@ -19,7 +19,7 @@ import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
 import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
 const AllStudents = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
+    const [page, setPage] = useState(new URLSearchParams(winaow.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
