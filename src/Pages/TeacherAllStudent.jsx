@@ -234,9 +234,9 @@ const TeacherAllStudent = () => {
         return { name: item?.category_name, value: item?.id }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading) return
-        if (data, updateData, DeleteData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData])
+        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
+        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
