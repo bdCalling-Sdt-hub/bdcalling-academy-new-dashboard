@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import UpdateInput from '../Input/UpdateInput';
 import usePostRequest from '../../Hooks/usePostRequest';
 import useGetRequest from '../../Hooks/useGetRequest';
-const DuePayment = ({ setOpenPaymentModal, AdmitValues }) => {
+const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('paymentStatus', `/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order[0]?.batch_id}`)
     const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -35,8 +35,6 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues }) => {
             formData.append(key, paymentData[key])
         })
         mutate(formData)
-        reset()
-        setOpenPaymentModal(false)
     };
     const onFullPaymentSubmit = data => {
         const paymentData = {
@@ -72,6 +70,10 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues }) => {
         setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
         setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due)
     }, [Payment])
+    useEffect(() => {
+        if (!error && data) refetch(); reset();setOpenPaymentModal(false)
+
+    }, [data, error])
     return (
         <div>
             <div className='start-center gap-4'>

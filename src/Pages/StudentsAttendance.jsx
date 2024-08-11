@@ -2,8 +2,9 @@ import { DatePicker, Input, Select, Table } from "antd"
 import { useState } from "react";
 import useGetRequest from "../Hooks/useGetRequest";
 import { useUserData } from "../Providers/UserProviders/UserProvider";
+import { imageUrl } from "../AxiosConfig/useAxiosConfig";
 const StudentsAttendance = () => {
-    const [open, setOpen] = useState('student')
+    const [Page, setPage] = useState(1)
     const { useData, loading, isError } = useUserData();
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const BatchOptions = Batch?.data?.data?.map(item => {
@@ -12,7 +13,22 @@ const StudentsAttendance = () => {
     const [batchId, setBatchId] = useState()
     const [date, setDate] = useState()
     const [phone_number, setPhone_number] = useState('')
-    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances${batchId && `?batch_id=${batchId}`}${date && `${batchId ?"&":"?"}date=${date}`}${phone_number && `&phone_number=${phone_number}`}`)
+    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances?page=${Page}${batchId && `&batch_id=${batchId}`}${date ? `&date=${date}`:""}${phone_number ? `&phone_number=${phone_number}`:''}`)
+    const data = Students?.data?.map((item, i) => {
+        return {
+            "key": i + 1,
+            "_id": item?.student_id,
+            "name": item?.student?.user?.name,
+            "Batch no": item?.batch?.batch_id,
+            "phone": item?.student?.phone_number,
+            "email": item?.student?.user?.email,
+            "batch": item?.batch?.batch_name,
+            "status": "Absent",
+            "date": item?.date,
+            "img": `${imageUrl}/${item?.student?.image}` || "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
+            "status": item?.is_present
+        }
+    })
     const columns = [
         {
             title: '#Sl',
@@ -71,7 +87,6 @@ const StudentsAttendance = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
-    console.log(filterBy)
     return (
         <div>
             <p className='text-2xl font-semibold mt-6'>Students Attendance</p>

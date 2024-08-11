@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { AdminSideberLink, mentorsSideberLink, SideberLink, studentSideberLink } from '../../Utils/SideberLinks';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import academyLogo from '../../assets/academyLogo.png'
 import { IoIosArrowDown } from 'react-icons/io';
 import { useUserData } from '../../Providers/UserProviders/UserProvider';
@@ -20,6 +20,7 @@ const Sideber = () => {
         if (useData?.role === 'STUDENT') return setMenus(studentSideberLink)
         setMenus([])
     }, [SideberLink, loading, isError, useData, studentSideberLink, mentorsSideberLink, AdminSideberLink])
+    const navigate = useNavigate()
     return (
         <>
             <div className='w-full h-auto center-center bg-white px-9 py-[20px] mb-6'>
@@ -59,8 +60,11 @@ const Sideber = () => {
                     )
                 }
                 <li className='my-2 font-medium'>
-                    <button onClick={()=>localStorage.removeItem('token')} className={`start-center gap-2 px-5 py-2 menu flex-row  whitespace-nowrap`}>
-                        <RiLogoutBoxRLine   className='text-2xl' />
+                    <button onClick={() => {
+                        localStorage.removeItem('token')
+                        navigate('/login')
+                    }} className={`start-center gap-2 px-5 py-2 menu flex-row  whitespace-nowrap`}>
+                        <RiLogoutBoxRLine className='text-2xl' />
                         Log Out
                     </button>
                 </li>

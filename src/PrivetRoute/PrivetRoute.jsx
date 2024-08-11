@@ -14,10 +14,10 @@ const PrivetRoute = ({ children }) => {
     if (!useData?.email || isError) {
         return <Navigate state={location.pathname} to={`/login`}></Navigate>
     }
-    if (useData?.role === 'ADMIN') return
+    if (useData?.role === 'ADMIN') return children
+    if (useData?.role === 'SUPER ADMIN') return children
     if (useData?.role === 'MENTOR') return <Navigate to={'/teacher/teacher-dashboard'}></Navigate>
     if (useData?.role === 'STUDENT') return <Navigate to={'/student/student-dashboard'}></Navigate>
-    if (useData?.role === 'SUPER ADMIN') return children
     localStorage.removeItem('token')
     return <Navigate state={location.pathname} to={`/login`}></Navigate>
 }

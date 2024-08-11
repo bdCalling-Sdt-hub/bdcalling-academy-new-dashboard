@@ -8,6 +8,7 @@ import video from '../assets/video.png';
 import useAxiosConfig from '../AxiosConfig/useAxiosConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const UploadGallery = () => {
     const [files, setFiles] = useState([]);
@@ -122,8 +123,10 @@ const UploadGallery = () => {
             <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
                 <div className='flex justify-between items-center'>
                     <div className='flex justify-start items-center gap-2'>
-                        <button className='text-2xl p-3 rounded-full bg-white' style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
-                            <FiUpload />
+                    <button onClick={() => {
+                            navigate(-1)
+                        }} className='text-2xl p-3 rounded-full bg-white' style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
+                            <IoIosArrowBack />
                         </button>
                         <div>
                             <p className='text-xl font-medium'>Upload Files</p>
