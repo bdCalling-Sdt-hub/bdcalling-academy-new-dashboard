@@ -5,10 +5,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TrainerFeedbackForm from "../Components/Forms/TrainerFeedbackForm";
 import useGetRequest from "../Hooks/useGetRequest";
+import usePatchRequest from "../Hooks/usePatchRequest";
 
 const reviewData = [
     {
-        name: 'SAVANNAH NGUYENssssss',
+        name: 'SAVANNAH NGUYEN',
         date: 'MAR 08, 2024',
         review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
         rating: '5'
@@ -135,25 +136,39 @@ const TrainerReview = () => {
     const totalPage = Math.ceil(totalData / itemPerPage)
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const [rating, setrating] = useState(5)
+    const [rating, setrating] = useState(filterdData?.rating_value)
+    const [requestingReview, Review, ReviewError, refetch] = useGetRequest('trainerReview', `/trainer-reviews`)
+
+    const { mutate: updateCourse, isLoading: updateLoading, data: updateData, } = usePatchRequest('courses', `/trainer-reviews/${filterdData?.id}`);
+    const onSubmit = data => {
+
+        
+        const formData = new FormData()
+        Object.keys(CourseData).map(key => {
+            formData.append(key, data[key])
+        })
+        formData.append('_method', 'PUT')
+        if (image) {
+            formData.append('image', image)
+        }
+        updateCourse(formData)
+    };
+
     const inputHandeler = (e, name) => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
 
 
-
-    const [requestingReview, Review, ReviewError, refetch] = useGetRequest('review', `/reviews`)
     console.log(Review)
-
 
     return (
         <>
             <div className="grid-2 py-10">
                 {
-                    reviewData.slice(page * itemPerPage, (page * itemPerPage) + itemPerPage).map(item => <TrainerReviewCard setFilterdData={setFilterdData} setOpenFeedbackModal={setOpenFeedbackModal} key={item} item={item} />)
+                    Review?.map(item => <TrainerReviewCard setFilterdData={setFilterdData} setOpenFeedbackModal={setOpenFeedbackModal} key={item} item={item} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
