@@ -112,7 +112,7 @@ const StudentsAttendance = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
-    console.log(Attendance)
+    // console.log(Attendance)
     return (
         <>
             <div className='grid-2'>
