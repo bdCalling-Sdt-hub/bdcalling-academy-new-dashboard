@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RxCross2 } from 'react-icons/rx'
+import useGetRequest from '../Hooks/useGetRequest'
+import toast from 'react-hot-toast'
+import useDeleteRequest from '../Hooks/useDeleteRequest'
 const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
@@ -33,6 +36,27 @@ const data = [
     },
 ]
 const Notification = () => {
+    const [id, setStudent] = useState()
+    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `/notification`)
+    const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/mark-as-read/${id}`);
+    const handleDelete = () => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete {filterData?.name}</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        DeleteStudents()
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
+    }
     return (
         <div>
             <p className='text-xl font-semibold my-4'>Notification </p>

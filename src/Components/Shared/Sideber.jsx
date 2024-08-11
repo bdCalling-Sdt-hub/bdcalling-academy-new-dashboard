@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import academyLogo from '../../assets/academyLogo.png'
 import { IoIosArrowDown } from 'react-icons/io';
 import { useUserData } from '../../Providers/UserProviders/UserProvider';
+import { RiLogoutBoxRLine } from 'react-icons/ri';
 const Sideber = () => {
     const { useData, loading, isError } = useUserData();
     const [menus, setMenus] = useState([])
@@ -57,6 +58,12 @@ const Sideber = () => {
                     </div>
                     )
                 }
+                <li className='my-2 font-medium'>
+                    <button onClick={()=>localStorage.removeItem('token')} className={`start-center gap-2 px-5 py-2 menu flex-row  whitespace-nowrap`}>
+                        <RiLogoutBoxRLine   className='text-2xl' />
+                        Log Out
+                    </button>
+                </li>
             </ul>
         </>
     )
