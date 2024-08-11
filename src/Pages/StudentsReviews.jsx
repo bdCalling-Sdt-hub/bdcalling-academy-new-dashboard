@@ -100,9 +100,10 @@ const StudentsReviews = () => {
             <div className='grid grid-cols-3 gap-3'>
                 {
                     Review?.data?.map((item, index) => {
+                        console.log(item)
                         return (<div className='p-4 bg-[#EBF0F5] rounded-md' key={index}>
                             <div className='flex justify-start items-center gap-2'>
-                                {[...Array(Number(item?.rating_value))].map(item2 => <FaStar key={item2} className='text-2xl text-yellow-500' />)}
+                                {[...Array(Number(item?.rating_value))].map((item2,i) => <FaStar key={i} className='text-2xl text-yellow-500' />)}
                                 (<p>{item?.rating_value}</p>)
                             </div>
                             <div className='flex justify-between items-center gap-2 mt-3'>

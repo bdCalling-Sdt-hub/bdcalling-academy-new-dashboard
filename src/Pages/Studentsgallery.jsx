@@ -1,5 +1,5 @@
 import { Pagination } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaEye, FaPlay, FaPlus } from 'react-icons/fa'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
@@ -9,18 +9,14 @@ import useDeleteRequest from '../Hooks/useDeleteRequest'
 import toast from 'react-hot-toast'
 
 const Studentsgallery = () => {
-    const [current, setCurrent] = useState(3);
+    const [current, setCurrent] = useState(1);
     const [id, setId] = useState(undefined)
-    const [requestingGallery, Gallery, GalleryError,] = useGetRequest('Gallery', `/gallery`)
+    const [requestingGallery, Gallery, GalleryError, refetch] = useGetRequest('Gallery', `/gallery?page=${current}`)
     // console.log(Gallery)
     const { mutate: DeleteGallery, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('gallery', `/gallery/${id}`);
-    const onChange = (page) => {
-        setCurrent(page);
-    };
-    const onShowSizeChange = (current, size) => {
-        setCurrent(1)
-        console.log(current, size)
-    }
+    useEffect(() => {
+        if (DeleteData && !DeleteLoading) refetch()
+    }, [DeleteData, DeleteLoading])
     const handleDelete = () => {
         toast((t) => (
             <div>
@@ -39,6 +35,7 @@ const Studentsgallery = () => {
             </div>
         ));
     }
+    console.log(Gallery)
     return (
         <div className='mt-4'>
             <div className='flex justify-between items-center gap-2'>
@@ -54,7 +51,7 @@ const Studentsgallery = () => {
             </div>
             <div className='grid grid-cols-3 gap-8 mt-4'>
                 {
-                    Gallery?.data?.map((item) => <div key={item?.id} className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
+                    Gallery?.data?.data?.map((item) => <div key={item?.id} className='w-full p-3 h-[400px] bg-white relative rounded-md overflow-hidden'>
                         <div className='w-full h-full absolute left-0 top-0'>
                             <img src={item?.image ? `${imageUrl}/${item?.image}` : "https://i.ibb.co/M51Zmpf/Rectangle-87-1.png"} alt="" className='w-full h-full object-cover' />
                         </div>
@@ -72,7 +69,7 @@ const Studentsgallery = () => {
                 }
             </div>
             <div className='text-center my-5'>
-                <Pagination current={current} onChange={onChange} onShowSizeChange={onShowSizeChange} total={500} />
+                <Pagination current={current} onChange={(page) => setCurrent(page)} pageSize={Gallery?.data?.per_page} showSizeChanger={false} total={Gallery?.data?.total} />
             </div>
         </div>
     )

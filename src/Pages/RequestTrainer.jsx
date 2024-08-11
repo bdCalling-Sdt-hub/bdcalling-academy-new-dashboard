@@ -25,7 +25,7 @@ const RequestTrainer = () => {
     const [openLeaveModal, setOpenLeaveModal] = useState(false);
     const { mutate, isLoading, data, error } = usePostRequest('approve', '/approve-leave-application');
     const { mutate: Reject, isLoading: isLoadingReject, data: Rejectdata, error: Rejecterror } = usePostRequest('approve', '/reject-leave-application');
-    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError,] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.designation && `&designation=${filterBy?.designation}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)
+    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.designation && `&designation=${filterBy?.designation}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)
     const requestList = TrainerRequest?.data?.data?.map((item, i) => {
         return {
             "Name": item?.user?.name,
@@ -83,11 +83,11 @@ const RequestTrainer = () => {
         dataIndex: 'Phone',
         key: 'Phone',
     },
-    {
-        title: 'Designation',
-        dataIndex: 'Designation',
-        key: 'Designation',
-    },
+    // {
+    //     title: 'Designation',
+    //     dataIndex: 'Designation',
+    //     key: 'Designation',
+    // },
     {
         title: 'Date From',
         dataIndex: 'date_from',
@@ -137,7 +137,7 @@ const RequestTrainer = () => {
     }
     useEffect(() => {
         if (isLoading || isLoadingReject) return
-        if ((data || Rejectdata) && (!Rejecterror || !error)) setOpenLeaveModal(false)
+        if ((data || Rejectdata) && (!Rejecterror || !error)) setOpenLeaveModal(false); refetch()
     }, [data, Rejectdata, error, Rejecterror, isLoadingReject, isLoading])
     return (
         <>
@@ -154,7 +154,7 @@ const RequestTrainer = () => {
                     <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                         <IoSearch />
                     </button>
-                    <button type='button' onClick={()=>{
+                    <button type='button' onClick={() => {
                         setFilterBy({})
                     }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
                         <RxCross2 />

@@ -10,6 +10,7 @@ import { FaEdit, FaPlus } from 'react-icons/fa';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
 import usePatchRequest from '../../Hooks/usePatchRequest';
+import { imageUrl } from '../../AxiosConfig/useAxiosConfig';
 const EventTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' }]
 
 const UpdateEventForm = () => {
@@ -50,7 +51,9 @@ const UpdateEventForm = () => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        formData.append('image', image)
+        if (image) {
+            formData.append('image', image)
+        }
         mutate(formData)
     };
     useEffect(() => {
@@ -62,7 +65,7 @@ const UpdateEventForm = () => {
                 <PageHeading text={`All Events`} /> <MdOutlineKeyboardArrowRight className='text-2xl' /> <PageHeading text={`Update Event `} />
             </div>
             <div className='relative w-[500px] h-[260px] rounded-xl my-6 mt-0'>
-                <img className='w-full h-full object-cover rounded-xl' src={image ? URL.createObjectURL(image) : "https://i.ibb.co/TmVrjpR/Rectangle-6469-1.png"} alt="" />
+                <img className='w-full h-full object-cover rounded-xl' src={image ? URL.createObjectURL(image) :Events?.data?.image ?`${imageUrl}/${Events?.data?.image}` : "https://i.ibb.co/TmVrjpR/Rectangle-6469-1.png"} alt="" />
                 <label htmlFor='upload' className='text-white bg-[var(--primary-bg)] text-2xl p-2 rounded-full absolute -bottom-3 -right-3 cursor-pointer'>
                     <FaEdit />
                 </label>
