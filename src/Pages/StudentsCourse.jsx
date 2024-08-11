@@ -20,18 +20,27 @@ const StudentsCourse = () => {
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
     const { mutate, isLoading, data, error } = usePostRequest('review', '/reviews');
     const { useData, loading, isError } = useUserData();
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState({});
+    const [video , setVideo ] = useState()
 
-    const videoUrl = Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.[currentIndex]?.video_url;
+    // console.log(currentIndex)
+    useEffect(()=>{
+        setCurrentIndex(Course?.[0]?.batch?.course?.course_module?.[0]?.videos)
+    },[])
+
+    const videoUrl = currentIndex?.video_url;
     const handleNextVideoButton = () => {
-        if (currentIndex < Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-        }
+        // if (currentIndex?.id ) {
+        //     setCurrentIndex(currentIndex + 1);
+        //     console.log('yse')
+        // }
+        // setVideo(currentIndex?.video_url)
+
     }
 
     const handlePreviousButton = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
+        if (currentIndex?.id > 0) {
+            setCurrentIndex(currentIndex?.id - 1);
         }
     }
     const handleUserReviewFormValue = (values) => {
@@ -50,12 +59,12 @@ const StudentsCourse = () => {
         mutate(formData)
     }
 
-    
+
 
     useEffect(() => {
         if (formData) {
             form.resetFields();
-            setRating(0); 
+            setRating(0);
         }
     }, [data])
     return (
@@ -63,10 +72,10 @@ const StudentsCourse = () => {
             <div className='col-span-4'>
                 <div className='card-shadow h-[500px] card-shadow rounded-md overflow-hidden mb-3'>
 
-                    {videoUrl && (
+                    {currentIndex && (
                         <iframe
                             className="w-full object-contain h-full"
-                            src={videoUrl}
+                            src={currentIndex?.video_url}
                             title="YouTube video player"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -139,7 +148,50 @@ const StudentsCourse = () => {
                     back
                 </button>
                 <p className='text-lg font-medium capitalize my-4'>Key to a great Ul Dribbble shot</p>
-                <div>
+
+
+                {
+                    
+                    Course?.[0]?.batch.course?.course_module?.map(courseVideo => {
+
+                       return ( <div>
+                            <div className='between-center'>
+                                <p className='text-lg'>Ice Breaking Session</p>
+                                <p className='text-base'>02:30 Hours</p>
+                            </div>
+                            {
+                                courseVideo?.videos?.map((item, i) => {
+                                    
+                                    return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex?.id === item?.id ? "bg-blue-500 text-white" : ""} `} onClick={() => setCurrentIndex(item)} key={i}>
+                                        <div className='start-center gap-2 '>
+                                            <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
+                                                <FaPlay />
+                                            </button>
+                                            <p>{item?.name}</p>
+                                        </div>
+                                        {/* <p>1:00</p> */}
+                                    </div>
+                                })
+                            }
+                            <div className='between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2' >
+                                <div className='start-center gap-2'>
+                                    <button className='text-blue-500 text-lg p-2 rounded-full bg-blue-100'>
+                                        <CgFileDocument />
+                                    </button>
+                                    <p>Mentor Introducing</p>
+                                </div>
+                                <p className='text-green-600'>1/5</p>
+                            </div>
+                        </div>)
+
+
+
+                    })
+
+
+                }
+
+                {/* <div>
                     <div className='between-center'>
                         <p className='text-lg'>Ice Breaking Session</p>
                         <p className='text-base'>02:30 Hours</p>
@@ -166,10 +218,197 @@ const StudentsCourse = () => {
                         </div>
                         <p className='text-green-600'>{currentIndex + 1}/{Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length}</p>
                     </div>
-                </div>
+                </div> */}
+
+
+
+
+
+
+
+
+
             </div>
         </div>
     )
 }
 
 export default StudentsCourse
+
+
+
+// [
+//     {
+//       id: 12,
+//       batch_id: 6,
+//       student_id: 22,
+//       status: 'enrolled',
+//       created_at: '2024-08-11T05:35:01.000000Z',
+//       updated_at: '2024-08-11T05:35:01.000000Z',
+//       batch: {
+//         id: 6,
+//         course_id: 3,
+//         batch_id: 'BCA-UTA-2401',
+//         batch_name: 'New Batch',
+//         start_date: '2024-08-15',
+//         end_date: '2024-08-30',
+//         seat_limit: 20,
+//         seat_left: 20,
+//         image: 'adminAsset/image/1082431118.jpg',
+//         discount_price: 100,
+//         created_at: '2024-08-10T05:36:10.000000Z',
+//         updated_at: '2024-08-10T05:36:10.000000Z',
+//         course: {
+//           id: 3,
+//           course_category_id: 2,
+//           course_name: 'Uta Benton',
+//           language: 'Dolore itaque mollit',
+//           course_details: 'Placeat et recusand',
+//           course_time_length: 'Ullamco itaque rerum',
+//           price: '804',
+//           max_student_length: null,
+//           skill_Level: 'Sit qui omnis volup',
+//           address: 'Eius voluptas explic',
+//           thumbnail: 'adminAsset/image/1177336403.jpeg',
+//           career_opportunities: [ 'Et corrupti qui ess' ],
+//           curriculum: [ 'Sed amet et perspic' ],
+//           tools: [ 'Ab aliqua Eos illu' ],
+//           job_position: [ 'Expedita modi cupidi' ],
+//           popular_section: 0,
+//           status: 'pending',
+//           course_type: 'offline',
+//           created_at: '2024-08-08T04:06:29.000000Z',
+//           updated_at: '2024-08-09T12:22:46.000000Z',
+//           course_module: [
+//             {
+//               id: 2,
+//               course_id: 3,
+//               module_title: 'test',
+//               created_by: null,
+//               module_no: '1',
+//               created_at: '2024-08-09T14:03:50.000000Z',
+//               updated_at: '2024-08-09T14:03:50.000000Z',
+//               videos: [
+//                 {
+//                   id: 33,
+//                   course_module_id: 2,
+//                   name: 'dsfg ',
+//                   video_url:
+//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
+//                   order: '1',
+//                   created_at: '2024-08-11T00:34:13.000000Z',
+//                   updated_at: '2024-08-11T00:34:13.000000Z'
+//                 },
+//                 {
+//                   id: 34,
+//                   course_module_id: 2,
+//                   name: 'zsdf',
+//                   video_url:
+//                     'https://www.youtube.com/embed/qbkmHPxYOBQ?si=GjA3W9SjEYxjdUyQ',
+//                   order: '2',
+//                   created_at: '2024-08-11T00:34:13.000000Z',
+//                   updated_at: '2024-08-11T00:34:13.000000Z'
+//                 },
+//                 {
+//                   id: 35,
+//                   course_module_id: 2,
+//                   name: 'sdrt',
+//                   video_url:
+//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
+//                   order: '3',
+//                   created_at: '2024-08-11T00:34:13.000000Z',
+//                   updated_at: '2024-08-11T00:34:13.000000Z'
+//                 },
+//                 {
+//                   id: 36,
+//                   course_module_id: 2,
+//                   name: 'sdf',
+//                   video_url:
+//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
+//                   order: '4',
+//                   created_at: '2024-08-11T00:34:13.000000Z',
+//                   updated_at: '2024-08-11T00:34:13.000000Z'
+//                 },
+//                 {
+//                   id: 37,
+//                   course_module_id: 2,
+//                   name: 'asd',
+//                   video_url:
+//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
+//                   order: '5',
+//                   created_at: '2024-08-11T00:34:13.000000Z',
+//                   updated_at: '2024-08-11T00:34:13.000000Z'
+//                 }
+//               ]
+//             },
+//             {
+//               id: 6,
+//               course_id: 3,
+//               module_title: 'melodie lara',
+//               created_by: null,
+//               module_no: '2',
+//               created_at: '2024-08-11T03:55:13.000000Z',
+//               updated_at: '2024-08-11T03:55:13.000000Z',
+//               videos: Array(6) [
+//                 {
+//                   id: 38,
+//                   course_module_id: 6,
+//                   name: 'Nasim Hood',
+//                   video_url: 'https://www.wiqa.cc',
+//                   order: '1',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 },
+//                 {
+//                   id: 39,
+//                   course_module_id: 6,
+//                   name: 'Neve Larsen',
+//                   video_url: 'https://www.jawizazahyhi.co',
+//                   order: '2',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 },
+//                 {
+//                   id: 40,
+//                   course_module_id: 6,
+//                   name: 'Marshall Holman',
+//                   video_url: 'https://www.zana.in',
+//                   order: '3',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 },
+//                 {
+//                   id: 41,
+//                   course_module_id: 6,
+//                   name: 'Steel Jordan',
+//                   video_url: 'https://www.tixypaxi.co',
+//                   order: '4',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 },
+//                 {
+//                   id: 42,
+//                   course_module_id: 6,
+//                   name: 'Freya Cabrera',
+//                   video_url: 'https://www.lyliqelonufyq.net',
+//                   order: '5',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 },
+//                 {
+//                   id: 43,
+//                   course_module_id: 6,
+//                   name: 'Kirby Russo',
+//                   video_url: 'https://www.rupojuhadudyno.me',
+//                   order: '6',
+//                   created_at: '2024-08-11T03:55:13.000000Z',
+//                   updated_at: '2024-08-11T03:55:13.000000Z'
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         teachers: []
+//       }
+//     }
+//   ]
