@@ -19,7 +19,7 @@ import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
 import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
 const AllStudents = () => {
-    const [page, setPage] = useState(new URLSearchParams(winaow.location.search).get('page') || 1);
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -55,6 +55,7 @@ const AllStudents = () => {
     const BatchOptions = Batch?.data?.data?.map(item => {
         return { name: item?.batch_name, value: item?.id }
     }) || []
+
     const TableData = Students?.data?.map((item, index) => {
         return {
             key: index + 1,
