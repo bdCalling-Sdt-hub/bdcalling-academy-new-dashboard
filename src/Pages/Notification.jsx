@@ -41,9 +41,7 @@ const Notification = () => {
     const [id, setStudent] = useState()
     const [page, setPage] = useState(0)
     const { useData, loading, isError } = useUserData();
-    console.log(useData)
-    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `${(useData?.role === 'SUPER ADMIN' || useData?.role === 'ADMIN') ? '/admin-notification' : '/notifications'}`)
-    console.log(Notification)
+    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `${(useData?.role === 'SUPER ADMIN' || useData?.role === 'ADMIN') ? '/admin-notification' : '/notification'}`)
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/mark-as-read/${id}`);
     const handleDelete = () => {
         toast((t) => (
