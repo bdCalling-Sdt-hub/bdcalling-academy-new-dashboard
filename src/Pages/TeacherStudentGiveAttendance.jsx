@@ -89,7 +89,7 @@ const TeacherStudentGiveAttendance = () => {
             batchID: Students?.data?.[0]?.id,
             attendance: 0,
             studentID: item?.user?.id,
-            image:item?.user?.image
+            image: item?.user?.image
         }
     })
     const onSubmit = () => {
@@ -114,7 +114,8 @@ const TeacherStudentGiveAttendance = () => {
             attendance_by: useData?.id,
             attendances: [...presents, ...absents]
         }
-        console.log(postData)
+        // console.log(AttendanceData)
+        // return
         mutate(AttendanceData)
     }
     const HandleSendMassage = (value) => {
