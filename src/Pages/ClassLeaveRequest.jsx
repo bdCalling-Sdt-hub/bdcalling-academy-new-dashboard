@@ -7,34 +7,19 @@ import { FaCheck } from 'react-icons/fa'
 import { IoTimeOutline } from 'react-icons/io5'
 import usePostRequest from '../Hooks/usePostRequest'
 import useGetRequest from '../Hooks/useGetRequest'
-const data = [
-    {
-        key: '1',
-        Status: 1,
-        Recommender: 'this is Rab',
-        Date: '12-12-12',
-        LeaveType: 'andolon coltese',
-    },
-    {
-        key: '2',
-        Status: 0,
-        Recommender: 'this is Rab',
-        Date: '12-12-12',
-        LeaveType: 'andolon coltese',
-    },
-]
+import { RxCross2 } from 'react-icons/rx'
 const ClassLeaveRequest = () => {
     const { mutate, isLoading, data: PostLeaveData, error } = usePostRequest('Leave', '/request-leave-application');
     const [requestingLeave, Leave, LeaveError, refetch] = useGetRequest('Leave', `/show-leave-application`)
     const data = Leave?.data?.data?.map((item, i) => {
         return {
             key: i + 1,
-            Status: item?.leave_status === 'pending' ? 0 : 1,
+            Status: item?.leave_status === 'pending' ? 0 : item?.leave_status === 'rejected' ? 2 : 1,
             Recommender: item?.recommend_by,
             date_from: item?.date_from,
             date_to: item?.date_to,
             LeaveType: item?.leave_type,
-            id:item?.id
+            id: item?.id
         }
     })
     const [form] = Form.useForm()
@@ -70,7 +55,7 @@ const ClassLeaveRequest = () => {
             key: 'date_to'
         },
         {
-            title: 'Recommender',
+            title: 'Comment',
             dataIndex: 'Recommender',
             key: 'Recommender'
         },
@@ -79,8 +64,8 @@ const ClassLeaveRequest = () => {
             dataIndex: 'Status',
             key: 'Status',
             render: (_, record) => {
-                return <button className={`${_ === 1 ? 'bg-green-500' : "bg-yellow-500"} text-white flex justify-center items-center  py-2 w-36 gap-2`}>
-                    {_ === 1 ? <FaCheck /> : <IoTimeOutline />}   {_ === 1 ? 'Approved' : "Pending"}
+                return <button className={`${_ === 0 ? 'bg-yellow-500' : _ === 1 ? "bg-green-500" : 'bg-red-500'} text-white flex justify-center items-center  py-2 w-36 gap-2`}>
+                    {_ === 0 ? <IoTimeOutline /> : _ === 1 ? < FaCheck /> : <RxCross2 />}   {_ === 0 ? "Pending" : _ === 1 ? 'Approved' : 'Rejected'}
                 </button>
             }
         },

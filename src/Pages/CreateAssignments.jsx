@@ -129,7 +129,7 @@ const CreateAssignments = () => {
             <div className='start-start gap-6 my-8'>
                 <div className='card-shadow p-4 rounded-md w-[500px]'>
                     <p className='text-2xl font-semibold mb-4'>Add New Assignment</p>
-                    <AssignmentForms />
+                    <AssignmentForms refetch={refetch} />
                 </div>
                 <div id='allStudent' className='card-shadow p-4 rounded-md w-full'>
                     <p className='text-2xl font-semibold mb-4'>All Assignment Schedule</p>

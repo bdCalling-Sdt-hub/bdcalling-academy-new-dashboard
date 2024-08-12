@@ -25,7 +25,7 @@ const RequestTrainer = () => {
     const [openLeaveModal, setOpenLeaveModal] = useState(false);
     const { mutate, isLoading, data, error } = usePostRequest('approve', '/approve-leave-application');
     const { mutate: Reject, isLoading: isLoadingReject, data: Rejectdata, error: Rejecterror } = usePostRequest('approve', '/reject-leave-application');
-    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.designation && `&designation=${filterBy?.designation}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)
+    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.designation ? `&designation=${filterBy?.designation}`:''}${filterBy?.dob ? `&date=${filterBy?.dob}`:''}`)
     const requestList = TrainerRequest?.data?.data?.map((item, i) => {
         return {
             "Name": item?.user?.name,
