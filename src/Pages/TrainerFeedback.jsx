@@ -4,7 +4,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 const TrainerFeedback = () => {
 
     const [Loading, reviews, error,] = useGetRequest('review', `/show-student-feedback`)
-    // console.log(reviews?.data?.data)
+    console.log(reviews?.data?.data)
     return (
         <div>
             <p className='text-2xl font-semibold my-6'>Trainer All Feedback</p>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = axios.create({
     // baseURL: 'http://192.168.10.64:7000/api',
-    baseURL: 'http://192.168.10.232:7000/api',
+    baseURL: 'http://115.127.156.13:7000/api',
 })
 const useAxiosConfig = () => {
     return baseUrl
