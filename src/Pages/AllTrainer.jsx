@@ -35,6 +35,7 @@ const AllTrainer = () => {
         }
     })
     const AdminData = Teacher?.teacher?.data?.map(item => {
+        console.log(item)
         return {
             _id: item?.id,
             profile: item?.image,
