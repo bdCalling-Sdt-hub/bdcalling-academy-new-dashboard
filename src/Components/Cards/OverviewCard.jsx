@@ -11,7 +11,9 @@ const OverviewCard = ({ title, total, icon, text }) => {
                     <p className="overview-total">{total}</p>
                 </div>
             </div>
-            <p className="start-center mt-4 gap-2"><MdOutlineShowChart className="text-2xl text-[#2492EB]"/> {text}</p>
+            <p className="start-center mt-4 gap-2 py-4">
+                {/* <MdOutlineShowChart className="text-2xl text-[#2492EB]" /> {text} */}
+            </p>
         </div>
     )
 }
