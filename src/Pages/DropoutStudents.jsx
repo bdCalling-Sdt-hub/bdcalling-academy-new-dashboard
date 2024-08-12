@@ -113,16 +113,16 @@ const DropoutStudents = () => {
         //     </div >,
         //     key: '_id'
         // },
-        {
-            title: 'Actions',
-            dataIndex: '_id',
-            render: (_, record) => <div className='start-center gap-2'>
-                <Link to={`/admitted-students`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
-                    <IoMdInformationCircleOutline />
-                </Link>
-            </div>,
-            key: '_id'
-        },
+        // {
+        //     title: 'Actions',
+        //     dataIndex: '_id',
+        //     render: (_, record) => <div className='start-center gap-2'>
+        //         <Link to={`/admitted-students`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+        //             <IoMdInformationCircleOutline />
+        //         </Link>
+        //     </div>,
+        //     key: '_id'
+        // },
     ];
     const handelFilterData = (id) => {
         const newData = data.filter(item => item._id === id)

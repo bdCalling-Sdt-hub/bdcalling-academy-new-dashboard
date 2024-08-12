@@ -62,7 +62,7 @@ const TeacherBaseStudents = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img:item?.image? `${imageUrl}/${item?.image}` : ProfileImage,
             course: item?.category?.category_name,
             _id: item?.id,
             gender: item?.gender,
