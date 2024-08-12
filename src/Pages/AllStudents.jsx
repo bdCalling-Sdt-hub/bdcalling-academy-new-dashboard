@@ -55,6 +55,7 @@ const AllStudents = () => {
     const BatchOptions = Batch?.data?.data?.map(item => {
         return { name: item?.batch_name, value: item?.id }
     }) || []
+
     const TableData = Students?.data?.map((item, index) => {
         return {
             key: index + 1,

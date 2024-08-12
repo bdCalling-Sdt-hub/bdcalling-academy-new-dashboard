@@ -8,188 +8,9 @@ import { IoSearch } from 'react-icons/io5'
 import {  MdOutlineArrowBackIosNew } from 'react-icons/md'
 import { SiMicrosoftword } from 'react-icons/si'
 import useGetRequest from '../Hooks/useGetRequest'
-const data = [
-    {
-        "_id": "1",
-        "name": "Alice Smith",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7890",
-        "studentID": "student1@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "2",
-        "name": "Bob Johnson",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8901",
-        "studentID": "student2@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "3",
-        "name": "Charlie Brown",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9012",
-        "studentID": "student3@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "4",
-        "name": "David Wilson",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0123",
-        "studentID": "student4@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "5",
-        "name": "Eva Martinez",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1234",
-        "studentID": "student5@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "6",
-        "name": "Frank Garcia",
-        "Batch no": "BAC-WP2024",
-        "phone": "678-901-2345",
-        "studentID": "student6@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "7",
-        "name": "Grace Miller",
-        "Batch no": "BAC-WP2024",
-        "phone": "789-012-3456",
-        "studentID": "student7@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "8",
-        "name": "Hank Lee",
-        "Batch no": "BAC-WP2024",
-        "phone": "890-123-4567",
-        "studentID": "student8@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "9",
-        "name": "Ivy Harris",
-        "Batch no": "BAC-WP2024",
-        "phone": "901-234-5678",
-        "studentID": "student9@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "10",
-        "name": "Jack Clark",
-        "Batch no": "BAC-WP2024",
-        "phone": "012-345-6789",
-        "studentID": "student10@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "11",
-        "name": "Karen Lewis",
-        "Batch no": "BAC-WP2024",
-        "phone": "123-456-7891",
-        "studentID": "student11@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "12",
-        "name": "Leo Walker",
-        "Batch no": "BAC-WP2024",
-        "phone": "234-567-8902",
-        "studentID": "student12@example.com",
-        "course": "Art",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "13",
-        "name": "Mona Hall",
-        "Batch no": "BAC-WP2024",
-        "phone": "345-678-9013",
-        "studentID": "student13@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "14",
-        "name": "Nick Young",
-        "Batch no": "BAC-WP2024",
-        "phone": "456-789-0124",
-        "studentID": "student14@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    },
-    {
-        "_id": "15",
-        "name": "Olivia King",
-        "Batch no": "BAC-WP2024",
-        "phone": "567-890-1235",
-        "studentID": "student15@example.com",
-        "course": "UI/UX Design",
-        "Course type": "off line",
-        "status": "Complete",
-        "date": '12-08-2023',
-        "img": "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
-    }
-]
+import ProfileImage from '../assets/corporate-user-icon.webp'
+import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+
 
 const SuccessfulStudents = () => {
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
@@ -202,16 +23,37 @@ const SuccessfulStudents = () => {
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const { register, handleSubmit, formState: { errors } } = useForm();
     // query
-    const [requestingStudents, Students, StudentsError,] = useGetRequest('successStory', `/successful-student`)
-    console.log(Students)
+    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/successful-student`)
+    const TableData = Stores?.data?.map((item, i)=>{
+        const names = item?.students?.map(student => student?.user?.name).join(', ');
+        const image = item?.students?.map(student => student?.image).join(', ');
+        const phone = item?.students?.map(student => student?.phone_number).join(', ');
+        const studentId = item?.students?.map(student => student?.user?.email).join(', ');
+        const  date = item?.students?.map(student => student?.registration_date).join(', ');
+        const  status = item?.students?.map(student => student?.status).join(', ');
+        return {
+            key : i+1,
+            name : names,
+            img: `${imageUrl}/${image}` || ProfileImage,
+            phone : phone,
+            studentID : studentId,
+            course : item?.course?.course_name,
+            date: date,
+            status : status
+
+
+        }
+    })
+    console.log(TableData)
+    // const tableData =  Stores?.data.map()
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
     };
     const columns = [
         {
             title: '#Sl',
-            dataIndex: '_id',
-            key: '_id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
@@ -303,7 +145,7 @@ const SuccessfulStudents = () => {
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={TableData}
                     />
                 </div>
             </div>
@@ -638,3 +480,216 @@ const SuccessfulStudents = () => {
 
 
 export default SuccessfulStudents
+
+
+
+
+
+// [
+//     {
+//       id: 5,
+//       course_id: 4,
+//       batch_id: 'BCA-ELI-2401',
+//       batch_name: 'test',
+//       start_date: '2024-08-29',
+//       end_date: '2024-08-22',
+//       seat_limit: 4156,
+//       seat_left: 4156,
+//       image: 'adminAsset/image/120062413.jpeg',
+//       discount_price: 7789,
+//       created_at: '2024-08-09T08:58:37.000000Z',
+//       updated_at: '2024-08-09T08:58:37.000000Z',
+//       students: [
+//         {
+//           id: 4,
+//           category_id: 1,
+//           user_id: 14,
+//           status: 'enrolled',
+//           phone_number: '564564',
+//           gender: 'male',
+//           religion: 'islam',
+//           registration_date: '2024-08-23',
+//           dob: '2024-08-22',
+//           blood_group: 'undefined',
+//           address: 'qae sdfg as',
+//           add_by: 'super admin',
+//           student_type: 'super admin',
+//           messages: [
+//             'deadline near', 'deadline near', '[",ksjgfiusdf aspe"]', '["erfw3rfdsdfcs sdf "]'
+//           ],
+//           event_name: null,
+//           image: 'adminAsset/image/736473981.jpeg',
+//           created_at: '2024-08-09T08:59:30.000000Z',
+//           updated_at: '2024-08-11T05:29:10.000000Z',
+//           pivot: { batch_id: 5, student_id: 4 },
+//           user: {
+//             id: 14,
+//             name: 'Berk Nunez',
+//             email: 'siya4273@gmail.com',
+//             email_verified_at: '2024-08-09T08:59:30.000000Z',
+//             role: 'STUDENT',
+//             otp: '0',
+//             designation: null,
+//             expertise: null,
+//             image: null,
+//             user_status: '0',
+//             phone_number: null,
+//             created_at: '2024-08-09T08:59:30.000000Z',
+//             updated_at: '2024-08-09T08:59:30.000000Z'
+//           },
+//           order: [
+//             {
+//               id: 6,
+//               student_id: 4,
+//               batch_id: 1,
+//               course_fee: '774',
+//               discount_price: '12',
+//               price: '762',
+//               amount: '762',
+//               due: '0',
+//               discount_reference: null,
+//               gateway_name: 'Nagad',
+//               installment_date: [ { first_installment: '2024-08-10' } ],
+//               payment_type: 'one_time',
+//               transaction_id: null,
+//               currency: 'TK',
+//               status: 'paid',
+//               created_at: '2024-08-10T19:42:28.000000Z',
+//               updated_at: '2024-08-10T19:42:28.000000Z'
+//             }
+//           ]
+//         }
+//       ],
+//       course: {
+//         id: 4,
+//         course_category_id: 1,
+//         course_name: 'Elizabeth Hughes',
+//         language: 'Consectetur culpa qu',
+//         course_details: '4564531000v wieuo; dlfg ty h',
+//         course_time_length: '45',
+//         price: '456787',
+//         max_student_length: null,
+//         skill_Level: 'Asperiores nesciunt',
+//         address: 'ftgh fgh fgh f rf fgh',
+//         thumbnail: 'adminAsset/image/210537811.jpeg',
+//         career_opportunities: [ 'fghfg' ],
+//         curriculum: [ 'hfgh ' ],
+//         tools: [ 'fgh ' ],
+//         job_position: [ 'fghfgh ' ],
+//         popular_section: 0,
+//         status: 'pending',
+//         course_type: 'offline',
+//         created_at: '2024-08-09T08:57:47.000000Z',
+//         updated_at: '2024-08-09T08:57:47.000000Z',
+//         course_category: {
+//           id: 1,
+//           category_name: 'web Development',
+//           created_at: '2024-08-08T04:04:45.000000Z',
+//           updated_at: '2024-08-11T00:15:06.000000Z'
+//         }
+//       }
+//     },
+//     {
+//       id: 1,
+//       course_id: 2,
+//       batch_id: 'BCA-ONYS-2401',
+//       batch_name: 'Aileen Roberson',
+//       start_date: '2024-08-22',
+//       end_date: '2024-08-15',
+//       seat_limit: 31,
+//       seat_left: 31,
+//       image: 'adminAsset/image/379582754.jpeg',
+//       discount_price: 188,
+//       created_at: '2024-08-08T04:09:20.000000Z',
+//       updated_at: '2024-08-09T12:11:56.000000Z',
+//       students: [
+//         {
+//           id: 4,
+//           category_id: 1,
+//           user_id: 14,
+//           status: 'enrolled',
+//           phone_number: '564564',
+//           gender: 'male',
+//           religion: 'islam',
+//           registration_date: '2024-08-23',
+//           dob: '2024-08-22',
+//           blood_group: 'undefined',
+//           address: 'qae sdfg as',
+//           add_by: 'super admin',
+//           student_type: 'super admin',
+//           messages: [
+//             'deadline near', 'deadline near', '[",ksjgfiusdf aspe"]', '["erfw3rfdsdfcs sdf "]'
+//           ],
+//           event_name: null,
+//           image: 'adminAsset/image/736473981.jpeg',
+//           created_at: '2024-08-09T08:59:30.000000Z',
+//           updated_at: '2024-08-11T05:29:10.000000Z',
+//           pivot: { batch_id: 1, student_id: 4 },
+//           user: {
+//             id: 14,
+//             name: 'Berk Nunez',
+//             email: 'siya4273@gmail.com',
+//             email_verified_at: '2024-08-09T08:59:30.000000Z',
+//             role: 'STUDENT',
+//             otp: '0',
+//             designation: null,
+//             expertise: null,
+//             image: null,
+//             user_status: '0',
+//             phone_number: null,
+//             created_at: '2024-08-09T08:59:30.000000Z',
+//             updated_at: '2024-08-09T08:59:30.000000Z'
+//           },
+//           order: [
+//             {
+//               id: 6,
+//               student_id: 4,
+//               batch_id: 1,
+//               course_fee: '774',
+//               discount_price: '12',
+//               price: '762',
+//               amount: '762',
+//               due: '0',
+//               discount_reference: null,
+//               gateway_name: 'Nagad',
+//               installment_date: [ { first_installment: '2024-08-10' } ],
+//               payment_type: 'one_time',
+//               transaction_id: null,
+//               currency: 'TK',
+//               status: 'paid',
+//               created_at: '2024-08-10T19:42:28.000000Z',
+//               updated_at: '2024-08-10T19:42:28.000000Z'
+//             }
+//           ]
+//         }
+//       ],
+//       course: {
+//         id: 2,
+//         course_category_id: 1,
+//         course_name: 'Nyssa Caldwell',
+//         language: 'Minus ea provident',
+//         course_details: 'Dolor aliquam dolore',
+//         course_time_length: 'In rem illo cupidita',
+//         price: '774',
+//         max_student_length: null,
+//         skill_Level: 'Cupiditate deserunt',
+//         address: 'Ut nisi fugiat modi',
+//         thumbnail: 'adminAsset/image/1943901522.jpeg',
+//         career_opportunities: [ 'Tempor incididunt un' ],
+//         curriculum: [ 'Ipsam rerum illum s' ],
+//         tools: [ 'Qui amet qui reicie' ],
+//         job_position: [ 'Nostrum minus dolor ' ],
+//         popular_section: 1,
+//         status: 'pending',
+//         course_type: 'online',
+//         created_at: '2024-08-08T04:06:02.000000Z',
+//         updated_at: '2024-08-09T12:23:18.000000Z',
+//         course_category: {
+//           id: 1,
+//           category_name: 'web Development',
+//           created_at: '2024-08-08T04:04:45.000000Z',
+//           updated_at: '2024-08-11T00:15:06.000000Z'
+//         }
+//       }
+//     }
+//   ]
