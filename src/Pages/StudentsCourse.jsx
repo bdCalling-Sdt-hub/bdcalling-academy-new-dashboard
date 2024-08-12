@@ -1,13 +1,13 @@
+
 import React, { useEffect, useState } from 'react'
 import { FaArrowLeft, FaArrowRight, FaPlay, FaStar } from 'react-icons/fa'
-import ProfileImage from '../assets/corporate-user-icon.webp'
 import { Form } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { CgFileDocument } from 'react-icons/cg'
 import useGetRequest from '../Hooks/useGetRequest'
 import { useParams } from 'react-router-dom'
 import { useUserData } from '../Providers/UserProviders/UserProvider'
 import usePostRequest from '../Hooks/usePostRequest'
+import { TbPlayerPauseFilled } from 'react-icons/tb'
 
 
 
@@ -16,31 +16,50 @@ const StudentsCourse = () => {
     const [rating, setRating] = useState(0)
     const [form] = Form.useForm();
     const [formData, setData] = useState(null);
-
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('module', `/enrolled-courses?id=${id}`)
     const { mutate, isLoading, data, error } = usePostRequest('review', '/reviews');
     const { useData, loading, isError } = useUserData();
-    const [currentIndex, setCurrentIndex] = useState({});
-    const [video , setVideo ] = useState()
-
-    // console.log(currentIndex)
-    useEffect(()=>{
-        setCurrentIndex(Course?.[0]?.batch?.course?.course_module?.[0]?.videos)
-    },[])
-
-    const videoUrl = currentIndex?.video_url;
+    const [video, setVideo] = useState('')
+    const [videoIndex, setVideoIndex] = useState({ module: 0, video: 0, length: 0 })
+    const [allCourse, setAllCourse] = useState([])
+    useEffect(() => {
+        const formatData = () => {
+            return Course?.flatMap(item =>
+                item?.batch?.course?.course_module?.map(module => ({
+                    module_title: module?.module_title,
+                    date: module?.created_at?.split('T')[0],
+                    module_id: module?.id,
+                    courseName: item?.batch?.course?.course_name,
+                    course_id: item?.batch?.course?.id,
+                    video: module?.videos?.map(video => ({
+                        video_id: video?.id,
+                        video_url: video?.video_url,
+                        Video_name: video?.name
+                    }))
+                }))
+            );
+        };
+        const data = formatData()
+        setVideoIndex({ module: 0, video: 0, length: data?.[0]?.video.length })
+        setVideo(data?.[0]?.video?.[0]?.video_url)
+        setAllCourse(data)
+    }, [Course])
     const handleNextVideoButton = () => {
-        // if (currentIndex?.id ) {
-        //     setCurrentIndex(currentIndex + 1);
-        //     console.log('yse')
-        // }
-        // setVideo(currentIndex?.video_url)
-
+        if (videoIndex?.video === videoIndex?.length - 1) {
+            setVideo(allCourse?.[videoIndex?.module + 1]?.video?.[0]?.video_url)
+            setVideoIndex({ module: videoIndex?.module + 1, video: 0, length: allCourse?.[videoIndex?.module + 1]?.video.length })
+        } else {
+            setVideo(allCourse?.[videoIndex?.module]?.video?.[videoIndex?.video + 1]?.video_url)
+            setVideoIndex({ module: videoIndex?.module, video: videoIndex?.video + 1, length: allCourse?.[videoIndex?.module]?.video.length })
+        }
     }
-
     const handlePreviousButton = () => {
-        if (currentIndex?.id > 0) {
-            setCurrentIndex(currentIndex?.id - 1);
+        if (videoIndex?.video === 0) {
+            setVideo(allCourse?.[videoIndex?.module - 1]?.video?.[allCourse?.[videoIndex?.module - 1]?.video.length - 1]?.video_url)
+            setVideoIndex({ module: videoIndex?.module - 1, video: allCourse?.[videoIndex?.module - 1]?.video.length - 1, length: allCourse?.[videoIndex?.module - 1]?.video.length })
+        } else {
+            setVideo(allCourse?.[videoIndex?.module]?.video?.[videoIndex?.video - 1]?.video_url)
+            setVideoIndex({ module: videoIndex?.module, video: videoIndex?.video - 1, length: allCourse?.[videoIndex?.module]?.video.length })
         }
     }
     const handleUserReviewFormValue = (values) => {
@@ -71,30 +90,25 @@ const StudentsCourse = () => {
         <div className='grid grid-cols-6 gap-4 justify-start items-start mt-4'>
             <div className='col-span-4'>
                 <div className='card-shadow h-[500px] card-shadow rounded-md overflow-hidden mb-3'>
-
-                    {currentIndex && (
-                        <iframe
-                            className="w-full object-contain h-full"
-                            src={currentIndex?.video_url}
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    )}
-
-
+                    <iframe
+                        className="w-full object-contain h-full"
+                        src={video}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                    ></iframe>
                 </div>
-                <div className='between-center gap-2'>
-                    <div className='start-center gap-2'>
+                <div className='flex justify-end items-center gap-2'>
+                    {/* <div className='start-center gap-2'>
                         <p><span className='text-gray-400'>Trainer:</span> Ashraful Islam</p>
-                    </div>
+                    </div> */}
                     <div className='flex justify-end items-center gap-2'>
-                        <button onClick={() => handlePreviousButton()} disabled={currentIndex === 0} className={` flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                        <button onClick={() => handlePreviousButton()} disabled={videoIndex?.module === 0 && videoIndex?.video === 0} className={` flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500 disabled:text-black disabled:border-gray-300 disabled:bg-slate-300 disabled:cursor-not-allowed `}>
                             <FaArrowLeft />  Previous
                         </button>
-                        <button onClick={() => handleNextVideoButton()} disabled={currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1} className={`flex justify-center items-center gap-3 w-44 rounded-md border border-blue-500 py-2 text-blue-500  ${currentIndex === Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                        <button onClick={() => handleNextVideoButton()} disabled={videoIndex?.module === allCourse?.length - 1 && videoIndex?.video === allCourse?.[allCourse?.length - 1]?.video?.length - 1} className={`flex justify-center items-center gap-3 w-44 rounded-md disabled:cursor-not-allowed disabled:text-black disabled:border-gray-300 disabled:bg-slate-300 border border-blue-500 py-2 text-blue-500  `}>
                             Next <FaArrowRight />
                         </button>
                     </div>
@@ -147,86 +161,33 @@ const StudentsCourse = () => {
                 <button className='px-8 py-2 border border-blue-500 rounded-md text-blue-500'>
                     back
                 </button>
-                <p className='text-lg font-medium capitalize my-4'>Key to a great Ul Dribbble shot</p>
-
+                <p className='text-lg font-medium capitalize my-4'>{allCourse?.[0]?.courseName}</p>
 
                 {
-                    
-                    Course?.[0]?.batch.course?.course_module?.map(courseVideo => {
-
-                       return ( <div>
-                            <div className='between-center'>
-                                <p className='text-lg'>Ice Breaking Session</p>
-                                <p className='text-base'>02:30 Hours</p>
+                    allCourse?.map((item, index) => {
+                        return <div key={index}>
+                            <div className='between-center mb-2 mt-5'>
+                                <p className='text-lg uppercase'>{item?.module_title}</p>
+                                <p className='text-sm'>{item?.date}</p>
                             </div>
                             {
-                                courseVideo?.videos?.map((item, i) => {
-                                    
-                                    return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex?.id === item?.id ? "bg-blue-500 text-white" : ""} `} onClick={() => setCurrentIndex(item)} key={i}>
+                                item?.video?.map((video, i) => {
+                                    return <div onClick={() => {
+                                        setVideoIndex({ module: index, video: i, length: item?.video?.length })
+                                        setVideo(video?.video_url)
+                                    }} className={`between-center cursor-pointer ${videoIndex?.module === index && videoIndex?.video === i ? "bg-blue-500 text-white" : ""} card-shadow rounded-md px-3 py-1 my-2 hover:bg-blue-500 hover:text-white transition-all`} key={i}>
                                         <div className='start-center gap-2 '>
                                             <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
-                                                <FaPlay />
+                                                {videoIndex?.module === index && videoIndex?.video === i ? <TbPlayerPauseFilled /> : <FaPlay />}
                                             </button>
-                                            <p>{item?.name}</p>
+                                            <p>{video?.Video_name}</p>
                                         </div>
-                                        {/* <p>1:00</p> */}
                                     </div>
                                 })
                             }
-                            <div className='between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2' >
-                                <div className='start-center gap-2'>
-                                    <button className='text-blue-500 text-lg p-2 rounded-full bg-blue-100'>
-                                        <CgFileDocument />
-                                    </button>
-                                    <p>Mentor Introducing</p>
-                                </div>
-                                <p className='text-green-600'>1/5</p>
-                            </div>
-                        </div>)
-
-
-
-                    })
-
-
-                }
-
-                {/* <div>
-                    <div className='between-center'>
-                        <p className='text-lg'>Ice Breaking Session</p>
-                        <p className='text-base'>02:30 Hours</p>
-                    </div>
-                    {
-                        Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.map((item, i) => {
-                            return <div className={`between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2   ${currentIndex === i ? "bg-blue-500 text-white" : ""} `} onClick={() => setCurrentIndex(i)} key={i}>
-                                <div className='start-center gap-2 '>
-                                    <button className={` text-blue-500 text-lg p-2 rounded-full bg-blue-100`}>
-                                        <FaPlay />
-                                    </button>
-                                    <p>{item?.name}</p>
-                                </div>
-                                <p>1:00</p>
-                            </div>
-                        })
-                    }
-                    <div className='between-center cursor-pointer card-shadow rounded-md px-3 py-1 my-2' >
-                        <div className='start-center gap-2'>
-                            <button className='text-blue-500 text-lg p-2 rounded-full bg-blue-100'>
-                                <CgFileDocument />
-                            </button>
-                            <p>Mentor Introducing</p>
                         </div>
-                        <p className='text-green-600'>{currentIndex + 1}/{Course?.[0]?.batch?.course?.course_module?.[0]?.videos?.length}</p>
-                    </div>
-                </div> */}
-
-
-
-
-
-
-
-
+                    })
+                }
 
             </div>
         </div>
@@ -237,178 +198,5 @@ export default StudentsCourse
 
 
 
-// [
-//     {
-//       id: 12,
-//       batch_id: 6,
-//       student_id: 22,
-//       status: 'enrolled',
-//       created_at: '2024-08-11T05:35:01.000000Z',
-//       updated_at: '2024-08-11T05:35:01.000000Z',
-//       batch: {
-//         id: 6,
-//         course_id: 3,
-//         batch_id: 'BCA-UTA-2401',
-//         batch_name: 'New Batch',
-//         start_date: '2024-08-15',
-//         end_date: '2024-08-30',
-//         seat_limit: 20,
-//         seat_left: 20,
-//         image: 'adminAsset/image/1082431118.jpg',
-//         discount_price: 100,
-//         created_at: '2024-08-10T05:36:10.000000Z',
-//         updated_at: '2024-08-10T05:36:10.000000Z',
-//         course: {
-//           id: 3,
-//           course_category_id: 2,
-//           course_name: 'Uta Benton',
-//           language: 'Dolore itaque mollit',
-//           course_details: 'Placeat et recusand',
-//           course_time_length: 'Ullamco itaque rerum',
-//           price: '804',
-//           max_student_length: null,
-//           skill_Level: 'Sit qui omnis volup',
-//           address: 'Eius voluptas explic',
-//           thumbnail: 'adminAsset/image/1177336403.jpeg',
-//           career_opportunities: [ 'Et corrupti qui ess' ],
-//           curriculum: [ 'Sed amet et perspic' ],
-//           tools: [ 'Ab aliqua Eos illu' ],
-//           job_position: [ 'Expedita modi cupidi' ],
-//           popular_section: 0,
-//           status: 'pending',
-//           course_type: 'offline',
-//           created_at: '2024-08-08T04:06:29.000000Z',
-//           updated_at: '2024-08-09T12:22:46.000000Z',
-//           course_module: [
-//             {
-//               id: 2,
-//               course_id: 3,
-//               module_title: 'test',
-//               created_by: null,
-//               module_no: '1',
-//               created_at: '2024-08-09T14:03:50.000000Z',
-//               updated_at: '2024-08-09T14:03:50.000000Z',
-//               videos: [
-//                 {
-//                   id: 33,
-//                   course_module_id: 2,
-//                   name: 'dsfg ',
-//                   video_url:
-//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
-//                   order: '1',
-//                   created_at: '2024-08-11T00:34:13.000000Z',
-//                   updated_at: '2024-08-11T00:34:13.000000Z'
-//                 },
-//                 {
-//                   id: 34,
-//                   course_module_id: 2,
-//                   name: 'zsdf',
-//                   video_url:
-//                     'https://www.youtube.com/embed/qbkmHPxYOBQ?si=GjA3W9SjEYxjdUyQ',
-//                   order: '2',
-//                   created_at: '2024-08-11T00:34:13.000000Z',
-//                   updated_at: '2024-08-11T00:34:13.000000Z'
-//                 },
-//                 {
-//                   id: 35,
-//                   course_module_id: 2,
-//                   name: 'sdrt',
-//                   video_url:
-//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
-//                   order: '3',
-//                   created_at: '2024-08-11T00:34:13.000000Z',
-//                   updated_at: '2024-08-11T00:34:13.000000Z'
-//                 },
-//                 {
-//                   id: 36,
-//                   course_module_id: 2,
-//                   name: 'sdf',
-//                   video_url:
-//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
-//                   order: '4',
-//                   created_at: '2024-08-11T00:34:13.000000Z',
-//                   updated_at: '2024-08-11T00:34:13.000000Z'
-//                 },
-//                 {
-//                   id: 37,
-//                   course_module_id: 2,
-//                   name: 'asd',
-//                   video_url:
-//                     'https://www.youtube.com/embed/xCSw6bPXZks?si=8Dnw1YwRDWLROnc2',
-//                   order: '5',
-//                   created_at: '2024-08-11T00:34:13.000000Z',
-//                   updated_at: '2024-08-11T00:34:13.000000Z'
-//                 }
-//               ]
-//             },
-//             {
-//               id: 6,
-//               course_id: 3,
-//               module_title: 'melodie lara',
-//               created_by: null,
-//               module_no: '2',
-//               created_at: '2024-08-11T03:55:13.000000Z',
-//               updated_at: '2024-08-11T03:55:13.000000Z',
-//               videos: Array(6) [
-//                 {
-//                   id: 38,
-//                   course_module_id: 6,
-//                   name: 'Nasim Hood',
-//                   video_url: 'https://www.wiqa.cc',
-//                   order: '1',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 },
-//                 {
-//                   id: 39,
-//                   course_module_id: 6,
-//                   name: 'Neve Larsen',
-//                   video_url: 'https://www.jawizazahyhi.co',
-//                   order: '2',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 },
-//                 {
-//                   id: 40,
-//                   course_module_id: 6,
-//                   name: 'Marshall Holman',
-//                   video_url: 'https://www.zana.in',
-//                   order: '3',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 },
-//                 {
-//                   id: 41,
-//                   course_module_id: 6,
-//                   name: 'Steel Jordan',
-//                   video_url: 'https://www.tixypaxi.co',
-//                   order: '4',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 },
-//                 {
-//                   id: 42,
-//                   course_module_id: 6,
-//                   name: 'Freya Cabrera',
-//                   video_url: 'https://www.lyliqelonufyq.net',
-//                   order: '5',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 },
-//                 {
-//                   id: 43,
-//                   course_module_id: 6,
-//                   name: 'Kirby Russo',
-//                   video_url: 'https://www.rupojuhadudyno.me',
-//                   order: '6',
-//                   created_at: '2024-08-11T03:55:13.000000Z',
-//                   updated_at: '2024-08-11T03:55:13.000000Z'
-//                 }
-//               ]
-//             }
-//           ]
-//         },
-//         teachers: []
-//       }
-//     }
-//   ]
+
+

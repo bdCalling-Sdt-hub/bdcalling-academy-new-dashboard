@@ -59,6 +59,7 @@ const StudentsReviews = () => {
     const [requestingReview, Review, ReviewError, refetch] = useGetRequest('Review', `/all-reviews`)
     const { mutate: updateFeedback, isLoading: updateLoading, data: updateData, } = usePatchRequest('reviews', `/reviews/${FilterData?.id}`);
     const { mutate: DeleteReview, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('reviews', `/reviews/${FilterData?.id}`);
+    console.log(Review)
     // console.log(Review)
     const onFinish = (values) => {
         const formData = new FormData()
@@ -71,7 +72,7 @@ const StudentsReviews = () => {
             setRating(FilterData?.rating)
             form.setFieldsValue(FilterData)
         }
-    }, [FilterData])
+ student: null   }, [FilterData])
     useEffect(() => {
         if ((!updateLoading && updateData) || (DeleteData && !DeleteLoading)) {
             refetch()

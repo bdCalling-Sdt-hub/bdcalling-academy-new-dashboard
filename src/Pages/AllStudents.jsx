@@ -19,7 +19,7 @@ import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
 import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
 const AllStudents = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') ||1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -246,9 +246,9 @@ const AllStudents = () => {
         return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData ,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (

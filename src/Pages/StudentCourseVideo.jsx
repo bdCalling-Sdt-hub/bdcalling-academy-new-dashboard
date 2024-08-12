@@ -87,7 +87,7 @@ const StudentCourseVideo = () => {
         //   }
         return {
             name: item?.batch?.course?.course_name,
-            percentage: '30% complete',
+            // percentage: '30% complete',
             image: `${imageUrl}/${item?.batch?.image}`,
             rating: 5,
             id: item?.id

@@ -1,156 +1,35 @@
 import { useForm } from "react-hook-form";
 import TrainerReviewCard from "../Components/Forms/TrainerReviewCard"
-import { Modal } from "antd";
-import { useState } from "react";
+import { Modal, Pagination } from "antd";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import TrainerFeedbackForm from "../Components/Forms/TrainerFeedbackForm";
 import useGetRequest from "../Hooks/useGetRequest";
 import usePatchRequest from "../Hooks/usePatchRequest";
 
-const reviewData = [
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-    {
-        name: 'SAVANNAH NGUYEN',
-        date: 'MAR 08, 2024',
-        review: "I bought L'Eau d'Issey pour Homme Eau & Cedre Intense Eau De Toilette for my husband and he absolutely loves it! The scent is fresh and masculine, perfect for everyday wear. The cedar notes give it a nice woody undertone that lasts throughout the day. Highly recommend this perfume.",
-        rating: '5'
-    },
-]
 const TrainerReview = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 0);
-    const totalData = reviewData.length
-    const [itemPerPage, setItemPerPage] = useState(8)
-    const totalPage = Math.ceil(totalData / itemPerPage)
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false)
     const [filterdData, setFilterdData] = useState({})
-    const [rating, setrating] = useState(filterdData?.rating_value)
+    const [rating, setrating] = useState(0)
     const [requestingReview, Review, ReviewError, refetch] = useGetRequest('trainerReview', `/trainer-reviews`)
-
-    const { mutate: updateCourse, isLoading: updateLoading, data: updateData, } = usePatchRequest('courses', `/trainer-reviews/${filterdData?.id}`);
+    const { mutate: updateCourse, isLoading: updateLoading, data: updateData, } = usePatchRequest('Review', `/trainer-reviews/${filterdData?.id}?page=${page}`);
+    useEffect(() => {
+        if (filterdData?.rating_value) {
+            setrating(Number(filterdData?.rating_value))
+        }
+    }, [filterdData?.rating_value])
     const onSubmit = data => {
-
-        
         const formData = new FormData()
-        Object.keys(CourseData).map(key => {
+        Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
         formData.append('_method', 'PUT')
+        formData.append('rating_value', rating)
+        console.log(formData.get('rating_value'))
         // if (image) {
         //     formData.append('image', image)
         // }
@@ -161,30 +40,20 @@ const TrainerReview = () => {
         setFilterdData({ ...filterdData, [name]: e.target.value })
     }
 
-
-    console.log(Review)
-
+    useEffect(() => {
+        if (updateLoading) return
+        if (updateData) refetch(); setOpenFeedbackModal(false)
+    }, [updateData, updateLoading])
     return (
         <>
             <div className="grid-2 py-10">
                 {
-                    Review?.map(item => <TrainerReviewCard setFilterdData={setFilterdData} setOpenFeedbackModal={setOpenFeedbackModal} key={item} item={item} />)
+                    Review?.data?.map(item => <TrainerReviewCard setFilterdData={setFilterdData} setOpenFeedbackModal={setOpenFeedbackModal} key={item} item={item} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
-                <button onClick={() => {
-                    navigate(`/trainer-review?page=${Number(page) - 1}`)
-                    setPage(Number(page) - 1)
-                }} disabled={page == '0'} className={`rounded-sm bg-[var(--primary-bg)] m-1 h-10 w-16 block text-white`}>prev</button>
-                {
-                    [...Array(totalPage).keys()].map(item => <Link key={item} onClick={() => setPage(item)} to={`/trainer-review?page=${item}`}>
-                        <button className={`rounded-sm m-1 h-10 w-10 block ${page == item ? 'bg-[var(--primary-bg)] text-white' : 'bg-white'}`} key={item}>{item + 1}</button>
-                    </Link>)
-                }
-                <button disabled={page == totalPage - 1} onClick={() => {
-                    navigate(`/trainer-review?page=${Number(page) + 1}`)
-                    setPage(Number(page) + 1)
-                }} className={`rounded-sm m-1 h-10 w-16 block bg-[var(--primary-bg)] text-white`}>prev</button>
+
+                <Pagination showSizeChanger={false} pageSize={Review?.per_page} total={Review?.total} onChange={(page) => setPage(page)} />
             </div>
             <Modal
                 centered

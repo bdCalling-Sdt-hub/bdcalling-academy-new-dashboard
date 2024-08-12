@@ -22,6 +22,7 @@ import { CiCircleInfo } from 'react-icons/ci'
 import DuePayment from '../Components/Forms/DuePayment'
 import { RiPrinterFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
+import SalseStudentAddForm from '../Components/Forms/SalseStudentAddForm'
 const SalesAdmittedStudent = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
@@ -32,11 +33,10 @@ const SalesAdmittedStudent = () => {
     const { register: registerAdmit, handleSubmit: handleAdmit, formState: { errors: AdmitError } } = useForm();
     const [filterData, setFilterData] = useState({})
     const [image, setImage] = useState(null);
+    const [openAdmitStudentModal, setOpenAdmitStudentModal] = useState(false)
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     const [openStudentAddModal, setOpenStudentAddModal] = useState(false)
     const [followUp, setFollowUp] = useState({ _id: false, index: false })
-    const [inputType, setInputType] = useState('password')
-    const [text, setText] = useState(true)
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
@@ -50,16 +50,7 @@ const SalesAdmittedStudent = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
-
-    
-    const BatchOptions = Batch?.data?.data?.map(item => {
-        return { name: item?.batch_name, value: item?.id }
-    }) || []
-    const CourseOptions = Course?.data?.map(item => {
-        return { name: item?.course_name, value: item?.id }
-    }) || []
+    const [formFor,setFormfor]=useState('add')
     const TableData = AllStudents.map((item, index) => {
         return {
             key: index + 1,
@@ -142,7 +133,7 @@ const SalesAdmittedStudent = () => {
             title: 'Course Type',
             dataIndex: 'course_type',
             key: 'course_type'
-        }, 
+        },
         {
             title: 'Set Follow Up',
             dataIndex: '_id',
@@ -181,15 +172,16 @@ const SalesAdmittedStudent = () => {
                 }} className='p-1 text-green-500 text-2xl rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
                     <RiPrinterFill />
                 </button> */}
-                <Link to={`/admitted-students/students-information/${record._id}/${record?.order[0]?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
+                {/* <Link to={`/admitted-students/students-information/${record._id}/${record?.order[0]?.batch_id}`} className='text-2xl text-[var(--primary-bg)] hover:scale-105 active:scale-95'>
                     <CiCircleInfo />
-                </Link>
-                {/* <button onClick={() => {
+                </Link> */}
+                <button onClick={() => {
                     handelFilterData(record._id)
-                    handleDelete()
-                }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
-                    <RxCross2 />
-                </button> */}
+                    setOpenAdmitStudentModal(true)
+                    setFormfor('update')
+                }} className='text-2xl text-blue-500 hover:scale-105 active:scale-95'>
+                    <FaEdit />
+                </button>
             </div>,
             key: '_id'
         },
@@ -198,14 +190,10 @@ const SalesAdmittedStudent = () => {
         const newData = TableData?.filter(item => item._id === id)
         setFilterData(newData[0])
     }
-
-    const CategoryOptions2 = Category?.data?.data?.map(item => {
-        return { name: item?.category_name, value: item?.category_name }
-    })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
@@ -278,6 +266,9 @@ const SalesAdmittedStudent = () => {
                 </div>
                 <div className="flex justify-end items-center w-full gap-3">
                     <button onClick={() => {
+                        setOpenAdmitStudentModal(true)
+                    }} className="bg-blue-500 text-white py-2 px-3 rounded-md max-w-44"> Admit Student</button>
+                    <button onClick={() => {
                         selectedRowKeys?.length <= 0 ? toast.error('please select students') : setOpenFollowUpModal(true)
                     }} className="btn-secondary max-w-44"><FaPlus /> Send Message</button>
                 </div>
@@ -297,8 +288,6 @@ const SalesAdmittedStudent = () => {
                     <IoSearch />
                 </button>
             </form>
-
-
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
                 <h3 className='section-title px-5'>Admitted Students List</h3>
                 {
@@ -325,19 +314,6 @@ const SalesAdmittedStudent = () => {
                     />
                 </div>
             </div>
-            {/* create and update student  modal develope by siyam */}
-
-            {/* payment modal  */}
-            <Modal
-                centered
-                footer={false}
-                open={openPaymentModal}
-                onCancel={() => setOpenPaymentModal(false)}
-                width={700}
-            >
-                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={filterData} />
-            </Modal>
-            {/* admit modal  */}
             {/* Follow up Modal  */}
             <Modal
                 centered
@@ -362,15 +338,19 @@ const SalesAdmittedStudent = () => {
                                 <span className={`cursor-pointer w-5 h-5 bg-[#2BA24C] border-[#2BA24C] border rounded-full`}></span>
                                 <span className={`cursor-pointer w-5 h-5 bg-[#FFC60B] border-[#FFC60B] border rounded-full`}></span>
                             </div>
-                            {/* <div className='start-center gap-2'>
-                                <span onClick={() => colorHandeler('blue')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'blue') ? 'bg-[#2492EB]' : 'bg-transparent')} border-[#2492EB] border rounded-full`}></span>
-                                <span onClick={() => colorHandeler('green')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'green') ? 'bg-[#2BA24C]' : 'bg-transparent')} border-[#2BA24C] border rounded-full`}></span>
-                                <span onClick={() => colorHandeler('yellow')} className={`cursor-pointer w-5 h-5 ${(colorType.find(item => item == 'yellow') ? 'bg-[#FFC60B]' : 'bg-transparent')} border-[#FFC60B] border rounded-full`}></span>
-                            </div> */}
                             <button className='btn-primary max-w-32'>Send Comment</button>
                         </div>
                     </form>
                 </div>
+            </Modal>
+            <Modal
+                open={openAdmitStudentModal}
+                onCancel={() => setOpenAdmitStudentModal(false)}
+                centered
+                footer={false}
+                width={900}
+            >
+                <SalseStudentAddForm setOpenAdmitStudentModal={setOpenAdmitStudentModal} refetch={refetch} filteredData={filterData} image={image} setImage={setImage} formFor={formFor} />
             </Modal>
         </>
     )
