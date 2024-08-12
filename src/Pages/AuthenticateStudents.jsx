@@ -62,7 +62,7 @@ const AuthenticateStudents = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             course: item?.category?.category_name,
             _id: item?.id,
             gender: item?.gender,
@@ -236,9 +236,9 @@ const AuthenticateStudents = () => {
         return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
@@ -302,7 +302,7 @@ const AuthenticateStudents = () => {
     }
     useEffect(() => {
         if (isAdmitLoading) return
-        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false) ; setFilterData({})
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false); setFilterData({})
     }, [errorAdmit, AdmitData, isAdmitLoading])
     return (
         <>

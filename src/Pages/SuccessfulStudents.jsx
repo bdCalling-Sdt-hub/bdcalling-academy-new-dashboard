@@ -44,7 +44,6 @@ const SuccessfulStudents = () => {
 
         }
     })
-    console.log(TableData)
     // const tableData =  Stores?.data.map()
     const onSubmit = data => console.log(data);
     const onChange = (date, dateString) => {
@@ -117,9 +116,9 @@ const SuccessfulStudents = () => {
                 <div className='w-full'>
                     <PageHeading text={`Successful Students list`} />
                 </div>
-                <div className="flex justify-end items-center w-full gap-3">
+                {/* <div className="flex justify-end items-center w-full gap-3">
                     <button onClick={() => setOpenFollowUpModal(true)} className="btn-secondary max-w-32">Follow Up</button>
-                </div>
+                </div> */}
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
                 <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} />
