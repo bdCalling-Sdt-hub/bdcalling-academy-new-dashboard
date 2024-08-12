@@ -62,7 +62,7 @@ const EventsBaseStudents = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img:item?.image? `${imageUrl}/${item?.image}` : ProfileImage,
             event_name: item?.event_name,
             _id: item?.id,
             gender: item?.gender,

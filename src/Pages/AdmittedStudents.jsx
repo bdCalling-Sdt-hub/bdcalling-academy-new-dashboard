@@ -60,7 +60,7 @@ const AdmittedStudents = () => {
             name: item?.name,
             email: item?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             _id: item?._id,
             batch_id: item?.batch_id,
             gender: item?.gender,
@@ -194,7 +194,7 @@ const AdmittedStudents = () => {
                 </Link>
                 <button onClick={() => {
                     setFilterData(record)
-                    handleDelete(record?._id,record?.order?.[0]?.batch_id)
+                    handleDelete(record?._id, record?.order?.[0]?.batch_id)
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
                     <RxCross2 />
                 </button>
@@ -207,11 +207,11 @@ const AdmittedStudents = () => {
         setFilterData(newData[0])
     }
     useEffect(() => {
-        if (isLoading, updateLoading,messageLoading) return
-        if (data, updateData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
-    }, [isLoading, data, updateData, updateLoading,MessageData,messageLoading])
+        if (isLoading, updateLoading, messageLoading) return
+        if (data, updateData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+    }, [isLoading, data, updateData, updateLoading, MessageData, messageLoading])
     //delete users
-    const handleDropout = async (id,batchId) => {
+    const handleDropout = async (id, batchId) => {
         const loadingToastId = toast.loading('Sending request...');
 
         try {
@@ -221,7 +221,7 @@ const AdmittedStudents = () => {
             toast.error(error?.response?.data?.message || error.message || 'Something went wrong.', { id: loadingToastId });
         }
     };
-    const handleDelete = (id,batchId) => {
+    const handleDelete = (id, batchId) => {
         toast((t) => (
             <div>
                 <p className="text-xs text-red-500 text-center">Are you sure you want to dropout?</p>
@@ -231,7 +231,7 @@ const AdmittedStudents = () => {
                     </button>
                     <button
                         onClick={() => {
-                            handleDropout(id,batchId);
+                            handleDropout(id, batchId);
                             toast.dismiss(t.id);
                         }}
                         className="px-3 py-1 bg-blue-500 text-white rounded-md"
