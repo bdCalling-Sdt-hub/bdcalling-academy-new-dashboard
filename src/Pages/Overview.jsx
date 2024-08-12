@@ -8,6 +8,9 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import useGetRequest from "../Hooks/useGetRequest";
 import { imageUrl } from "../AxiosConfig/useAxiosConfig";
+import { useEffect, useState } from "react";
+import ProfileImage from '../assets/corporate-user-icon.webp'
+
 
 const chartData = [
     {
@@ -119,21 +122,74 @@ const chartData = [
 //     },
 // ];
 const Overview = () => {
+    const [AllStudents, setAllStudent] = useState([])
+
     const [requestingDashboardOverview, DashboardOverview, DashboardOverviewError,] = useGetRequest('Dashboard', `/dashboard`)
     const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=1`)
     const [requestingStudentRatio, StudentRatio, StudentRatioError] = useGetRequest('Ratio', `/student-ratio?year=${new Date().getFullYear()}`)
-    console.log(StudentRatio)
-    const dataSource = Students?.data?.map((item, i) => {
+
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError] = useGetRequest('batchStudents', `/show-admit-student`)
+
+
+
+
+
+
+
+    useEffect(() => {
+        const result = [];
+        BatchStudents?.data.forEach(batch => {
+            batch.students.forEach(student => {
+                result.push({
+                    id: batch?.id,
+                    courseId: batch?.course_id,
+                    studentID: student?.id,
+                    batch_id: batch?.batch_id,
+                    course_name: batch?.course?.course_name,
+                    name: student?.user?.name,
+                    image: student.image,
+                    phone_number: student?.phone_number,
+                    order: student?.order,
+                    _id: student?.id,
+                    email: student?.user?.email,
+                    course_type: batch?.course?.course_type,
+                    messages: student?.messages,
+                    course: batch?.course
+                });
+            });
+        });
+        setAllStudent(result)
+    }, [BatchStudents])
+
+
+    // console.log(BatchStudents)
+    const TableData = AllStudents.map((item, index) => {
         return {
-            key: i + 1,
-            name:item?.user?.name,
-            profile:item?.user?.image ?`${imageUrl}/${item?.user?.image}` : 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-            phone: item?.phone_number,
-            address: item?.address,
+            key: index + 1,
+            name: item?.name,
+            email: item?.email,
+            phone_number: item?.phone_number,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
+            _id: item?._id,
+            batch_id: item?.batch_id,
             gender: item?.gender,
             registration_date: item?.registration_date,
+            category_id: item?.category_id,
+            blood_group: item?.blood_group,
+            religion: item?.religion,
+            dob: item?.dob,
+            address: item?.address,
+            course: item?.course,
+            course_type: item?.course_type,
+            order: item?.order,
+            messages: item?.messages,
+            course_name: item?.course_name
         }
     })
+    console.log(TableData)
+
+
+
     const overviewData = [
         {
             title: 'Total Earning',
@@ -187,37 +243,44 @@ const Overview = () => {
     const columns = [
         {
             title: '#Sl',
-            dataIndex: 'profile',
-            render: (_, record) => (
-                <img className="w-8 h-8 rounded-full" src={record.profile} alt="" />
-            ),
-            key: 'profile',
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Student Name',
             dataIndex: 'name',
-            key: 'name',
+            render: (_, record) => <div className='start-center gap-2'>
+                <img src={record?.img} className='h-10 w-10 rounded-full' alt={record?.name} /> <p className='text-sm text-[var(--primary-color)]'>{record?.name}</p>
+            </div>,
+            key: 'name'
         },
         {
-            title: 'Phone',
-            dataIndex: 'phone',
-            key: 'phone',
+            title: 'Phone Number',
+            dataIndex: 'phone_number',
+            key: 'phone_number'
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email'
         },
         {
-            title: 'gender',
-            dataIndex: 'gender',
-            key: 'gender',
+            title: 'Batch no',
+            dataIndex: 'batch_id',
+            key: 'batch_id'
         },
         {
-            title: 'Registration Date',
-            dataIndex: 'registration_date',
-            key: 'registration_date',
+            title: 'Course Name',
+            dataIndex: 'course_name',
+            key: 'course_name'
         },
+        {
+            title: 'Course Type',
+            dataIndex: 'course_type',
+            key: 'course_type'
+        },
+       
+        
     ];
     return (
         <>
@@ -229,21 +292,6 @@ const Overview = () => {
                 <div className="between-center gap-3 px-8">
                     <div className="start-center gap-16">
                         <p className="section-title">Students Ratio</p>
-                        {/* <Link to={`#`}>
-                            See All
-                        </Link> */}
-                        {/* <Dropdown
-                            menu={{
-                                items,
-                            }}
-                        >
-                            <button onClick={(e) => e.preventDefault()}>
-                                <Space>
-                                    2024
-                                    <DownOutlined />
-                                </Space>
-                            </button>
-                        </Dropdown> */}
                     </div>
                     <div className="flex justify-end items-center gap-5 w-full">
                         <div className="flex justify-end items-center gap-3 w-fit">
@@ -280,9 +328,13 @@ const Overview = () => {
             </div>
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
-                    <p className="section-title">Student List</p> <Link className="text-[#2492EB]" to={`/all-students`}>See All</Link>
+                    <p className="section-title">Student List</p> <Link className="text-[#2492EB]" to={`/admitted-students`}>See All</Link>
                 </div>
-                <Table pagination={false} dataSource={dataSource} columns={columns} />
+                <Table
+                    columns={columns}
+                    dataSource={TableData?.slice(0,5) || []}
+                    pagination={false}
+                />
             </div>
         </>
     )
