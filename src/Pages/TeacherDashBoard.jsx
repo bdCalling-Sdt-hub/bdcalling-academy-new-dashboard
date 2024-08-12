@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 import { FaArrowsRotate } from "react-icons/fa6";
 import { CiCircleInfo } from "react-icons/ci";
+import useGetRequest from "../Hooks/useGetRequest";
+import { imageUrl } from "../AxiosConfig/useAxiosConfig";
 const overviewData = [
     {
         title: 'Total Amount',
@@ -92,188 +94,98 @@ const chartData = [
     },
 
 ];
-const dataSource = [
-    {
-        key: '1',
-        name: 'Mike',
-        profile: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        phone: '(123)123456',
-        address: '10 Downing Street',
-        department: '10 Downing Street',
-        admitionDate: '10 Downing Street',
-    },
-    {
-        key: '1',
-        name: 'Mike',
-        profile: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        phone: '(123)123456',
-        address: '10 Downing Street',
-        department: '10 Downing Street',
-        admitionDate: '10 Downing Street',
-    },
-    {
-        key: '1',
-        name: 'Mike',
-        profile: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        phone: '(123)123456',
-        address: '10 Downing Street',
-        department: '10 Downing Street',
-        admitionDate: '10 Downing Street',
-    },
-    {
-        key: '1',
-        name: 'Mike',
-        profile: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        phone: '(123)123456',
-        address: '10 Downing Street',
-        department: '10 Downing Street',
-        admitionDate: '10 Downing Street',
-    },
-    {
-        key: '1',
-        name: 'Mike',
-        profile: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        phone: '(123)123456',
-        address: '10 Downing Street',
-        department: '10 Downing Street',
-        admitionDate: '10 Downing Street',
-    },
-];
 
-
-const columns = [
-    {
-        title: '#Sl',
-        dataIndex: 'profile',
-        render: (_, record) => (
-            <img className="w-8 h-8 rounded-full" src={record.profile} alt="" />
-        ),
-        key: 'profile',
-    },
-    {
-        title: 'Student Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Phone',
-        dataIndex: 'phone',
-        key: 'phone',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-    },
-    {
-        title: 'Department',
-        dataIndex: 'department',
-        key: 'department',
-    },
-    {
-        title: 'Date Of Admition',
-        dataIndex: 'admitionDate',
-        key: 'admitionDate',
-    },
-    {
-        title: 'Attendance',
-        dataIndex: 'Attendance',
-        key: 'Attendance',
-        render: (_, record) => (
-            <>
-                <button className="flex justify-center items-center gap-1 py-2 px-6 bg-green-100 text-green-600 rounded-md"> Present</button>
-                {/* <button className="flex justify-center items-center gap-1 py-2 px-6 bg-yellow-100 text-yellow-600 rounded-md"> <FaArrowsRotate /> In Progress</button>
-            <button className="flex justify-center items-center gap-1 py-2 px-6 bg-red-100 text-red-600 rounded-md"> <RxCross2 /> Not Started</button> */}
-            </>
-        ),
-    },
-    {
-        title: 'Actions',
-        render: (_, record) => (
-            <div className="start-center gap-3">
-                <CiCircleInfo className="text-[#2492EB]" onClick={() => {
-                    console.log(record.key)
-                }} /> <RxCross1 onClick={() => {
-                    console.log(record.key)
-                }} />
-            </div>
-        ),
-        key: 'actions',
-    },
-];
-const RoutineData = [
-    {
-        key: '1',
-        Subject: 'Mike',
-        ClassRoom: 'https://i.ibb.co/QKGfq6j/Ellipse-1.png',
-        Date: '(123)123456',
-        Day: '10 Downing Street',
-        Time: '10 Downing Street',
-        Status: '10 Downing Street',
-        Attendance: '10 Downing Street',
-    },
-
-];
-const RoutineColumns = [
-    {
-        title: '#Sl',
-        dataIndex: 'key',
-        key: 'key',
-    },
-    {
-        title: 'Subject',
-        dataIndex: 'Subject',
-        key: 'Subject',
-    },
-    {
-        title: 'Class Room',
-        dataIndex: 'ClassRoom',
-        key: 'ClassRoom',
-    },
-    {
-        title: 'Date',
-        dataIndex: 'Date',
-        key: 'Date',
-    },
-    {
-        title: 'Day',
-        dataIndex: 'Day',
-        key: 'Day',
-    },
-    {
-        title: 'Time',
-        dataIndex: 'Time',
-        key: 'Time',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'Status',
-        key: 'Status',
-        render: (_, record) => (
-            <>
-                <button className="flex justify-center items-center gap-1 py-2 px-6 bg-green-100 text-green-600 rounded-md"> <FaCheck /> Completed</button>
-                {/* <button className="flex justify-center items-center gap-1 py-2 px-6 bg-yellow-100 text-yellow-600 rounded-md"> <FaArrowsRotate /> In Progress</button>
-            <button className="flex justify-center items-center gap-1 py-2 px-6 bg-red-100 text-red-600 rounded-md"> <RxCross2 /> Not Started</button> */}
-            </>
-        ),
-    },
-    {
-        title: 'Attendance',
-        dataIndex: 'Attendance',
-        key: 'Attendance',
-        render: (_, record) => (
-            <>
-                <button className="flex justify-center items-center gap-1 py-2 px-6 bg-green-100 text-green-600 rounded-md"> Present</button>
-                {/* <button className="flex justify-center items-center gap-1 py-2 px-6 bg-yellow-100 text-yellow-600 rounded-md"> <FaArrowsRotate /> In Progress</button>
-            <button className="flex justify-center items-center gap-1 py-2 px-6 bg-red-100 text-red-600 rounded-md"> <RxCross2 /> Not Started</button> */}
-            </>
-        ),
-    },
-
-];
 
 
 const TeacherDashBoard = () => {
+
+
+    const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/routines`)
+    const [requestingStudents, Students, StudentsError, isError] = useGetRequest('AuthStudents', `/students`);
+    const TableData = Students?.data?.map((item, index) => {
+        return {
+            key: index + 1,
+            name: item?.user?.name,
+            email: item?.user?.email,
+            phone_number: item?.phone_number,
+            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            course: item?.category?.category_name,
+            _id: item?.id,
+            gender: item?.gender,
+            religion: item?.religion,
+            registration_date: item?.registration_date,
+            category_id: item?.category_id,
+            blood_group: item?.blood_group,
+            dob: item?.dob,
+            address: item?.address,
+            messages: item?.messages
+        }
+    })
+
+
+    const routineData = Routine?.data?.data?.map(item => {
+        return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
+    })
+
+    const studentColumns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone_number',
+            key: 'phone_number',
+        },
+        {
+            title: 'Course',
+            dataIndex: 'course',
+            key: 'course',
+        },
+        {
+            title: 'Registration Date',
+            dataIndex: 'registration_date',
+            key: 'registration_date',
+        },
+
+    ];
+
+    const columns = [
+        {
+            title: 'Module Name',
+            dataIndex: 'moduleName',
+            key: 'moduleName',
+        },
+        {
+            title: 'Batch',
+            dataIndex: 'batch',
+            key: 'batch',
+        },
+        {
+            title: 'Batch ID ',
+            dataIndex: 'batchID',
+            key: 'batchID',
+        },
+        {
+            title: 'Select Time',
+            dataIndex: 'time',
+            key: 'time',
+        },
+        {
+            title: 'Select Date',
+            dataIndex: 'date',
+            key: 'date',
+        },
+
+    ];
+
+
     return (
         <>
             <PageHeading text={`Overview`} />
@@ -329,14 +241,19 @@ const TeacherDashBoard = () => {
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
                     <p className="section-title">My Classes Routing</p>
+                    <Link className="text-[#2492EB]" to={`/teacher/class-routine`}>See All</Link>
                 </div>
-                <Table pagination={false} dataSource={RoutineData} columns={RoutineColumns} />
+                <Table dataSource={routineData.slice(0,5)} pagination={false} columns={columns} />
             </div>
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
-                    <p className="section-title">Student List</p> <Link className="text-[#2492EB]" to={`/teacher/all-student-attendance`}>See All</Link>
+                    <p className="section-title">Student List</p> <Link className="text-[#2492EB]" to={`/teacher/all-student`}>See All</Link>
                 </div>
-                <Table pagination={false} dataSource={dataSource} columns={columns} />
+                <Table
+                    columns={studentColumns}
+                    dataSource={TableData.slice(0,5) || []}
+                    pagination={false}
+                />
             </div>
         </>
     )
