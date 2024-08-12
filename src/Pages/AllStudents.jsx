@@ -19,7 +19,7 @@ import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
 import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
 const AllStudents = () => {
-    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') ||1);
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
     const [openAdmitModal, setOpenAdmitModal] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -47,7 +47,7 @@ const AllStudents = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` :''} ${filterBy?.name ? `&name=${filterBy?.name} ` :''}${filterBy?.category ? `&category_name=${filterBy?.category}` :""}${filterBy?.dob ? `&dob=${filterBy?.dob}` :""}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }

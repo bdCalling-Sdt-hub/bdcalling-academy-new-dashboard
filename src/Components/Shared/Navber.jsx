@@ -13,6 +13,7 @@ const Navber = () => {
         // console.log(e.target.value)
     }
     const navigate = useNavigate()
+    console.log(useData)
     return (
         <div className="between-center w-full p-3 py-6 bg-white ">
             <div className="w-[460px] relative" >
