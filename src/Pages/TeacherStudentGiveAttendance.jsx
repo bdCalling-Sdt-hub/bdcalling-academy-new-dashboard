@@ -114,8 +114,6 @@ const TeacherStudentGiveAttendance = () => {
             attendance_by: useData?.id,
             attendances: [...presents, ...absents]
         }
-        console.log(AttendanceData)
-        return
         mutate(AttendanceData)
     }
     const HandleSendMassage = (value) => {

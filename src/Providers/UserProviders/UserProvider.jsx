@@ -13,8 +13,6 @@ const UserProvider = ({ children }) => {
         if (gettingProfile) { setLoading(true) } else { setLoading(false) }
         if (data) setUserData(data.user)
     }, [gettingProfile, data, isError])
-    const [ip, setIP] = useState('');
-
     return (
         <UserData.Provider value={{ useData, setUserData, loading, setLoading, isError, refetch }}>
             {children}

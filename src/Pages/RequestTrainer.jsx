@@ -25,7 +25,7 @@ const RequestTrainer = () => {
     const [openLeaveModal, setOpenLeaveModal] = useState(false);
     const { mutate, isLoading, data, error } = usePostRequest('approve', '/approve-leave-application');
     const { mutate: Reject, isLoading: isLoadingReject, data: Rejectdata, error: Rejecterror } = usePostRequest('approve', '/reject-leave-application');
-    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.designation && `&designation=${filterBy?.designation}`}${filterBy?.dob && `&date=${filterBy?.dob}`}`)
+    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.designation ? `&designation=${filterBy?.designation}`:''}${filterBy?.dob ? `&date=${filterBy?.dob}`:''}`)
     const requestList = TrainerRequest?.data?.data?.map((item, i) => {
         return {
             "Name": item?.user?.name,
@@ -110,14 +110,14 @@ const RequestTrainer = () => {
     {
         title: 'Actions',
         render: (_, record) => (
-            <div className="start-center gap-3 text-2xl">
-                <FiEdit className="text-[#2492EB] cursor-pointer hover:scale-105 active:scale-95 transition-all" onClick={() => {
-                    handelEdit(record.id)
-                }} />
+            <button  onClick={() => {
+                handelEdit(record.id)
+            }} disabled={record?.Status == 'approved'} className=" text-2xl text-[#2492EB] p-1 rounded-full disabled:hover:scale-100 hover:scale-105 active:scale-95 disabled:active:scale-100 transition-all disabled:cursor-not-allowed disabled:text-gray-500">
+                <FiEdit />
                 {/* <RxCross1 className='text-red-600 cursor-pointer hover:scale-105 active:scale-95 transition-all' onClick={() => {
                     // console.log(record._id)
                 }} /> */}
-            </div>
+            </button>
         ),
         key: '_id',
     },

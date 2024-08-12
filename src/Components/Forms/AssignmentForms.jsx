@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import usePostRequest from '../../Hooks/usePostRequest';
 import { useLocation } from 'react-router-dom';
 
-const AssignmentForms = () => {
+const AssignmentForms = ({refetch}) => {
     const location = useLocation()
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/teacher-batch`)
     const [batchID, setBatchID] = useState(undefined)
@@ -49,6 +49,7 @@ const AssignmentForms = () => {
     };
     useEffect(() => {
         form.resetFields();
+        refetch()
     }, [data])
     return (
         <div id='addBatch'>
