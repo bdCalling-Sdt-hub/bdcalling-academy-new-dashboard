@@ -349,10 +349,6 @@ export const router = createBrowserRouter([
                 element: <AddProvideClassVideo />
             },
             {
-                path: '/notification',
-                element: <Notification />
-            },
-            {
                 path: '/update-video/:id',
                 element: <UpdateVideo />
             },
@@ -363,6 +359,16 @@ export const router = createBrowserRouter([
             {
                 path: '/update-batch/:id',
                 element: <UpdateBatch />
+            },
+        ]
+    },
+    {
+        path: '/',
+        element: <Dashboard />,
+        children: [
+            {
+                path: '/notification',
+                element: <Notification />
             },
         ]
     },

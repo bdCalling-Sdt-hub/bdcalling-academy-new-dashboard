@@ -3,6 +3,8 @@ import { RxCross2 } from 'react-icons/rx'
 import useGetRequest from '../Hooks/useGetRequest'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
+import { useUserData } from '../Providers/UserProviders/UserProvider'
+import { Pagination } from 'antd'
 const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
@@ -37,7 +39,11 @@ const data = [
 ]
 const Notification = () => {
     const [id, setStudent] = useState()
-    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `/notification`)
+    const [page, setPage] = useState(0)
+    const { useData, loading, isError } = useUserData();
+    console.log(useData)
+    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `${(useData?.role === 'SUPER ADMIN' || useData?.role === 'ADMIN') ? '/admin-notification' : '/notifications'}`)
+    console.log(Notification)
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/mark-as-read/${id}`);
     const handleDelete = () => {
         toast((t) => (
@@ -75,6 +81,9 @@ const Notification = () => {
                     </div>
                 </div>)
             }
+            <div className='text-center'>
+                <Pagination pageSize={Notification?.notifications?.per_page || 7} showSizeChanger={false} onChange={(page) => setPage(page)} total={Notification?.notifications?.total || 0} current={page} />
+            </div>
         </div>
     )
 }
