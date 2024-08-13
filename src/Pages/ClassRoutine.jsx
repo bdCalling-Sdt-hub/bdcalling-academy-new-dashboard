@@ -16,7 +16,7 @@ const ClassRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const [filterBy, setFilterBy] = useState()
-    const [requestingRoutine, Routine, routineError,refetch] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName ? `&module_title=${filterBy?.moduleName}`:''}${filterBy?.batch_id ? `&batch_id=${filterBy?.batch_id}`:''}`)
+    const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName ? `&module_title=${filterBy?.moduleName}` : ''}${filterBy?.batch_id ? `&batch_id=${filterBy?.batch_id}` : ''}`)
     const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}${filterBy?.date && `&date${filterBy?.date}`}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
@@ -122,7 +122,7 @@ const ClassRoutine = () => {
             <div className='start-start gap-6 my-8'>
                 <div className='card-shadow p-4 rounded-md w-[500px]'>
                     <p className='text-2xl font-semibold mb-4'>Add New Class Routine</p>
-                    <ClassRoutineForm refetch={refetch}/>
+                    <ClassRoutineForm refetch={refetch} />
                 </div>
                 <div id='allStudent' className='card-shadow p-4 rounded-md w-full'>
                     <p className='text-2xl font-semibold mb-4'>All Class Routine</p>
@@ -140,7 +140,7 @@ const ClassRoutine = () => {
                             <Form.Item
                                 label={false}
                                 name="batch_id">
-                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
+                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Batch id" />
                             </Form.Item>
                             {/* <Form.Item
                                 label={false}
@@ -155,6 +155,7 @@ const ClassRoutine = () => {
                                 </button>
                                 <button type='button' onClick={() => {
                                     setFilterBy({})
+                                    form.resetFields()
                                 }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
                                     <RxCross2 />
                                 </button>
