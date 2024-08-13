@@ -189,6 +189,7 @@ const AllStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setImage(null)
                     setOpenAdmitModal(true)
@@ -196,6 +197,7 @@ const AllStudents = () => {
                     Admit
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     setText(false)
                     handelFilterData(record?._id)
                     setImage(null)
@@ -204,6 +206,7 @@ const AllStudents = () => {
                     <MdEditSquare />
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>

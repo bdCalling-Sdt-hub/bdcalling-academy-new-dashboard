@@ -174,6 +174,7 @@ const AdmittedStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2 relative'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setOpenFollowUpModal(true)
                     setSelectedRowKeys([record.key])
@@ -201,6 +202,7 @@ const AdmittedStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setImage(null)
 
@@ -211,12 +213,14 @@ const AdmittedStudents = () => {
                     <CiCircleInfo />
                 </Link>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     handleSuccessfulStudent(record?._id, record?.order?.[0]?.batch_id)
                 }} className='p-1 text-green-500 text-2xl rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
                     <FaCheck />
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     setFilterData(record)
                     handleDelete(record?._id, record?.order?.[0]?.batch_id)
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>

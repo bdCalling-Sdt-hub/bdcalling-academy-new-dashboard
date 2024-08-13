@@ -48,7 +48,7 @@ const AuthenticateStudents = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=auth&page=${page}${filterBy?.number ?  `&phone_number=${filterBy?.number}` : ""}${filterBy?.name ? `&name=${filterBy?.name}` : ""}${filterBy?.category ? `&category_name=${filterBy?.category}` :""}${filterBy?.dob ? `&dob=${filterBy?.dob}` : ""}`)//phone_number=01317659523&name=r&category_name=1&
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=auth&page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ""}${filterBy?.name ? `&name=${filterBy?.name}` : ""}${filterBy?.category ? `&category_name=${filterBy?.category}` : ""}${filterBy?.dob ? `&dob=${filterBy?.dob}` : ""}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
 
     console.log(Students)
@@ -193,6 +193,7 @@ const AuthenticateStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setImage(null)
                     setOpenAdmitModal(true)
@@ -200,6 +201,7 @@ const AuthenticateStudents = () => {
                     Admit
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     setText(false)
                     handelFilterData(record?._id)
                     setImage(null)
@@ -208,6 +210,7 @@ const AuthenticateStudents = () => {
                     <MdEditSquare />
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
