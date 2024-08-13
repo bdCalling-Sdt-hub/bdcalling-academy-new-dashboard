@@ -56,7 +56,7 @@ const Otp = () => {
       }}
     >
       <div style={{ width: "630px", background: "white", padding: "90px 57px" }}>
-        <h1 style={{ fontSize: "32px", color: "#6A6D7C", marginBottom: "13px", textAlign: "center" }}>Check your email</h1>
+        <h1 style={{ fontSize: "32px", color: "#6A6D7C", marginBottom: "13px", textAlign: "center" }}>Check Your Email</h1>
         <p style={{ width: "380px", color: "#B8B8B8", margin: "0 auto 0 auto" }}>
           We sent a reset link to <span style={{ color: "#545454" }}> contact@dscode...com </span>
           enter 6 digit code that mentioned in the email
