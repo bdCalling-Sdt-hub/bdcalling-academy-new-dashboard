@@ -22,7 +22,6 @@ const UpdatePassword = () => {
       })
     }
     values.email = localStorage.getItem('email')
-    console.log(values)
     const formData = new FormData()
     Object.keys(values).map(key => {
       formData.append(key, values[key])
