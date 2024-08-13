@@ -4,9 +4,21 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import forgatePass from "../assets/forgatePass.png";
 import logo from "../assets/academyLogo.png";
+import usePostRequest from "../Hooks/usePostRequest";
 const ForgotPassword = () => {
+    const { mutate, isLoading, data, error } = usePostRequest('forgetPass', '/forget-pass');
     const navigate = useNavigate();
     const onFinish = (values) => {
+        // localStorage.setItem('email' , values?.email)
+        const data = {
+            email : values?.email
+        }
+        // console.log(data)
+        const formData = new FormData()
+        Object.keys(data).map(key => {
+            formData.append(key, data[key])
+        })
+        mutate(formData)
         navigate('/otp')
     };
     return (

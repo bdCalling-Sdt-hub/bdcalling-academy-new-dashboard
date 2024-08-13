@@ -3,17 +3,25 @@ import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import usePostRequest from "../Hooks/usePostRequest";
 
 
 const Otp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [err, setErr] = useState("");
+
+
+  const { mutate, isLoading, data, error } = usePostRequest('forgetPass', '/resend-otp');
   const handleResendCode = () => {
-    
+    const formData = new FormData()
+    formData.append("email", localStorage.getItem('email'))
+    mutate(formData)
+
   }
   const handleVerifyOtp = () => {
-   navigate('/update-password')
+    
+    navigate('/update-password')
 
   }
 
