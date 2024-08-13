@@ -18,14 +18,26 @@ const Otp = () => {
     const formData = new FormData()
     formData.append("email", localStorage.getItem('email'))
     mutate(formData)
-
   }
   const handleVerifyOtp = () => {
+    console.log(otp)
     if (!otp) {
-      return toast.error('Please input your verification email')
+      return toast.error('Please Input Your Verification Email')
     }
+
+    const email = localStorage.getItem('email')
+    console.log(email)
+
+    const data = {
+      email,otp
+    }
+    console.log(data)
     const formData = new FormData()
+    formData.append('email', email) 
     formData.append('otp', otp)
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+  }
     mutationOtp(formData)
   }
   useEffect(() => {

@@ -10,7 +10,6 @@ const UpdatePassword = () => {
   const [conPassError, setConPassError] = useState("");
   const { mutate, isLoading, data, error } = usePostRequest('Students', '/reset-pass');
   const onFinish = (values) => {
-    localStorage.setItem('email', 'sldkfos@3ASLDf')
     if (values?.password_confirmation !== values?.password) {
       return Swal.fire({
         position: "center",
@@ -23,6 +22,7 @@ const UpdatePassword = () => {
       })
     }
     values.email = localStorage.getItem('email')
+    console.log(values)
     const formData = new FormData()
     Object.keys(values).map(key => {
       formData.append(key, values[key])

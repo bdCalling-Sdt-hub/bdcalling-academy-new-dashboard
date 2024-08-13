@@ -7,13 +7,7 @@ import { useUserData } from '../Providers/UserProviders/UserProvider'
 import { Pagination } from 'antd'
 
 
-const Notification = [
-    {
-        "data" : {
 
-        }
-    }
-]
 const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
@@ -30,7 +24,7 @@ const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
         name: 'Rahman Abir',
-        notification: 'Rahman abir has purchased Ui/UX Course . Payment Code: 210629-105148',s
+        notification: 'Rahman abir has purchased Ui/UX Course . Payment Code: 210629-105148',
         time: '2 min ago'
     },
     {
