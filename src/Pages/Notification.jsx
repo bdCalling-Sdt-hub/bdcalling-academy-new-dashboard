@@ -5,6 +5,15 @@ import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
 import { useUserData } from '../Providers/UserProviders/UserProvider'
 import { Pagination } from 'antd'
+
+
+const Notification = [
+    {
+        "data" : {
+
+        }
+    }
+]
 const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
@@ -21,7 +30,7 @@ const data = [
     {
         img: 'https://i.ibb.co/xhxFyry/images-19.jpg',
         name: 'Rahman Abir',
-        notification: 'Rahman abir has purchased Ui/UX Course . Payment Code: 210629-105148',
+        notification: 'Rahman abir has purchased Ui/UX Course . Payment Code: 210629-105148',s
         time: '2 min ago'
     },
     {
@@ -43,6 +52,7 @@ const Notification = () => {
     const { useData, loading, isError } = useUserData();
     const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `${(useData?.role === 'SUPER ADMIN' || useData?.role === 'ADMIN') ? '/admin-notification' : '/notification'}`)
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/mark-as-read/${id}`);
+    console.log(Notification?.notifications?.data)
     const handleDelete = () => {
         toast((t) => (
             <div>
@@ -65,13 +75,13 @@ const Notification = () => {
         <div>
             <p className='text-xl font-semibold my-4'>Notification </p>
             {
-                data?.map((item, index) => <div key={index} className='p-3 my-4 flex justify-start items-center gap-2 rounded-md card-shadow'>
+                Notification?.notifications?.data?.map((item, index) => <div key={index} className='p-3 my-4 flex justify-start items-center gap-2 rounded-md card-shadow'>
                     <img src={item?.img} className='w-10 h-10 rounded-full' alt="" />
                     <div className='flex justify-between items-start gap-2 w-full mx-3'>
                         <div className=''>
                             <p className='text-base font-semibold'>{item?.name}</p>
-                            <p className='text-sm'>{item?.notification}</p>
-                            <p className='text-sm'>{item?.time}</p>
+                            <p className='text-sm'>{item?.message}</p>
+                            <p className='text-sm'>{item?.read_at}</p>
                         </div>
                         <button className='text-xl p-1 rounded-md text-white bg-blue-500'>
                             <RxCross2 />
