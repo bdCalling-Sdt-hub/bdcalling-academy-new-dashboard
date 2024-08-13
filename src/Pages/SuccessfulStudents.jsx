@@ -14,18 +14,12 @@ import { RxCross2 } from 'react-icons/rx'
 
 
 const SuccessfulStudents = () => {
-    const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
-    const [openPrintModal, setOpenPrintModal] = useState(false)
-    const [openDropModal, setOpenDropModal] = useState(false)
-    const [openPaymentModal, setOpenPaymentModal] = useState(false)
-    const [fullpaymentType, setFullPaymentType] = useState(true)
-    const [filterData, setFilterData] = useState({})
+    const [page, setPage] = useState(0)
+
     const [filterBy, setFilterBy] = useState()
-    const [exportType, setExportType] = useState('pdf')
-    const [followUp, setFollowUp] = useState({ _id: false, index: false })
     const { register, handleSubmit, formState: { errors } } = useForm();
     // query
-    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/successful-student`)
+    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/successful-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}` : ''}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ''}`)
     const TableData = Stores?.data?.map((item, i) => {
         const names = item?.students?.map(student => student?.user?.name).join(', ');
         const image = item?.students?.map(student => student?.image).join(', ');
@@ -47,7 +41,6 @@ const SuccessfulStudents = () => {
         }
     })
     const onSubmit = data => {
-        console.log(data)
         setFilterBy({ ...data, });
     };
     const onChange = (date, dateString) => {
@@ -98,22 +91,8 @@ const SuccessfulStudents = () => {
             key: 'Payment status'
         },
     ];
-    const handelFilterData = (id) => {
-        const newData = data.filter(item => item._id === id)
-        setFilterData(newData[0])
-    }
-    const [colorType, setColorType] = useState(['blue'])
-    const colorHandeler = (color) => {
-        if (colorType.find(item => item == color)) {
-            const newColor = colorType.filter(item => item != color)
-            setColorType([...newColor])
-        } else {
-            setColorType([...colorType, color])
-        }
-    }
-    const inputHandeler = (e, name) => {
-        setFilterData({ ...filterData, [name]: e.target.value })
-    }
+
+
     return (
         <>
             <div className='grid-2'>
@@ -136,7 +115,7 @@ const SuccessfulStudents = () => {
                     <IoSearch />
                 </button>
                 <button type='button' onClick={() => {
-                    // setFilterBy({})
+                    setFilterBy({})
                 }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
                     <RxCross2 />
                 </button>
@@ -148,6 +127,12 @@ const SuccessfulStudents = () => {
                     <Table
                         columns={columns}
                         dataSource={TableData}
+                        pagination={{
+                            total: Stores?.total,
+                            pageSize: Stores?.per_page,
+                            showSizeChanger: false,
+                            onChange: ((page) => setPage(page))
+                        }}
                     />
                 </div>
             </div>

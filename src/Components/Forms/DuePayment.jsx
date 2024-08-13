@@ -15,6 +15,11 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [totalPayment, setTotalPayment] = useState(Payment?.data[Payment?.data.length - 1]?.due || 0)
+    // useEffect(() => {
+    //     setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
+    // }, [AdmitValues])
+    // console.log(AdmitValues?.order)
+    // console.log(Payment)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
         const paymentData = {
@@ -71,7 +76,7 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
         setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due)
     }, [Payment])
     useEffect(() => {
-        if (!error && data) refetch(); reset();setOpenPaymentModal(false)
+        if (!error && data) refetch(); reset(); setOpenPaymentModal(false)
 
     }, [data, error])
     return (

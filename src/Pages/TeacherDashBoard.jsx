@@ -243,7 +243,7 @@ const TeacherDashBoard = () => {
                     <p className="section-title">My Classes Routing</p>
                     <Link className="text-[#2492EB]" to={`/teacher/class-routine`}>See All</Link>
                 </div>
-                <Table dataSource={routineData.slice(0,5)} pagination={false} columns={columns} />
+                <Table dataSource={routineData?.slice(0,5)} pagination={false} columns={columns} />
             </div>
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
