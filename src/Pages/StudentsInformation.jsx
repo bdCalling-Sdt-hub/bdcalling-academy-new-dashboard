@@ -12,7 +12,7 @@ import DuePayment from '../Components/Forms/DuePayment'
 
 const StudentsInformation = () => {
     const { id, batch } = useParams()
-    const [requestingPayment, Payment, PaymentError,] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
+    const [requestingPayment, Payment, PaymentError, refetch] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
     const [AdmitValues, setAdmitValue] = useState({ _id: id, order: [{ batch_id: batch }] })
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
     return (
@@ -165,7 +165,7 @@ const StudentsInformation = () => {
                 onCancel={() => setOpenPaymentModal(false)}
                 width={700}
             >
-                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={AdmitValues} />
+                <DuePayment setOpenPaymentModal={setOpenPaymentModal} AdmitValues={AdmitValues} refetch={refetch} />
             </Modal>
         </>
     )

@@ -13,7 +13,7 @@ const Otp = () => {
 
 
   const { mutate, isLoading, data, error } = usePostRequest('forgetPass', '/resend-otp');
-  const { mutate: mutationOtp, isLoading: OtpIsLoading, data: OtpData, error: OtpError } = usePostRequest('forgetPass', '/email-verified');
+  const { mutate: mutationOtp, isLoading: OtpIsLoading, data: OtpData, error: OtpError } = usePostRequest('email-verified', '/email-verified');
   const handleResendCode = () => {
     const formData = new FormData()
     formData.append("email", localStorage.getItem('email'))

@@ -1,6 +1,6 @@
 import { DatePicker, Form, Select } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useGetRequest from '../Hooks/useGetRequest';
 import usePostRequest from '../Hooks/usePostRequest';
 
@@ -8,6 +8,7 @@ const AddSalesStudentBatch = () => {
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses`)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
     const { mutate, isLoading, data, error } = usePostRequest('batch', '/phoenix-batches');
+    const navigate = useNavigate()
     const CourseOptions = Course?.data?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
@@ -52,6 +53,9 @@ const AddSalesStudentBatch = () => {
     const onCourseSelect = (value) => {
         console.log(`selected ${value}`);
     };
+    useEffect(()=>{
+        if(data) navigate(-1)
+    },[data])
     return (
         <div id='addBatch'>
             <Form

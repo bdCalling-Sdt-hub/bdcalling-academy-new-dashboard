@@ -62,7 +62,7 @@ const CreateAdmin = () => {
             const AdminData = {
                 name: value?.name,
                 role: 'ADMIN',
-                email: value?.email,
+                // email: value?.email,
                 designation: value?.designation,
                 expertise: value?.expert,
                 _method: 'PUT',
@@ -137,7 +137,7 @@ const CreateAdmin = () => {
             </div>
             <div className="grid-4">
                 {
-                    AdminData?.map((item, index) => <AdminCard handleDelete={handleDelete} key={index} item={item} handelEdit={handelEdit} />)
+                    AdminData?.map((item, index) => <AdminCard setCreatingUser={setCreatingUser} handleDelete={handleDelete} key={index} item={item} handelEdit={handelEdit} />)
                 }
             </div>
             <div className="center-center my-5 mt-8">
