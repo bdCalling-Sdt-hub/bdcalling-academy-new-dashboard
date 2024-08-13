@@ -63,6 +63,7 @@ const Sideber = () => {
                     <button onClick={() => {
                         localStorage.removeItem('token')
                         navigate('/login')
+                        window.location.reload()
                     }} className={`start-center gap-2 px-5 py-2 menu flex-row  whitespace-nowrap`}>
                         <RiLogoutBoxRLine className='text-2xl' />
                         Log Out
