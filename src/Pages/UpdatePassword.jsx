@@ -1,17 +1,17 @@
 import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"
+import usePostRequest from "../Hooks/usePostRequest";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();
   const [newPassError, setNewPassError] = useState("");
   const [conPassError, setConPassError] = useState("");
-  const [curPassError, setCurPassError] = useState("");
-  const [err, setErr] = useState("");
+  const { mutate, isLoading, data, error } = usePostRequest('Students', '/reset-pass');
   const onFinish = (values) => {
-    const { password, confirmPassword } = values;
-    if (confirmPassword !== password) {
+    localStorage.setItem('email', 'sldkfos@3ASLDf')
+    if (values?.password_confirmation !== values?.password) {
       return Swal.fire({
         position: "center",
         icon: "error",
@@ -22,9 +22,18 @@ const UpdatePassword = () => {
         imageHeight: 400,
       })
     }
-    
+    values.email = localStorage.getItem('email')
+    const formData = new FormData()
+    Object.keys(values).map(key => {
+      formData.append(key, values[key])
+    })
+    mutate(formData)
   };
-
+  useEffect(() => {
+    if (data && !error) {
+      navigate('/login')
+    }
+  }, [data, error])
   return (
     <div className="bg-blue-100"
       style={{
@@ -81,7 +90,7 @@ const UpdatePassword = () => {
           <label style={{ display: "block", color: "#6A6D7C", marginBottom: "5px" }} htmlFor="email">Confirm Password</label>
           <Form.Item
             style={{ marginBottom: 0 }}
-            name="confirmPassword"
+            name="password_confirmation"
             rules={[
               {
                 required: true,
