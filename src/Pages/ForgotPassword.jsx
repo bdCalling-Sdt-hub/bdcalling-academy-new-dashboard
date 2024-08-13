@@ -1,5 +1,5 @@
 import { Button, Form, Input, Typography } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import forgatePass from "../assets/forgatePass.png";
@@ -19,8 +19,12 @@ const ForgotPassword = () => {
             formData.append(key, data[key])
         })
         mutate(formData)
-        navigate('/otp')
     };
+    useEffect(()=>{
+        if(!error && data){
+            navigate('/otp')
+        }
+    },[error,data])
     return (
         <div className="grid grid-cols-2 gap-0 "
             style={{

@@ -1,9 +1,9 @@
 import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import usePostRequest from "../Hooks/usePostRequest";
+import toast from "react-hot-toast";
 
 
 const Otp = () => {
@@ -13,6 +13,7 @@ const Otp = () => {
 
 
   const { mutate, isLoading, data, error } = usePostRequest('forgetPass', '/resend-otp');
+  const { mutate: mutationOtp, isLoading: OtpIsLoading, data: OtpData, error: OtpError } = usePostRequest('forgetPass', '/email-verified');
   const handleResendCode = () => {
     const formData = new FormData()
     formData.append("email", localStorage.getItem('email'))
@@ -20,11 +21,18 @@ const Otp = () => {
 
   }
   const handleVerifyOtp = () => {
-    
-    navigate('/update-password')
-
+    if (!otp) {
+      return toast.error('Please input your verification email')
+    }
+    const formData = new FormData()
+    formData.append('otp', otp)
+    mutationOtp(formData)
   }
-
+  useEffect(() => {
+    if (!OtpError && OtpData) {
+      navigate('/update-password')
+    }
+  }, [OtpError, OtpData])
   return (
     <div className="bg-blue-100"
       style={{
