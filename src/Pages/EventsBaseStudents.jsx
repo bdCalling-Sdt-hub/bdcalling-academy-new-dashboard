@@ -39,7 +39,7 @@ const EventsBaseStudents = () => {
     const [singleCourse, setSingleCourse] = useState(null)
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-    const { mutate: mutateAdmit, isLoading:isAdmitLoading, data:AdmitData, error:errorAdmit } = usePostRequest('admitStudents', '/admit-student');
+    const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
@@ -62,7 +62,7 @@ const EventsBaseStudents = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img:item?.image? `${imageUrl}/${item?.image}` : ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             event_name: item?.event_name,
             _id: item?.id,
             gender: item?.gender,
@@ -72,7 +72,7 @@ const EventsBaseStudents = () => {
             blood_group: item?.blood_group,
             dob: item?.dob,
             address: item?.address,
-            messages:item?.messages
+            messages: item?.messages
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -183,8 +183,8 @@ const EventsBaseStudents = () => {
                         setFollowUp({ _id: record._id, index: item })
                     }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
                 }
-               {
-                    record?.messages?.map((item,index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                {
+                    record?.messages?.map((item, index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
                         <p className='text-[#5C5C5C] '>{item}</p>
                     </div>)
                 }
@@ -196,6 +196,7 @@ const EventsBaseStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setImage(null)
                     setOpenAdmitModal(true)
@@ -203,6 +204,7 @@ const EventsBaseStudents = () => {
                     Admit
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     setText(false)
                     handelFilterData(record?._id)
                     setImage(null)
@@ -211,6 +213,7 @@ const EventsBaseStudents = () => {
                     <MdEditSquare />
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
@@ -242,9 +245,9 @@ const EventsBaseStudents = () => {
         return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch();setFilterData({})
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
@@ -309,7 +312,7 @@ const EventsBaseStudents = () => {
     useEffect(() => {
         console.log(errorAdmit, AdmitData, isAdmitLoading)
         if (isAdmitLoading) return
-        if (AdmitData && !errorAdmit) setOpenPaymentModal(true);setOpenAdmitModal(false)
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
     }, [errorAdmit, AdmitData, isAdmitLoading])
     return (
         <>
@@ -337,7 +340,7 @@ const EventsBaseStudents = () => {
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`8801566026301`} />
                 </div>
                 <div className='col-span-2'>
-                    <Input classNames={`border`} status={errors} placeholder={'event name'}  rules={{ ...register("category", { required: false }) }} />
+                    <Input classNames={`border`} status={errors} placeholder={'event name'} rules={{ ...register("category", { required: false }) }} />
                 </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full w-fit'>
                     <IoSearch />
@@ -418,9 +421,9 @@ const EventsBaseStudents = () => {
                             { name: 'Christianity', value: 'christianity' },
                             { name: 'Other', value: 'other' },
                         ]} rules={{ ...registerStudent("religion", { required: true }) }} />
-                    <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Event Name`} type={`text`} rules={{ ...registerStudent("eventName", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.eventName} />
+                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Event Name`} type={`text`} rules={{ ...registerStudent("eventName", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.eventName} />
                     </div>
-                        <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...registerStudent("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
+                    <UpdateInput status={StudentError} handler={inputHandeler} classNames={`w-full border`} lebel={`Address*`} type={`text`} rules={{ ...registerStudent("address", { required: true }) }} placeholder={`*Required Field`} defaultValue={filterData?.address} />
                     <div className="px-48 mt-8">
                         <input value={text ? 'create' : 'update'} className="btn-primary cursor-pointer capitalize" type="submit" />
                     </div>

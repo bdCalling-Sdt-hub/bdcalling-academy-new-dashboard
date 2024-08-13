@@ -39,7 +39,7 @@ const TeacherBaseStudents = () => {
     const [singleCourse, setSingleCourse] = useState(null)
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
-    const { mutate: mutateAdmit, isLoading:isAdmitLoading, data:AdmitData, error:errorAdmit } = usePostRequest('admitStudents', '/admit-student');
+    const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
@@ -48,9 +48,7 @@ const TeacherBaseStudents = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
-    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=teacher&page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}`:""}${filterBy?.name ? `&name=${filterBy?.name}` :""}${filterBy?.category ? `&category_name=${filterBy?.category}` : ""}${filterBy?.dob ? `&dob=${filterBy?.dob}` :""}`)//phone_number=01317659523&name=r&category_name=1&
-
-    console.log(Students) 
+    const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('AuthStudents', `/students?student_type=teacher&page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ""}${filterBy?.name ? `&name=${filterBy?.name}` : ""}${filterBy?.category ? `&category_name=${filterBy?.category}` : ""}${filterBy?.dob ? `&dob=${filterBy?.dob}` : ""}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
@@ -64,7 +62,7 @@ const TeacherBaseStudents = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img:item?.image? `${imageUrl}/${item?.image}` : ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             course: item?.category?.category_name,
             _id: item?.id,
             gender: item?.gender,
@@ -74,7 +72,7 @@ const TeacherBaseStudents = () => {
             blood_group: item?.blood_group,
             dob: item?.dob,
             address: item?.address,
-            messages:item?.messages
+            messages: item?.messages
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -184,7 +182,7 @@ const TeacherBaseStudents = () => {
                     }} className={`w-5 h-5 ${item == 0 ? 'bg-[#2492EB]' : item == 1 ? 'bg-[#2BA24C]' : 'bg-[#FFC60B]'} rounded-full`}></span>)
                 }
                 {
-                    record?.messages?.map((item,index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
+                    record?.messages?.map((item, index) => <div key={index} className={`${(followUp?._id == record?._id && followUp?.index == index) ? 'block' : 'hidden'} ${index == 0 ? 'border-[#2492EB]' : index == 1 ? 'border-[#2BA24C]' : 'border-[#FFC60B]'} absolute top-[40px] right-0 p-3 border-2 rounded-md bg-white z-50 carr-shadow w-[400px]`}>
                         <p className='text-[#5C5C5C] '>{item}</p>
                     </div>)
                 }
@@ -196,6 +194,7 @@ const TeacherBaseStudents = () => {
             dataIndex: '_id',
             render: (_, record) => <div className='start-center gap-2'>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     setImage(null)
                     setOpenAdmitModal(true)
@@ -203,6 +202,7 @@ const TeacherBaseStudents = () => {
                     Admit
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     setText(false)
                     handelFilterData(record?._id)
                     setImage(null)
@@ -211,6 +211,7 @@ const TeacherBaseStudents = () => {
                     <MdEditSquare />
                 </button>
                 <button onClick={() => {
+                    toast.dismiss()
                     handelFilterData(record._id)
                     handleDelete()
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
@@ -251,9 +252,9 @@ const TeacherBaseStudents = () => {
         return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch();setFilterData({})
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
@@ -318,7 +319,7 @@ const TeacherBaseStudents = () => {
     useEffect(() => {
         console.log(errorAdmit, AdmitData, isAdmitLoading)
         if (isAdmitLoading) return
-        if (AdmitData && !errorAdmit) setOpenPaymentModal(true);setOpenAdmitModal(false)
+        if (AdmitData && !errorAdmit) setOpenPaymentModal(true); setOpenAdmitModal(false)
     }, [errorAdmit, AdmitData, isAdmitLoading])
     return (
         <>
@@ -376,7 +377,7 @@ const TeacherBaseStudents = () => {
                             total: Students?.total || 0,
                             onChange: (page, pagesize) => setPage(page),
                             showSizeChanger: false,
-                            pageSize : Students?.per_page
+                            pageSize: Students?.per_page
                         }}
                     />
                 </div>
