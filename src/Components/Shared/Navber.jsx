@@ -1,6 +1,4 @@
 import { useForm } from "react-hook-form";
-import Input from "../Input/Input";
-import { CiSearch } from "react-icons/ci";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import flag from '../../assets/flag.png'
 import { useNavigate } from "react-router-dom";
@@ -20,8 +18,8 @@ const Navber = () => {
                 <CiSearch className="text-2xl text-[#A7A7A7] absolute top-[50%] translate-y-[-50%] left-2" /> */}
             </div>
             <div className="flex justify-end items-center w-full gap-5 py-[6px]">
-                <img src={flag} className="h-5 w-8 -mr-3" alt="" />
-                <p className="text-lg">EN</p>
+                {/* <img src={flag} className="h-5 w-8 -mr-3" alt="" />
+                <p className="text-lg">EN</p> */}
                 <div onClick={() => navigate('/notification')} className="relative cursor-pointer">
                     <MdOutlineNotificationsActive className="text-3xl" />
                     <span className="rounded-full bg-[#E91E63] p-[2px] px-[4px] text-white absolute top-0 right-0 text-[10px]" >

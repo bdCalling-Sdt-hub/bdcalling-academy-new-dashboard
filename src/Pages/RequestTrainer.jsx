@@ -102,7 +102,7 @@ const RequestTrainer = () => {
         title: 'Status',
         dataIndex: '_id',
         render: (_, record) => {
-            return <button className={`transition-all text-base font-medium px-6 py-[6px] ${record?.Status == 'approved' ? 'bg-[#2BA24C]' : record?.Status == 'pending' ? 'bg-yellow-500' : 'bg-red-500'}  rounded-md text-white center-center max-w-36`}> {record?.Status}</button>
+            return <button className={`transition-all text-base font-medium px-6 py-[6px] cursor-default ${record?.Status == 'approved' ? 'bg-[#2BA24C]' : record?.Status == 'pending' ? 'bg-yellow-500' : 'bg-red-500'}  rounded-md text-white center-center max-w-36`}> {record?.Status}</button>
         }
         ,
         key: '_id',
@@ -112,7 +112,7 @@ const RequestTrainer = () => {
         render: (_, record) => (
             <button  onClick={() => {
                 handelEdit(record.id)
-            }} disabled={record?.Status == 'approved'} className=" text-2xl text-[#2492EB] p-1 rounded-full disabled:hover:scale-100 hover:scale-105 active:scale-95 disabled:active:scale-100 transition-all disabled:cursor-not-allowed disabled:text-gray-500">
+            }} disabled={record?.Status == 'approved'} className=" text-2xl text-[#2492EB] p-1 rounded-full disabled:hover:scale-100 hover:scale-105 active:scale-95 disabled:active:scale-100 transition-all disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-transparent">
                 <FiEdit />
                 {/* <RxCross1 className='text-red-600 cursor-pointer hover:scale-105 active:scale-95 transition-all' onClick={() => {
                     // console.log(record._id)
