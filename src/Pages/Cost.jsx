@@ -146,7 +146,7 @@ const Cost = () => {
                 total: Cost?.total || 0,
                 onChange: (page, pagesize) => setPage(page),
                 showSizeChanger: false,
-                pageSize: 10
+                pageSize: Cost?.per_page
             }} />
             <Modal
                 open={open}

@@ -140,7 +140,7 @@ const CreateRoutine = () => {
                             <Form.Item
                                 label={false}
                                 name="batch_id">
-                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="Search by Batch..." />
+                                <input className='outline-none w-full border p-[10px] rounded-md' placeholder="create-routine" />
                             </Form.Item>
                             {/* <Form.Item
                                 label={false}
@@ -155,6 +155,7 @@ const CreateRoutine = () => {
                                 </button>
                                 <button type='button' onClick={() => {
                                     setFilterBy({})
+                                    form.resetFields()
                                 }} className='text-2xl p-[10px] bg-[red] ml-2 text-white rounded-full'>
                                     <RxCross2 />
                                 </button>
