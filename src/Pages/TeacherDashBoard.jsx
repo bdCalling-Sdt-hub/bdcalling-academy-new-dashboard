@@ -251,7 +251,7 @@ const TeacherDashBoard = () => {
                 </div>
                 <Table
                     columns={studentColumns}
-                    dataSource={TableData?.slice(0,5) || []}
+                    dataSource={TableData?.slice[0,5] || []}
                     pagination={false}
                 />
             </div>

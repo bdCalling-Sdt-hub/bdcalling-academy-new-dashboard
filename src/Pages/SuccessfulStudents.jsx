@@ -14,34 +14,29 @@ import { RxCross2 } from 'react-icons/rx'
 
 
 const SuccessfulStudents = () => {
-    const [page, setPage] = useState(0)
-
-    const [filterBy, setFilterBy] = useState()
+    const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [filterBy, setFilterBy] = useState({})
+
+
     // query
-    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/successful-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}` : ''}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ''}`)
+    const [requestingStores, Stores, StoresError,] = useGetRequest('successStory', `/successful-student?&page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ""}${filterBy?.name ? `&name=${filterBy?.name}` : ""}`)
     const TableData = Stores?.data?.map((item, i) => {
-        const names = item?.students?.map(student => student?.user?.name).join(', ');
-        const image = item?.students?.map(student => student?.image).join(', ');
-        const phone = item?.students?.map(student => student?.phone_number).join(', ');
-        const studentId = item?.students?.map(student => student?.user?.email).join(', ');
-        const date = item?.students?.map(student => student?.registration_date).join(', ');
-        const status = item?.students?.map(student => student?.status).join(', ');
         return {
             key: i + 1,
-            name: names,
-            img: `${imageUrl}/${image}` || ProfileImage,
-            phone: phone,
-            studentID: studentId,
+            name: item?.students[0]?.user?.name,
+            img: `${imageUrl}/${item?.students[0]?.image}` || ProfileImage,
+            phone: item?.students[0]?.phone_number,
+            studentID: item?.students[0]?.user?.email,
             course: item?.course?.course_name,
-            date: date,
-            status: status
+            date: item?.students[0]?.registration_date,
+            status: item?.students[0]?.status
 
 
         }
     })
     const onSubmit = data => {
-        setFilterBy({ ...data, });
+        setFilterBy({ ...data })
     };
     const onChange = (date, dateString) => {
     };
@@ -104,13 +99,13 @@ const SuccessfulStudents = () => {
                 </div> */}
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
-                {/* <DatePicker className='max-w-44 min-w-44 py-2 border-none rounded-3xl' onChange={onChange} /> */}
                 <div className='max-w-44 min-w-44'>
                     <Input rules={{ ...register("name", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Full Name`} />
                 </div>
                 <div className='max-w-44 min-w-44'>
                     <Input type={`number`} rules={{ ...register("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
                 </div>
+
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
                 </button>
@@ -123,15 +118,26 @@ const SuccessfulStudents = () => {
 
 
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
+                {/* {
+                    (filterBy?.name || filterBy?.number || filterBy?.category || filterBy?.dob) && <div className='flex justify-start items-center gap-2 mb-2 -mt-3 ml-5'>Filter by
+                        {filterBy?.name && <><strong>name</strong> : {filterBy?.name} </>}
+                        {filterBy?.number && <><strong>number</strong>   : {filterBy?.number}</>}
+                        {filterBy?.category && <> <strong>category</strong> : {filterBy?.category} </>}
+                        {filterBy?.dob && <> <strong>date of birth</strong> : {filterBy?.dob} </>}
+                        <button onClick={() => setFilterBy({})} className='text-xl p-1 rounded-full text-white bg-red-500'>
+                            <RxCross2 />
+                        </button>
+                    </div>
+                } */}
                 <div>
                     <Table
                         columns={columns}
                         dataSource={TableData}
                         pagination={{
-                            total: Stores?.total,
-                            pageSize: Stores?.per_page,
+                            total: Stores?.total || 0,
+                            onChange: (page, pagesize) => setPage(page),
                             showSizeChanger: false,
-                            onChange: ((page) => setPage(page))
+                            pageSize: Stores?.per_page
                         }}
                     />
                 </div>
