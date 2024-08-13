@@ -41,9 +41,21 @@ const LeaveForm = ({ image, setImage, filterdData, inputHandeler, register,
             <TextArea status={errors} handler={inputHandeler} classNames={`w-full border h-32 pointer-events-none`} lebel={`Reason`} rules={{ ...register("Reason", { required: false }) }} placeholder={`Reason`} defaultValue={filterdData.Reason} />
             <UpdateInput status={errors} handler={inputHandeler} classNames={`w-full border`} lebel={`Comments`} rules={{ ...register("Comments", { required: true }) }} placeholder={`Comments`} defaultValue={filterdData.Comments} />
             <div className='between-center gap-3 py-8 pb-0'>
-                    <button onClick={()=>handleRequest('approve')} className='transition-all text-base font-medium px-10 py-3 bg-[#2BA24C] rounded-md text-white hover:scale-105 active:scale-95'>Approved</button>
-                    <button onClick={()=>handleRequest('pending')} className='transition-all text-base font-medium px-10 py-3 text-[#FFC60B] border border-[#FFC60B] rounded-md hover:scale-105 active:scale-95'>Pending</button>
-                    <button onClick={()=>handleRequest('reject')} className='transition-all text-base font-medium px-10 py-3 text-[#FA1131] border border-[#FA1131] rounded-md  hover:scale-105 active:scale-95'>Rejected</button>
+                    <button onClick={()=>{
+                        if (!filterdData?.Comments) {
+                            return
+                        }
+                        handleRequest('approve')}} className='transition-all text-base font-medium px-10 py-3 bg-[#2BA24C] rounded-md text-white hover:scale-105 active:scale-95'>Approved</button>
+                    <button onClick={()=>{
+                        // if (!filterdData?.Comments) {
+                        //     return
+                        // }
+                        handleRequest('pending')}} className='transition-all text-base font-medium px-10 py-3 text-[#FFC60B] border border-[#FFC60B] rounded-md hover:scale-105 active:scale-95'>Pending</button>
+                    <button onClick={()=>{
+                        if (!filterdData?.Comments) {
+                            return
+                        }
+                        handleRequest('reject')}} className='transition-all text-base font-medium px-10 py-3 text-[#FA1131] border border-[#FA1131] rounded-md  hover:scale-105 active:scale-95'>Rejected</button>
                 </div>
         </form>
     )

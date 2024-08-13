@@ -27,8 +27,6 @@ const AdmitPaymentModal = ({ setOpenPaymentModal, setOpenAdmitModal, course, Adm
             payment_type: 'installment',
             currency: 'TK',
         }
-        // console.log(paymentData)
-        // return
         const formData = new FormData()
         Object.keys(paymentData).map(key => {
             formData.append(key, paymentData[key])

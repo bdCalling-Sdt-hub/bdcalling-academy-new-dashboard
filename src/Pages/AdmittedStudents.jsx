@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { FaPlus } from 'react-icons/fa6'
+import { FaCheck, FaPlus } from 'react-icons/fa6'
 import { DatePicker, message, Modal, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
@@ -18,7 +18,6 @@ import DuePayment from '../Components/Forms/DuePayment'
 import { RiPrinterFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 const AdmittedStudents = () => {
-    const [loading, setLoading] = useState(false)
     const axiosConfig = useAxiosConfig()
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [openFollowUpModal, setOpenFollowUpModal] = useState(false)
@@ -36,24 +35,14 @@ const AdmittedStudents = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [filterBy, setFilterBy] = useState({})
     const [SendMessageTo, setSendMessage] = useState([])
-    // query 
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.batch && `&batch_id=${filterBy?.batch}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}`)
-    const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
+    const [requestingBatchStudents, BatchStudents, BatchStudentsError, refetch] = useGetRequest('batchStudents', `/show-admit-student?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ''}${filterBy?.name ? `&name=${filterBy?.name}` : ''}${filterBy?.batch ? `&batch_id=${filterBy?.batch}` : ''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}` : ''}`)
+    const { mutate, isLoading, data, error } = usePostRequest('Students', '/completed-student');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
     const { mutate: updateStudents, isLoading: updateLoading, data: updateData, } = usePatchRequest('Students', `/students/${filterData?._id}`);
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
-    // console.log(BatchStudents)
-    const BatchOptions = Batch?.data?.data?.map(item => {
-        return { name: item?.batch_name, value: item?.id }
-    }) || []
-    const CourseOptions = Course?.data?.map(item => {
-        return { name: item?.course_name, value: item?.id }
-    }) || []
+
     const TableData = AllStudents.map((item, index) => {
         return {
             key: index + 1,
@@ -98,6 +87,35 @@ const AdmittedStudents = () => {
     const onChange = (date, dateString) => {
         setdob(dateString)
     };
+    const handleSuccessfulStudent = (id, batchID) => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">Are you sure you want to success this student?</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        Cancel
+                    </button>
+                    <button
+                        onClick={() => {
+                            toast.dismiss(t.id);
+                            const data = {
+                                student_ids: JSON.stringify([id]),
+                                batch_id: batchID
+                            }
+                            const formData = new FormData()
+                            Object.keys(data).map(key => {
+                                formData.append(key, data[key])
+                            })
+                            mutate(formData)
+                        }}
+                        className="px-3 py-1 bg-blue-500 text-white rounded-md"
+                    >
+                        Sure
+                    </button>
+                </div>
+            </div>
+        ))
+    }
     const columns = [
         {
             title: '#Sl',
@@ -193,6 +211,12 @@ const AdmittedStudents = () => {
                     <CiCircleInfo />
                 </Link>
                 <button onClick={() => {
+                    handelFilterData(record._id)
+                    handleSuccessfulStudent(record?._id, record?.order?.[0]?.batch_id)
+                }} className='p-1 text-green-500 text-2xl rounded hover:scale-105 active:scale-95 transition-all max-w-32'>
+                    <FaCheck />
+                </button>
+                <button onClick={() => {
                     setFilterData(record)
                     handleDelete(record?._id, record?.order?.[0]?.batch_id)
                 }} className='text-2xl text-red-500 hover:scale-105 active:scale-95'>
@@ -207,8 +231,8 @@ const AdmittedStudents = () => {
         setFilterData(newData[0])
     }
     useEffect(() => {
-        if (isLoading, updateLoading, messageLoading) return
-        if (data, updateData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
+        if (isLoading || updateLoading || messageLoading) return
+        if (data || updateData || MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch()
     }, [isLoading, data, updateData, updateLoading, MessageData, messageLoading])
     //delete users
     const handleDropout = async (id, batchId) => {
@@ -337,7 +361,8 @@ const AdmittedStudents = () => {
                         pagination={{
                             total: BatchStudents?.total || 0,
                             onChange: (page, pagesize) => setPage(page),
-                            showSizeChanger: false
+                            showSizeChanger: false,
+                            pageSize: BatchStudents?.per_page
                         }}
                     />
                 </div>
