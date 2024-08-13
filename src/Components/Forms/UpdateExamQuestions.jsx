@@ -9,10 +9,12 @@ import { addNewFields, removeNewFields } from '../../Utils/InputPlusActions'
 import PageHeading from '../Shared/PageHeading'
 import { formatQuestions } from '../../Utils/FormateMcq'
 import useGetRequest from '../../Hooks/useGetRequest'
+import usePatchRequest from '../../Hooks/usePatchRequest'
 
 
 const UpdateExamQuestions = () => {
     const { id } = useParams()
+    const { mutate: updateModule, isLoading: updateLoading, data: updateData, } = usePatchRequest('Module', `/update-module/${id}`);
     const [requestingQuestions, Questions, QuestionsError, refetch] = useGetRequest('module', `/show-module/${id}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [totalQuestions, setTotalQuestions] = useState(Questions?.data?.quiz?.questions.map((item, i) => {
@@ -23,24 +25,31 @@ const UpdateExamQuestions = () => {
             return { _id: i + 1, question: item?.question, option: item?.options, correctAnswer: item?.correctAnswer }
         }) || [])
     }, [Questions?.data?.quiz?.questions])
-    const correctAnswer = []
-    totalQuestions?.map(item => {
-        item?.option?.map((item2, i) => {
-            if (item?.correctAnswer === item2) {
-                correctAnswer.push({ [item?._id]: `answer${i + 1}-${item?._id}` })
-            }
-        })
-    })
-    const [correctAnswers, setCorrectAnswer] = useState(correctAnswer || [])//{ 437834: 'answer1-437834' }
+
+
+    const [correctAnswers, setCorrectAnswer] = useState([])//{ 437834: 'answer1-437834' }
     const handelCorrectAnswers = (ans, questionId) => {
         const newAnswers = correctAnswers.filter(item => !(item.hasOwnProperty(questionId)))
         setCorrectAnswer([...newAnswers, { [questionId]: ans }])
     }
     const onSubmit = data => {
         const formate = formatQuestions(correctAnswers, data)
-        console.log(formate)
+        const formData = new FormData()
+        formData.append('questions', formData)
+        // formData.append('_method', 'PUT')
+        updateModule(formData)
     };
-
+    useEffect(() => {
+        const correctAnswer = []
+        totalQuestions?.map(item => {
+            item?.option?.map((item2, i) => {
+                if (item?.correctAnswer === item2) {
+                    correctAnswer.push({ [item?._id]: `answer${i + 1}-${item?._id}` })
+                }
+            })
+        })
+        setCorrectAnswer(correctAnswer)
+    }, [totalQuestions])
     return (
         <>
             <PageHeading text={Questions?.data?.module_title} />
