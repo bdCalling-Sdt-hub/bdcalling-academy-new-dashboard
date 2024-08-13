@@ -28,13 +28,14 @@ const BatchForm = () => {
             seat_limit: values?.seat,
             discount_price: values?.discountPrice,
             teacher_id: JSON.stringify(values.trainer),
-            image: Image
         }
         const formData = new FormData()
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        // console.log(data)
+        if(Image){
+            formData.append(Image)
+        }
         mutate(formData)
     };
 
@@ -43,7 +44,6 @@ const BatchForm = () => {
         setImage(e.target.files[0])
     }
     const onChange = (field, date, dateString) => {
-        // console.log(field, date, dateString);
         if (field === 'start') {
             setStartDate(dateString)
         } else if (field === 'end') {

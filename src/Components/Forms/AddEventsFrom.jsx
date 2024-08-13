@@ -9,6 +9,7 @@ import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { FaEdit, FaPlus } from 'react-icons/fa';
 import useGetRequest from '../../Hooks/useGetRequest';
 import usePostRequest from '../../Hooks/usePostRequest';
+import toast from 'react-hot-toast';
 const EventTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' }]
 
 const AddEventsFrom = ({ type }) => {
@@ -46,7 +47,9 @@ const AddEventsFrom = ({ type }) => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        formData.append('image', image)
+        if(image){
+            formData.append('image', image)
+        }
         mutate(formData)
     };
     useEffect(() => {
