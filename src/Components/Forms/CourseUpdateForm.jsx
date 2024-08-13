@@ -20,7 +20,7 @@ import { imageUrl } from '../../AxiosConfig/useAxiosConfig';
 const popularityOptions = [{ name: 'true', value: '1' }, { name: 'false', value: '0' }]
 // const CategoryOptions = [{ name: 'App Development', value: 'App Development' }, { name: 'web Development', value: 'web Development' },]
 const CourseTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' },{ name: 'video', value: 'video' }]
-const CourseUpdateForm = ({ formFor }) => {
+const  CourseUpdateForm = ({ formFor }) => {
     const { id } = useParams()
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses/${id}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
