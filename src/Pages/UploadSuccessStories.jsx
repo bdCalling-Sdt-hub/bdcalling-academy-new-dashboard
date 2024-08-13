@@ -63,7 +63,6 @@ const UploadSuccessStories = () => {
         const data = new FormData();
         data.append('file', fileObj.file);
         data.append('type', type);
-
         axiosInstance.post('/success/story', data, {
             onUploadProgress: (progressEvent) => {
                 const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);

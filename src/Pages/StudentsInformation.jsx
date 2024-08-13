@@ -9,7 +9,7 @@ import Input from '../Components/Input/Input'
 import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import DuePayment from '../Components/Forms/DuePayment'
-
+import ProfileImage from '../assets/corporate-user-icon.webp'
 const StudentsInformation = () => {
     const { id, batch } = useParams()
     const [requestingPayment, Payment, PaymentError, refetch] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
@@ -23,7 +23,7 @@ const StudentsInformation = () => {
                 </Link>
                 <PageHeading text={`Students Information`} />
             </div>
-            <img src={`${imageUrl}/${Payment?.data[0]?.student?.image}`} className='h-20 w-20 rounded-full my-2' alt="" />
+            <img src={ Payment?.data[0]?.student?.image ? `${imageUrl}/${Payment?.data[0]?.student?.image}`:ProfileImage} className='h-20 w-20 rounded-full my-2' alt="" />
             <div className='grid-2-start pb-12 gap-2'>
                 <div className='w-full'>
                     <PageHeading text={`Student Personal Information`} />
@@ -152,7 +152,7 @@ const StudentsInformation = () => {
                     }
                     <hr className='w-[80%] my-5' />
                     <div className='flex justify-end items-center pr-[140px]'>
-                        <button disabled={Payment?.data[Payment?.data.length - 1].status !== 'due'} onClick={() => {
+                        <button disabled={Payment?.data[Payment?.data.length - 1]?.status !== 'due'} onClick={() => {
                             setOpenPaymentModal(true)
                         }} className='p-2 py-1 bg-[#FFC60B] text-white font-semibold rounded disabled:bg-gray-500'>payment</button>
                     </div>

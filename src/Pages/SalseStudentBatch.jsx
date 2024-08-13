@@ -17,7 +17,7 @@ const SalseStudentBatch = () => {
     const onSubmit = data => console.log(data);
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [requestingBatch, Batch, BatchError,] = useGetRequest('batch', `/phoenix-batches?page=${page}${filterBy?.batch && `&batch_name=${filterBy?.batch}`}`)
-    
+
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
     const onSubmitFilter = data => { setFilterBy({ ...data, }) };
     const CourseOptions = Course?.data?.map(item => {
@@ -50,21 +50,24 @@ const SalseStudentBatch = () => {
             </div>
             <div className='grid-4 my-10'>
                 {
-                    Batch?.data?.data?.map((item, index) => <div key={index} className="bg-white card-shadow p-3 rounded-md">
-                    <div className="w-full h-[240px] object-cover rounded-md overflow-hidden">
-                        <img className="w-full h-full object-cover" src={`${imageUrl}/${item?.image}`} alt="" />
-                    </div>
-                    <p className="text-lg text-[#333333] font-medium py-4">{item?.course?.course_name}</p>
-                    <p><strong>Batch ID:</strong> {item?.batch_id}</p>
-                    <div className="between-center gap-4 mt-5">
-                        <Link to={`/all-admitted-student/${item?.id}`}className="btn-primary ">
-                            All Students
-                        </Link>
-                        <Link to={`/add-sales-student-batch/update/${item?.id}`} className="btn-secondary">
-                        Edit Batch
-                        </Link>
-                    </div>
-                </div>)
+                    Batch?.data?.data?.map((item, index) => {
+                        return <div key={index} className="bg-white card-shadow p-3 w-full h-full rounded-md">
+                            <div className="w-full h-[240px] object-cover rounded-md overflow-hidden">
+                                <img className="w-full h-full object-cover" src={`${imageUrl}/${item?.image}`} alt="" />
+                            </div>
+                            <p className="text-sm text-[#333333] font-medium pt-4"> Course : {item?.course?.course_name}</p>
+                            <p className="text-lg text-[#333333] font-medium py-2"> Batch : {item?.batch_name}</p>
+                            <p><strong>Batch ID:</strong> {item?.batch_id}</p>
+                            <div className="between-center gap-4 mt-5">
+                                <Link to={`/all-admitted-student/${item?.id}`} className="btn-primary ">
+                                    All Students
+                                </Link>
+                                <Link to={`/add-sales-student-batch/update/${item?.id}`} className="btn-secondary">
+                                    Edit Batch
+                                </Link>
+                            </div>
+                        </div>
+                    })
                 }
             </div>
             <div className="center-center my-5 mt-8">
