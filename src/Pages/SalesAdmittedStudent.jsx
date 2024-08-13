@@ -13,15 +13,9 @@ import usePatchRequest from '../Hooks/usePatchRequest'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
 import useGetRequest from '../Hooks/useGetRequest'
 import usePostRequest from '../Hooks/usePostRequest'
-import SelectInput from '../Components/Input/SelectInput'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import ProfileImage from '../assets/corporate-user-icon.webp'
 import toast from 'react-hot-toast'
-import AdmitPaymentModal from '../Components/Forms/AdmitPaymentModal'
-import { CiCircleInfo } from 'react-icons/ci'
-import DuePayment from '../Components/Forms/DuePayment'
-import { RiPrinterFill } from 'react-icons/ri'
-import { Link } from 'react-router-dom'
 import SalseStudentAddForm from '../Components/Forms/SalseStudentAddForm'
 const SalesAdmittedStudent = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
@@ -50,14 +44,14 @@ const SalesAdmittedStudent = () => {
     const { mutate: DeleteStudents, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Students', `/students/${filterData?._id}`);
     const [dob, setdob] = useState('')
     const [AllStudents, setAllStudent] = useState([])
-    const [formFor,setFormfor]=useState('add')
+    const [formFor, setFormfor] = useState('add')
     const TableData = AllStudents.map((item, index) => {
         return {
             key: index + 1,
             name: item?.name,
             email: item?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             _id: item?._id,
             batch_id: item?.batch_id,
             gender: item?.gender,
