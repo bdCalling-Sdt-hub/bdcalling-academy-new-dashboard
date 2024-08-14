@@ -33,8 +33,8 @@ const BatchForm = () => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        if(Image){
-            formData.append(Image)
+        if (Image) {
+            formData.append('image', Image)
         }
         mutate(formData)
     };

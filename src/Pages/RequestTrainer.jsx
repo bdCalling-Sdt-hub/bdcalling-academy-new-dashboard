@@ -25,7 +25,8 @@ const RequestTrainer = () => {
     const [openLeaveModal, setOpenLeaveModal] = useState(false);
     const { mutate, isLoading, data, error } = usePostRequest('approve', '/approve-leave-application');
     const { mutate: Reject, isLoading: isLoadingReject, data: Rejectdata, error: Rejecterror } = usePostRequest('approve', '/reject-leave-application');
-    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.designation ? `&designation=${filterBy?.designation}`:''}${filterBy?.dob ? `&date=${filterBy?.dob}`:''}`)
+    const [requestingTrainerRequest, TrainerRequest, TrainerRequestError, refetch] = useGetRequest('trainer', `/admin-show-leave-application?page=${page}${filterBy?.number ? `&phone_number=${filterBy?.number}` : ''}${filterBy?.designation ? `&designation=${filterBy?.designation}` : ''}${filterBy?.dob ? `&date=${filterBy?.dob}` : ''}`)
+    console.log(TrainerRequest)
     const requestList = TrainerRequest?.data?.data?.map((item, i) => {
         return {
             "Name": item?.user?.name,
@@ -110,7 +111,7 @@ const RequestTrainer = () => {
     {
         title: 'Actions',
         render: (_, record) => (
-            <button  onClick={() => {
+            <button onClick={() => {
                 handelEdit(record.id)
             }} disabled={record?.Status == 'approved'} className=" text-2xl text-[#2492EB] p-1 rounded-full disabled:hover:scale-100 hover:scale-105 active:scale-95 disabled:active:scale-100 transition-all disabled:cursor-not-allowed disabled:text-gray-400 disabled:bg-transparent">
                 <FiEdit />
@@ -139,6 +140,7 @@ const RequestTrainer = () => {
         if (isLoading || isLoadingReject) return
         if ((data || Rejectdata) && (!Rejecterror || !error)) setOpenLeaveModal(false); refetch()
     }, [data, Rejectdata, error, Rejecterror, isLoadingReject, isLoading])
+    console.log(TrainerRequest?.data?.per_page,TrainerRequest?.data?.total)
     return (
         <>
             <PageHeading text={`Trainer Request To class off`} />
@@ -168,7 +170,14 @@ const RequestTrainer = () => {
             </div>
             <div id='allStudent' className='my-8 rounded-md bg-white'>
                 <p className='section-title px-2'>All List</p>
-                <Table dataSource={requestList} columns={columns} />
+                <Table dataSource={requestList} columns={columns}
+                    pagination={{
+                        pageSize: TrainerRequest?.data?.per_page || 9,
+                        showSizeChanger: false,
+                        total: TrainerRequest?.data?.total || 0,
+                        onChange:(page)=>setPage(page)
+                    }}
+                />
             </div>
             <Modal
                 centered

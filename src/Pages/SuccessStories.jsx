@@ -7,12 +7,13 @@ import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
+import DynamicVideo from '../Components/DynamicVideo/DynamicVideo'
 
 const SuccessStories = () => {
     const [id, setId] = useState('')
     const [current, setCurrent] = useState(1);
-    const [requestingStory, Story, StoryError, refetch] = useGetRequest('Story', `/success/story?type=story&page=${current}`)
-    const { mutate, isLoading, data, error } = useDeleteRequest('success', `/success/story/${id}`);
+    const [requestingStory, Story, StoryError, refetch] = useGetRequest('successStory', `/success/story?type=story&page=${current}`)
+    const { mutate, isLoading, data, error } = useDeleteRequest('successStory', `/success/story/${id}`);
     const onChange = (page) => {
         setCurrent(page);
     };
@@ -53,10 +54,11 @@ const SuccessStories = () => {
             <div className='grid grid-cols-2 gap-8 mt-4'>
                 {
                     Story?.data?.map((item, i) => {
-                        return <div key={i} className='w-full h-[400px] bg-white relative rounded-md overflow-hidden'>
-                            <video autoPlay controls className='w-full h-full object-cover'>
-                                <source src={`${imageUrl}/${item?.file}`} />
-                            </video>
+                        return <div key={item?.id} className='w-full h-[400px] bg-white relative rounded-md overflow-hidden'>
+                            <DynamicVideo key={item?.id} file={`${imageUrl}/${item?.file}`} />
+                            {/* <video autoPlay controls className='w-full h-full object-cover'>
+                                <source src={`${imageUrl}/${item?.file}?t=${new Date().getTime()}`} />
+                            </video> */}
                             <button onClick={() => { setId(item?.id); handleDelete() }} className='absolute top-2 right-2  text-xl bg-red-500 text-white p-1 rounded-full'>
                                 <MdDelete />
                             </button>

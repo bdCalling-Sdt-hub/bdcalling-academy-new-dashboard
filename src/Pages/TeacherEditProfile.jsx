@@ -7,6 +7,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
 import { useUserData } from '../Providers/UserProviders/UserProvider'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
+import toast from 'react-hot-toast'
 
 const TeacherEditProfile = () => {
     const { useData, loading, isError } = useUserData();
@@ -21,6 +22,12 @@ const TeacherEditProfile = () => {
         formState: { errors },
     } = useForm()
     const onSubmit = (value) => {
+        if ((value.password && value.password_confirmation) && (value.password !== value.password_confirmation)) {
+            return toast.error("confirm password doesn't match")
+        }
+        if ((value.password && !value.password_confirmation) || (!value.password && value.password_confirmation)) {
+            return toast.error("confirm password doesn't match")
+        }
         const data = {
             name: value?.name || Profile?.user?.name,
             phone_number: value?.phone || Profile?.user?.teacher?.phone_number,
@@ -28,6 +35,8 @@ const TeacherEditProfile = () => {
             designation: value?.designation || Profile?.user?.teacher?.designation,
             expert: value?.expert || Profile?.user?.teacher?.expertise,
         }
+        if (value?.password) data.password = value?.password
+        if (value?.password_confirmation) data.password_confirmation = value?.password_confirmation
         const formData = new FormData()
         formData.append('_method', 'PUT')
         Object.keys(data).map(key => {
@@ -87,9 +96,9 @@ const TeacherEditProfile = () => {
                             <input defaultValue={Profile?.user?.teacher?.phone_number} className='border w-full outline-none p-2 rounded-md' placeholder='phone Number' {...register("phone", { required: false })} />
                             {errors.phone && <span className='text-red-500'>This field is required</span>}
                         </div>
-                        <div className='w-full h-full'>
+                        <div className='w-full h-full pointer-events-none '>
                             <p className='text-base font-medium'>Email:</p>
-                            <input defaultValue={Profile?.user?.email} className='border w-full outline-none p-2 rounded-md' placeholder='email' type='email'{...register("email", { required: false })} />
+                            <input defaultValue={Profile?.user?.email} className='border w-full outline-none p-2 rounded-md cursor-not-allowed' placeholder='email' type='email'{...register("email", { required: false })} />
                             {errors.email && <span className='text-red-500'>This field is required</span>}
                         </div>
                         <div className='w-full h-full'>
@@ -127,7 +136,9 @@ const TeacherEditProfile = () => {
                             {errors.category && <span className='text-red-500'>This field is required</span>}
                         </div> */}
                         <div className='text-center col-span-2'>
-                            <button className='text-white bg-blue-500 rounded-md px-6 py-2 '>
+                            <button onClick={() => {
+                                toast.dismiss()
+                            }} className='text-white bg-blue-500 rounded-md px-6 py-2 '>
                                 Save Changes
                             </button>
                         </div>
