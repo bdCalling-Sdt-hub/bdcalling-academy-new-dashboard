@@ -46,48 +46,10 @@ const data = [
 
 const StudentCourseVideo = () => {
     const [requestingCourse, Course, CourseError,] = useGetRequest('all-course', `/enrolled-courses`)
-    // console.log(Course)
     const data = Course?.map(item => {
-        console.log(item?.id)
-        // {
-        //     id: 95,
-        //     course_id: 17,
-        //     batch_id: 'BCA-ELI-2405',
-        //     batch_name: 'Mufutau Rivera',
-        //     start_date: '2024-07-31',
-        //     end_date: '2024-07-31',
-        //     seat_limit: 89,
-        //     seat_left: 89,
-        //     image: 'adminAsset/image/1203880586.gif',
-        //     discount_price: 941,
-        //     created_at: '2024-07-15T10:16:49.000000Z',
-        //     updated_at: '2024-07-15T10:16:49.000000Z',
-        //     course: {
-        //       id: 17,
-        //       course_category_id: 3,
-        //       course_name: 'Elizabeth Hughes',
-        //       language: 'Consectetur culpa qu',
-        //       course_details: 'Est voluptate excep',
-        //       course_time_length: 'Accusantium sit dol',
-        //       price: '247',
-        //       max_student_length: null,
-        //       skill_Level: 'Asperiores nesciunt',
-        //       address: 'Beatae aperiam ex al',
-        //       thumbnail: 'adminAsset/image/358687653.png',
-        //       career_opportunities: [ 'Quia quis quae labor' ],
-        //       curriculum: [ 'Explicabo Aute est ' ],
-        //       tools: [ 'Laborum Consequatur' ],
-        //       job_position: [ 'Accusantium commodo ' ],
-        //       popular_section: 0,
-        //       status: 'pending',
-        //       course_type: 'offline',
-        //       created_at: '2024-07-10T06:13:27.000000Z',
-        //       updated_at: '2024-07-10T06:13:27.000000Z'
-        //     }
-        //   }
+       
         return {
             name: item?.batch?.course?.course_name,
-            // percentage: '30% complete',
             image: `${imageUrl}/${item?.batch?.image}`,
             rating: 5,
             id: item?.id
