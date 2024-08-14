@@ -178,7 +178,6 @@ const Overview = () => {
             course_name: item?.course_name
         }
     })
-    console.log(TableData)
 
 
     const overviewData = [
@@ -186,25 +185,25 @@ const Overview = () => {
             title: 'Total Earning',
             icon: 'https://i.ibb.co/dpsm0bv/Black.png',
             text: `10% Higher Then Last Years`,
-            total: `${Number(DashboardOverview?.data?.total_income / 1000).toFixed(1)}K`,
+            total: `${DashboardOverview?.data?.total_income ? Number(DashboardOverview?.data?.total_income / 1000).toFixed(1) : "0.0"}K`,
         },
         {
             title: 'Daily Earning',
             icon: 'https://i.ibb.co/g3DH8Hw/image-2-traced.png',
             text: `10% Higher Then Last Years`,
-            total: `${Number(DashboardOverview?.data?.daily_income / 1000).toFixed(1)}K`,
+            total: `${DashboardOverview?.data?.daily_income ?  Number(DashboardOverview?.data?.daily_income / 1000).toFixed(1) : "0.0"}K`,
         },
         {
             title: 'Weekly Earning',
             icon: 'https://i.ibb.co/VYh2PT6/image-3-traced.png',
             text: `10% Higher Then Last Years`,
-            total: `${Number(DashboardOverview?.data?.weekly_income / 1000).toFixed(1)}K`,
+            total: `${DashboardOverview?.data?.weekly_income ? (Number(DashboardOverview.data.weekly_income) / 1000).toFixed(1) : '0.0'}K`,
         },
         {
             title: 'Monthly Earning',
             icon: 'https://i.ibb.co/yQbns7G/image-4-traced.png',
             text: `10% Higher Then Last Years`,
-            total: `${Number(DashboardOverview?.data?.monthly_income / 1000).toFixed(1)}K`,
+            total: `${ DashboardOverview?.data?.monthly_income ? Number(DashboardOverview?.data?.monthly_income / 1000).toFixed(1)  :"0.0"}K`,
         },
         {
             title: 'Total Students',
