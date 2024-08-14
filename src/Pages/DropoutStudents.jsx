@@ -29,7 +29,7 @@ const DropoutStudents = () => {
     const [exchangeData, setExchangeData] = useState({})
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
     const [requestingStudents, Students, StudentsError, refetch] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}`:''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}`:''}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.category ? `&category_name=${filterBy?.category}`:''}${filterBy?.BatchID ? `&batch_id=${filterBy?.BatchID}`:''}`)
-    console.log(`/show-dropout-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}`:''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}`:''}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.category ? `&category_name=${filterBy?.category}`:''}${filterBy?.BatchID ? `&batch_id=${filterBy?.BatchID}`:''}`)
+    // console.log(`/show-dropout-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}`:''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}`:''}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.category ? `&category_name=${filterBy?.category}`:''}${filterBy?.BatchID ? `&batch_id=${filterBy?.BatchID}`:''}`)
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches?no_pagination=1`)
     const { mutate, isLoading, addData, error } = usePostRequest('refund', '/refund');

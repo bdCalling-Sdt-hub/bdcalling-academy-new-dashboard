@@ -66,7 +66,6 @@ const StudentProfile = () => {
             email: useData?.email,
             phone_number: useData?.student?.phone_number,
             gender: useData?.student?.gender,
-            religion: useData?.student?.religion,
             dob: useData?.student?.dob,
             blood_group: useData?.student?.blood_group,
             religion: useData?.student?.religion,

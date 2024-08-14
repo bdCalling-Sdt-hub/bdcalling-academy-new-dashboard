@@ -13,7 +13,7 @@ const StudentsAttendance = () => {
     const [batchId, setBatchId] = useState()
     const [date, setDate] = useState()
     const [phone_number, setPhone_number] = useState('')
-    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances?page=${Page}${batchId && `&batch_id=${batchId}`}${date ? `&date=${date}`:""}${phone_number ? `&phone_number=${phone_number}`:''}`)
+    const [requestingStudent, Students, StudentError,] = useGetRequest('Teacher_Batch', `/attendances?page=${Page}${batchId && `&batch_id=${batchId}`}${date ? `&date=${date}` : ""}${phone_number ? `&phone_number=${phone_number}` : ''}`)
     const data = Students?.data?.map((item, i) => {
         return {
             "key": i + 1,
@@ -23,9 +23,8 @@ const StudentsAttendance = () => {
             "phone": item?.student?.phone_number,
             "email": item?.student?.user?.email,
             "batch": item?.batch?.batch_name,
-            "status": "Absent",
             "date": item?.date,
-            "img": `${imageUrl}/${item?.student?.image}` || "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
+            "img": item?.student?.image ? `${imageUrl}/${item?.student?.image}` : "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
             "status": item?.is_present
         }
     })

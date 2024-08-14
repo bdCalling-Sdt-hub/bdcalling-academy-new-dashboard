@@ -68,7 +68,6 @@ const AllSalesStudent = () => {
             course: item?.category?.category_name,
             _id: item?.id,
             gender: item?.gender,
-            religion: item?.religion,
             registration_date: item?.registration_date,
             category_id: item?.category_id,
             blood_group: item?.blood_group,
