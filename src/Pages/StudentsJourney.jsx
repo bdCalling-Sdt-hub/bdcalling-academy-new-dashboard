@@ -7,6 +7,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
+import DynamicVideo from '../Components/DynamicVideo/DynamicVideo'
 
 const StudentsJourney = () => {
     const [id, setId] = useState('')
@@ -53,10 +54,8 @@ const StudentsJourney = () => {
             <div className='grid grid-cols-2 gap-8 mt-4'>
                 {
                     Story?.data?.map((item, i) => {
-                        return <div key={i} className='w-full h-[400px] bg-white relative rounded-md overflow-hidden'>
-                            <video autoPlay controls className='w-full h-full object-cover'>
-                                <source src={`${imageUrl}/${item?.file}`} />
-                            </video>
+                        return <div key={item?.id} className='w-full h-[400px] bg-white relative rounded-md overflow-hidden'>
+                            <DynamicVideo key={item?.id} file={`${imageUrl}/${item?.file}`} />
                             <button onClick={() => { setId(item?.id); handleDelete() }} className='absolute top-2 right-2  text-xl bg-red-500 text-white p-1 rounded-full'>
                                 <MdDelete />
                             </button>

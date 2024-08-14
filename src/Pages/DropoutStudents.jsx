@@ -10,6 +10,7 @@ import { IoMdInformationCircleOutline } from 'react-icons/io'
 import useGetRequest from '../Hooks/useGetRequest'
 import SelectInput from '../Components/Input/SelectInput'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import usePostRequest from '../Hooks/usePostRequest'
 
 const DropoutStudents = () => {
     const [page, setPage] = useState(1)
@@ -24,7 +25,8 @@ const DropoutStudents = () => {
     const [dob, setDob] = useState()
     const [allStudent, setAllStudent] = useState([])
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingStudents, Students, StudentsError,] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
+    const [requestingStudents, Students, StudentsError, refetch] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
+    const { mutate, isLoading, addData, error } = usePostRequest('refund', '/refund');
     const CategoryOptions = Category?.data?.data?.map(item => {
         return { name: item?.category_name, value: item?.category_name }
     })
@@ -42,10 +44,13 @@ const DropoutStudents = () => {
             "Batch no": item?.batch_id,
             "phone": item?.phone_number,
             "email": item?.email,
-            "course": item?.course?.course_name,
+            "course": item?.course_name,
             "Course type": item?.course?.course_type,
             "Payment status": item?.order?.status,
-            "img": item?.image ? `${imageUrl}/${item?.image}` : "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png"
+            "img": item?.image ? `${imageUrl}/${item?.image}` : "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
+            price: item?.order?.[0]?.price,
+            batch_id: item?.batch_id,
+            batchID: item?.order?.[0]?.batch_id
         }
     })
     const columns = [
@@ -157,10 +162,21 @@ const DropoutStudents = () => {
     const [refundAmount, setRefundAmount] = useState('');
 
     const handleStudentRefund = () => {
-        console.log('Refund Amount:', refundAmount);
-
-        setopenRefundModal(false)
+        console.log(filterData)
+        const data = {
+            refund_amount: Number(filterData?.price) - refundAmount,
+            student_id: filterData?._id,
+            batch_id: filterData?.batchID
+        }
+        const formData = new FormData()
+        Object.keys(data)?.map(key => {
+            formData.append(key, data[key])
+        })
+        mutate(formData)
     };
+    // useEffect(() => {
+    //     if (!error && addData) refetch()
+    // }, [error, addData])
     return (
         <>
             <div className='grid-2'>
@@ -214,37 +230,37 @@ const DropoutStudents = () => {
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Name:</p>
-                            <p className='text-end text-sm'>UX/UI Design</p>
+                            <p className='text-end text-sm'>{filterData?.course}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
-                            <p className=' text-sm'>Course ID:</p>
-                            <p className='text-end text-sm'>202402</p>
+                            <p className=' text-sm'>Batch ID:</p>
+                            <p className='text-end text-sm'>{filterData?.batch_id}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Student ID:</p>
-                            <p className='text-end text-sm'>BDA202415</p>
+                            <p className='text-end text-sm'>{filterData?._id}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Student Account:</p>
-                            <p className='text-end text-sm'>15000</p>
+                            <p className='text-end text-sm'>{filterData?.price}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm text-red-600'>Amount deducted:</p>
                             <p className='text-end text-sm  border rounded w-fit ml-auto text-gray-400 select-none'>
-                                <input
+                                <input type='number'
                                     placeholder="Refund Amount"
                                     value={refundAmount}
                                     onChange={(e) => {
                                         setRefundAmount(e.target.value);
                                     }}
-                                    classNames=""
+                                    className="p-2 outline-none border "
                                 />
                             </p>
                         </div>
                         <hr className='w-full my-2 block' />
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm font-semibold'>Total Payment :</p>
-                            <p className='text-end text-sm font-semibold'>12000Tk</p>
+                            <p className='text-end text-sm font-semibold'>{Number(filterData?.price) - refundAmount}Tk</p>
                         </div>
                         <button onClick={() => handleStudentRefund()} className='btn-primary max-w-32 mx-auto mt-7'>
                             Confirm

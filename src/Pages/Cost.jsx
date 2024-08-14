@@ -12,22 +12,24 @@ import { CiCircleMinus } from 'react-icons/ci'
 import usePostRequest from '../Hooks/usePostRequest'
 import useGetRequest from '../Hooks/useGetRequest'
 import usePatchRequest from '../Hooks/usePatchRequest'
+import { RxCross2 } from 'react-icons/rx'
 const Cost = () => {
     const [page, setPage] = useState(1)
     const [form] = Form.useForm()
     const [filterData, setFilterData] = useState({})
     const [FormFor, setFormFor] = useState('add')
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [open, setOpen] = useState(false)
     const [openPrintModal, setOpenPrintModal] = useState(false)
     const [exportType, setExportType] = useState('pdf')
-    const [date, setDate] = useState(new Date)
-    const { mutate, isLoading, data, error } = usePostRequest('includeCost', '/include/cost');
+    const [date, setDate] = useState(null)
+    const { mutate, isLoading, data, error } = usePostRequest('includeCost', `/include/cost`);
     const { mutate: updateCost, isLoading: updateLoading, data: updateData, error: updateError } = usePatchRequest('includeCost', `/include/cost/${filterData?.id}`);
     // console.log(updateError)
-    const [requestingCost, Cost, CostError, refetch] = useGetRequest('Cost', `/include/cost?page=${page}`);
-    console.log(Cost)
+    const [requestingCost, Cost, CostError, refetch] = useGetRequest('Cost', `/include/cost?page=${page}${date ? `&date=${date}` : ''}`);
+    const onSubmit = data => {
+        setDate(data?.date)//new Date(data?.date).toISOString()
+    };
     const CostData = Cost?.data?.map((item, i) => {
         return {
             key: i + 1,
@@ -132,10 +134,16 @@ const Cost = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className='start-center gap-4 flex-wrap max-w-fit bg-[#EBEBEB] p-4 px-6 rounded-[40px]'>
 
                     <div className='max-w-44 min-w-44'>
-                        <Input type={`date`} rules={{ ...register("batch", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Batch ID`} />
+                        <Input type={`date`} rules={{ ...register("date", { required: false }) }} classNames={`rounded-3xl`} placeholder={`Batch ID`} />
                     </div>
                     <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                         <IoSearch />
+                    </button>
+                    <button type='button' onClick={() => {
+                        reset()
+                        setDate(null)
+                    }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
+                        <RxCross2 />
                     </button>
                 </form>
                 <div className="flex justify-end items-center w-full gap-3">

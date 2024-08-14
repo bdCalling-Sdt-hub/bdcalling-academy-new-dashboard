@@ -63,7 +63,7 @@ const TeacherAllStudent = () => {
             name: item?.user?.name,
             email: item?.user?.email,
             phone_number: item?.phone_number,
-            img: `${imageUrl}/${item?.image}` || ProfileImage,
+            img: item?.image ? `${imageUrl}/${item?.image}` : ProfileImage,
             course: item?.category?.category_name,
             _id: item?.id,
             gender: item?.gender,
@@ -234,9 +234,9 @@ const TeacherAllStudent = () => {
         return { name: item?.category_name, value: item?.id }
     })
     useEffect(() => {
-        if (isLoading, updateLoading, DeleteLoading,messageLoading) return
-        if (data, updateData, DeleteData,MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
-    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData,MessageData,messageLoading])
+        if (isLoading, updateLoading, DeleteLoading, messageLoading) return
+        if (data, updateData, DeleteData, MessageData) setOpenPaymentModal(false); setOpenAdmitModal(false); setOpenStudentAddModal(false); setOpenFollowUpModal(false); setOpenStudentAddModal(false); refetch(); setFilterData({})
+    }, [isLoading, data, updateData, updateLoading, DeleteLoading, DeleteData, MessageData, messageLoading])
     //delete users
     const handleDelete = () => {
         toast((t) => (
