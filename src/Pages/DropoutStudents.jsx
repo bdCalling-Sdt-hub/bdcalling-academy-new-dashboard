@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
-import { DatePicker, Modal, Table } from 'antd'
+import { DatePicker, Form, Modal, Select, Table } from 'antd'
 import { useForm } from 'react-hook-form'
 import Input from '../Components/Input/Input'
 import { IoSearch } from 'react-icons/io5'
@@ -13,6 +13,7 @@ import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import usePostRequest from '../Hooks/usePostRequest'
 
 const DropoutStudents = () => {
+    const [form] = Form.useForm()
     const [page, setPage] = useState(1)
     const [openExchangeUpModal, setopenExchangeUpModal] = useState(false)
     const [openRefundModal, setopenRefundModal] = useState(false)
@@ -24,13 +25,22 @@ const DropoutStudents = () => {
     const [filterData, setFilterData] = useState({})
     const [dob, setDob] = useState()
     const [allStudent, setAllStudent] = useState([])
+    const [exchangeData, setExchangeData] = useState({})
     const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
     const [requestingStudents, Students, StudentsError, refetch] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
+    const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
     const { mutate, isLoading, addData, error } = usePostRequest('refund', '/refund');
     const CategoryOptions = Category?.data?.data?.map(item => {
-        return { name: item?.category_name, value: item?.category_name }
+        return { label: item?.category_name, value: item?.category_name }
     })
     const onSubmit = data => { };
+    const BatchOptions = Batch?.data?.data?.map(item => {
+        return { label: item?.batch_name, value: item?.id }
+    }) || []
+    const CategoryOptions2 = Category?.data?.data?.map(item => {
+        return { label: item?.category_name, value: item?.id }
+    })
     const onSubmitFilter = data => { setFilterBy({ ...data, ...dob }) };
 
     const onChange = (date, dateString) => {
@@ -103,21 +113,21 @@ const DropoutStudents = () => {
             </div>,
             key: 'Payment status'
         },
-        // {
-        //     title: 'Course Exchange',
-        //     dataIndex: '_id',
-        //     render: (_, record) => <div style={{
-        //         '--primary-bg': '#2BA24C'
-        //     }} className='start-center gap-2' >
-        //         <button onClick={() => {
-        //             handelFilterData(record._id)
-        //             setopenExchangeUpModal(true)
-        //         }} className='btn-primary max-w-32'>
-        //             Exchange
-        //         </button>
-        //     </div >,
-        //     key: '_id'
-        // },
+        {
+            title: 'Course Exchange',
+            dataIndex: '_id',
+            render: (_, record) => <div style={{
+                '--primary-bg': '#2BA24C'
+            }} className='start-center gap-2' >
+                <button onClick={() => {
+                    handelFilterData(record._id)
+                    setopenExchangeUpModal(true)
+                }} className='btn-primary max-w-32'>
+                    Exchange
+                </button>
+            </div >,
+            key: '_id'
+        },
         // {
         //     title: 'Actions',
         //     dataIndex: '_id',
@@ -174,9 +184,27 @@ const DropoutStudents = () => {
         })
         mutate(formData)
     };
-    // useEffect(() => {
-    //     if (!error && addData) refetch()
-    // }, [error, addData])
+    useEffect(() => {
+        if ((!error && addData) || (AdmitData && !errorAdmit)) refetch(); setopenExchangeUpModal(false); form.resetFields()
+    }, [error, addData, AdmitData, errorAdmit])
+    const onExchange = values => {
+        const paymentData = {
+            student_id: filterData?._id,
+            batch_id: values?.batch_id,
+            name: filterData?.name,
+            email: filterData?.email,
+            phone_number: filterData?.phone,
+            category_id: values?.category_id
+        }
+        const formData = new FormData()
+        Object.keys(paymentData).map(key => {
+            formData.append(key, paymentData[key])
+        })
+        mutateAdmit(formData)
+    }
+    useEffect(()=>{
+        form.setFieldsValue({})
+    },[])
     return (
         <>
             <div className='grid-2'>
@@ -195,9 +223,6 @@ const DropoutStudents = () => {
                 <div className='max-w-44 min-w-44'>
                     <Input type={`number`} rules={{ ...registerFilter("number", { required: false }) }} classNames={`rounded-3xl`} placeholder={`+8801566026301`} />
                 </div>
-                <div>
-                    <SelectInput classNames={`border`} status={errors} options={CategoryOptions} rules={{ ...registerFilter("category", { required: false }) }} />
-                </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
                 </button>
@@ -208,6 +233,12 @@ const DropoutStudents = () => {
 
                         columns={columns}
                         dataSource={data}
+                        pagination={{
+                            pageSize: Students?.per_page || 12,
+                            total: Students?.total || 0,
+                            onChange: (page) => setPage(page),
+                            showSizeChanger: false
+                        }}
                     />
                 </div>
             </div>
@@ -226,7 +257,7 @@ const DropoutStudents = () => {
                     <>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Refund Date:</p>
-                            <p className='text-end text-sm'>04/05/2024</p>
+                            <p className='text-end text-sm'>{new Date().toISOString().split('T')[0]}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm'>Course Name:</p>
@@ -241,8 +272,8 @@ const DropoutStudents = () => {
                             <p className='text-end text-sm'>{filterData?._id}</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
-                            <p className=' text-sm'>Student Account:</p>
-                            <p className='text-end text-sm'>{filterData?.price}</p>
+                            <p className=' text-sm'>Student Amount:</p>
+                            <p className='text-end text-sm'>{filterData?.price}TK</p>
                         </div>
                         <div className='grid-2 gap-2 my-4'>
                             <p className=' text-sm text-red-600'>Amount deducted:</p>
@@ -280,83 +311,86 @@ const DropoutStudents = () => {
                 <div className=''>
                     <h3 className='text-lg text-[var(--primary-bg)] -mt-5'>Dropped  Course</h3>
                     <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Course ID:</p>
-                        <p className='text-end text-sm'>202402</p>
+                        <p className=' text-sm'>Student Name:</p>
+                        <p className='text-end text-sm'>{filterData?.name}</p>
                     </div>
                     <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Student ID:</p>
-                        <p className='text-end text-sm'>BDA202415</p>
-                    </div>
-                    <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Payable Amount Date:</p>
-                        <p className='text-end text-sm'>04/05/2024</p>
-                    </div>
-                    <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Batch no:</p>
-                        <p className='text-end text-sm'>24VFGTD</p>
-                    </div>
-                    <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Category:</p>
-                        <p className='text-end text-sm'>Graphic & Vacuolations</p>
-                    </div>
-                    <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Course Type :</p>
-                        <p className='text-end text-sm'>Online</p>
+                        <p className=' text-sm'>Student email:</p>
+                        <p className='text-end text-sm'>{filterData?.email}</p>
                     </div>
                     <div className='grid-2 gap-2 my-4'>
                         <p className=' text-sm'>Course Name:</p>
-                        <p className='text-end text-sm'>UX/UI Design</p>
+                        <p className='text-end text-sm'>{filterData?.course}</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Batch ID:</p>
+                        <p className='text-end text-sm'>{filterData?.batch_id}</p>
+                    </div>
+                    <div className='grid-2 gap-2 my-4'>
+                        <p className=' text-sm'>Student ID:</p>
+                        <p className='text-end text-sm'>{filterData?._id}</p>
                     </div>
                     <div className='grid-2 gap-2 my-4'>
                         <p className=' text-sm'>Course Fee:</p>
-                        <p className='text-end text-sm'>15000</p>
-                    </div>
-                    <div className='grid-2 gap-2 my-4'>
-                        <p className=' text-sm'>Total amount:</p>
-                        <p className='text-end text-sm'>15000</p>
+                        <p className='text-end text-sm'>{filterData?.price}Tk</p>
                     </div>
                     <h3 className='text-lg text-[var(--primary-bg)] mt-5'>Exchange  Course</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} className=''>
+                    <Form
+                        layout='vertical'
+                        onFinish={onExchange}
+                        form={form}
+                    >
                         <div className='md:grid md:grid-cols-2 lg:grid-cols-3 justify-start items-start md:items-center gap-3 flex flex-col'>
-                            <div className='w-full'>
-                                <p className='text-[#333333] my-1'>Course Name</p>
-                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`3Danimation`}  {...register("courseName")} id="">
-                                    <option value="3Danimation">3Danimation</option>
-                                    <option value="3Danimation">3Danimation</option>
-                                    <option value="3Danimation">3Danimation</option>
-                                </select>
-                            </div>
-                            <div className='w-full'>
-                                <p className='text-[#333333] my-1'>Course Fee</p>
-                                <input placeholder='Tk20000' className='w-full p-2 border rounded-md outline-none ' type="text" {...register("courseFee")} id="" />
-                            </div>
-                            <div className='w-full'>
-                                <p className='text-[#333333] my-1'>Catagory</p>
-                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`Multimedia`} {...register("catagory")} id="">
-                                    <option value="Multimedia">Multimedia</option>
-                                    <option value="Multimedia">Multimedia</option>
-                                    <option value="Multimedia">Multimedia</option>
-                                </select>
-                            </div>
-                            <div className='w-full'>
-                                <p className='text-[#333333] my-1'>Course Type</p>
-                                <select className='w-full p-2 border rounded-md outline-none cursor-pointer' defaultValue={`online`} {...register("courseType")} id="">
-                                    <option value="online">online</option>
-                                    <option value="off line">off line</option>
-                                </select>
-                            </div>
-                            <div className='w-full'>
-                                <p className='text-[#333333] my-1'>Batch no</p>
-                                <input placeholder='24ADFFG' className='w-full p-2 border rounded-md outline-none ' type="text" {...register("batch")} id="" />
-                            </div>
+                            <Form.Item
+                                name={`category_id`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please select a batch'
+                                    }
+                                ]}
+                            >
+                                <Select style={{
+                                    height: '42px'
+                                }} placeholder="please select a category"
+                                    options={CategoryOptions2}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name={`batch_id`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please select a batch'
+                                    }
+                                ]}
+                            >
+                                <Select style={{
+                                    height: '42px'
+                                }}
+                                    onChange={(value) => {
+                                        const selectedBatch = Batch?.data?.data?.filter((item, i) => item.id == value)
+                                        setExchangeData({ course_id: selectedBatch?.[0]?.course_id, course_name: selectedBatch?.[0]?.course?.course_name, price: selectedBatch?.[0]?.course?.price })
+                                    }}
+                                    placeholder="please select a batch"
+                                    options={BatchOptions}
+                                />
+                            </Form.Item>
+                            <Form.Item>
+                                <Input style={{
+                                    height: '42px'
+                                }} classNames={`border  pointer-events-none`} placeholder={exchangeData?.course_name} />
+                            </Form.Item>
+                            <Form.Item>
+                                <Input style={{
+                                    height: '42px'
+                                }} classNames={`border  pointer-events-none`} placeholder={`${exchangeData?.price}TK`} />
+                            </Form.Item>
                         </div>
-                        <button onClick={() => {
-                            setopenExchangeUpModal(false)
-                            setOpenPaymentModal(true)
-                        }} className='btn-primary max-w-32 mx-auto mt-7'>
+                        <button className='btn-primary max-w-32 mx-auto mt-7'>
                             Confirm
                         </button>
-                    </form>
+                    </Form>
                 </div>
             </Modal>
             {/* payment modal  */}

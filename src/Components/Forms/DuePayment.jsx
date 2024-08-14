@@ -9,6 +9,7 @@ import UpdateInput from '../Input/UpdateInput';
 import usePostRequest from '../../Hooks/usePostRequest';
 import useGetRequest from '../../Hooks/useGetRequest';
 const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
+    console.log(AdmitValues)
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('paymentStatus', `/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order[0]?.batch_id}`)
     const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -20,15 +21,44 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
     // }, [AdmitValues])
     // console.log(AdmitValues?.order)
     // console.log(Payment)
+    // {
+    //     id: 6,
+    //     course_category_id: 2,
+    //     course_name: 'Camille Gordon',
+    //     language: 'Voluptas iste ipsa',
+    //     course_details: 'Obcaecati non sunt a',
+    //     course_time_length: 'Modi veniam eius eo',
+    //     price: '599',
+    //     max_student_length: null,
+    //     skill_Level: 'Iste nihil eligendi',
+    //     address: 'Dolores Nam dolore i',
+    //     thumbnail: 'adminAsset/image/123663338.jpg',
+    //     career_opportunities: [ 'Expedita qui autem c' ],
+    //     curriculum: [ 'Eveniet in assumend' ],
+    //     tools: [ 'Consequuntur sed vel' ],
+    //     job_position: [ 'Enim et consectetur' ],
+    //     popular_section: 0,
+    //     status: 'pending',
+    //     course_type: 'video',
+    //     created_at: '2024-08-12T09:53:51.000000Z',
+    //     updated_at: '2024-08-12T09:53:51.000000Z',
+    //     course_category: {
+    //       id: 2,
+    //       category_name: 'app developer',
+    //       created_at: '2024-08-08T04:04:51.000000Z',
+    //       updated_at: '2024-08-08T04:04:51.000000Z'
+    //     }
+    //   }
+
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
         const paymentData = {
             student_id: AdmitValues?._id,
-            batch_id: AdmitValues?.order[0]?.batch_id,
-            course_fee: Payment?.data[0]?.course_fee,
+            batch_id: AdmitValues?.order[0]?.batch_id || AdmitValues?.id,
+            course_fee: Payment?.data[0]?.course_fee || AdmitValues?.course?.price,
             discount_price: Payment?.data[0]?.discount_price || 0,
             amount: firstInstallment,
-            gateway_name: Payment?.data[0]?.gateway_name,
+            gateway_name: Payment?.data[0]?.gateway_name || '',
             discount_reference: Payment?.data[0]?.discount_reference || "",
             installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }, { second_installment: data?.secondDate }, { third_installment: data?.thirdDate }]),
             payment_type: 'installment',
@@ -72,12 +102,11 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
         }
     }
     useEffect(() => {
-        setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
-        setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due)
-    }, [Payment])
+        setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due || AdmitValues?.course?.price)
+        setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due || AdmitValues?.course?.price)
+    }, [Payment, AdmitValues])
     useEffect(() => {
         if (!error && data) refetch(); reset(); setOpenPaymentModal(false)
-
     }, [data, error])
     return (
         <div>

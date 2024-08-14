@@ -296,7 +296,6 @@ const AdmittedStudents = () => {
     }, [errorAdmit, AdmitData, isAdmitLoading])
     useEffect(() => {
         const result = [];
-        // console.log(BatchStudents)
         BatchStudents?.data.forEach(batch => {
             batch.students.forEach(student => {
                 result.push({
