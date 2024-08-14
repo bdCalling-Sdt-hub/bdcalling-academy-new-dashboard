@@ -260,6 +260,7 @@ const SalesAdmittedStudent = () => {
                 </div>
                 <div className="flex justify-end items-center w-full gap-3">
                     <button onClick={() => {
+                        setFormfor('add')
                         setOpenAdmitStudentModal(true)
                     }} className="bg-blue-500 text-white py-2 px-3 rounded-md max-w-44"> Admit Student</button>
                     <button onClick={() => {
