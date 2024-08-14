@@ -21,7 +21,7 @@ const UpdateEventForm = () => {
     const [image, setImage] = useState(null);
     const [requestingEvents, Events, EventsError, refetch, isError] = useGetRequest('Events', `/event/${id}`)
     const { mutate, isLoading, data, error } = usePatchRequest('event', `/event/${id}`);
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.course_name }
     }) || []

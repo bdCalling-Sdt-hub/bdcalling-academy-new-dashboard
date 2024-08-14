@@ -5,14 +5,14 @@ import useGetRequest from '../Hooks/useGetRequest';
 import usePostRequest from '../Hooks/usePostRequest';
 
 const AddSalesStudentBatch = () => {
-    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses`)
-    const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers`)
+    const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses?no_pagination=1`)
+    const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('batch', '/phoenix-batches');
     const navigate = useNavigate()
     const CourseOptions = Course?.data?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
-    const MentorsOptions = Admins?.teacher?.data?.map((item) => {
+    const MentorsOptions = Admins?.teacher?.map((item) => {
         return { value: item?.id, label: item?.user?.name }
     })
     const [form] = Form.useForm();

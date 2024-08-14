@@ -9,77 +9,37 @@ import { Link } from "react-router-dom";
 import { FaPlay, FaStar } from "react-icons/fa";
 import notenrolled from '../assets/notenrolled.png'
 import useGetRequest from "../Hooks/useGetRequest";
-const overviewData = [
-    {
-        title: 'Completed Classes',
-        icon: 'https://i.ibb.co/dpsm0bv/Black.png',
-        text: `10% Higher`,
-        total: `14`,
-    },
-    {
-        title: 'Completed Courses',
-        icon: 'https://i.ibb.co/g3DH8Hw/image-2-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `15k`,
-    },
-    {
-        title: 'Total Payment',
-        icon: 'https://i.ibb.co/VYh2PT6/image-3-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `25k`,
-    },
-    {
-        title: 'Due Payment',
-        icon: 'https://i.ibb.co/yQbns7G/image-4-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `45k`,
-    },
-]
-const data = [
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/g3Dhzz2/62b1de2e8e142538f54863b6-What-is-course-design.jpg',
-        rating: 5
-    },
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/drWwf2f/elearning-education-internet-lessons-online-600nw-2158034833.webp',
-        rating: 5
-    },
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/g3Dhzz2/62b1de2e8e142538f54863b6-What-is-course-design.jpg',
-        rating: 5
-    },
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/g3Dhzz2/62b1de2e8e142538f54863b6-What-is-course-design.jpg',
-        rating: 5
-    },
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/g3Dhzz2/62b1de2e8e142538f54863b6-What-is-course-design.jpg',
-        rating: 5
-    },
-    {
-        name: 'Certified UI/UX Designer Course',
-        percentage: '30% complete',
-        image: 'https://i.ibb.co/g3Dhzz2/62b1de2e8e142538f54863b6-What-is-course-design.jpg',
-        rating: 5
-    },
-
-]
-
-
 
 const StudentOverview = () => {
-
+    const [requestingOverview, Overview, OverviewError] = useGetRequest('student-counting', `/student-counting`);
+    console.log(Overview)
     const [requestingCourse, Course, CourseError,] = useGetRequest('all-course', `/enrolled-courses`)
+    const overviewData = [
+        {
+            title: 'Completed Classes',
+            icon: 'https://i.ibb.co/dpsm0bv/Black.png',
+            text: `10% Higher`,
+            total: Overview?.complete_class,
+        },
+        {
+            title: 'Completed Courses',
+            icon: 'https://i.ibb.co/g3DH8Hw/image-2-traced.png',
+            text: `10% Higher Then Last Years`,
+            total: Overview?.complete_course,
+        },
+        {
+            title: 'Total Payment',
+            icon: 'https://i.ibb.co/VYh2PT6/image-3-traced.png',
+            text: `10% Higher Then Last Years`,
+            total:Overview?.total_payment,
+        },
+        {
+            title: 'Due Payment',
+            icon: 'https://i.ibb.co/yQbns7G/image-4-traced.png',
+            text: `10% Higher Then Last Years`,
+            total: Overview?.total_due,
+        },
+    ]
     const data = Course?.map(item => {
 
         return {

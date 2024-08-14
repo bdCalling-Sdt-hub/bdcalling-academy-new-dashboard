@@ -11,6 +11,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 import SelectInput from '../Components/Input/SelectInput'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import usePostRequest from '../Hooks/usePostRequest'
+import { RxCross2 } from 'react-icons/rx'
 
 const DropoutStudents = () => {
     const [form] = Form.useForm()
@@ -26,19 +27,21 @@ const DropoutStudents = () => {
     const [dob, setDob] = useState()
     const [allStudent, setAllStudent] = useState([])
     const [exchangeData, setExchangeData] = useState({})
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingStudents, Students, StudentsError, refetch] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
+    const [requestingStudents, Students, StudentsError, refetch] = useGetRequest('Category', `/show-dropout-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}`:''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}`:''}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.category ? `&category_name=${filterBy?.category}`:''}${filterBy?.BatchID ? `&batch_id=${filterBy?.BatchID}`:''}`)
+    // console.log(`/show-dropout-student?page=${page}${filterBy?.name ? `&name=${filterBy?.name}`:''}${filterBy?.dob ? `&registration_date=${filterBy?.dob}`:''}${filterBy?.number ? `&phone_number=${filterBy?.number}`:''}${filterBy?.category ? `&category_name=${filterBy?.category}`:''}${filterBy?.BatchID ? `&batch_id=${filterBy?.BatchID}`:''}`)
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches?no_pagination=1`)
     const { mutate, isLoading, addData, error } = usePostRequest('refund', '/refund');
-    const CategoryOptions = Category?.data?.data?.map(item => {
+    const CategoryOptions = Category?.data?.map(item => {
         return { label: item?.category_name, value: item?.category_name }
     })
+    console.log(`/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
     const onSubmit = data => { };
-    const BatchOptions = Batch?.data?.data?.map(item => {
+    const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.id }
     }) || []
-    const CategoryOptions2 = Category?.data?.data?.map(item => {
+    const CategoryOptions2 = Category?.data?.map(item => {
         return { label: item?.category_name, value: item?.id }
     })
     const onSubmitFilter = data => { setFilterBy({ ...data, ...dob }) };
@@ -202,9 +205,9 @@ const DropoutStudents = () => {
         })
         mutateAdmit(formData)
     }
-    useEffect(()=>{
+    useEffect(() => {
         form.setFieldsValue({})
-    },[])
+    }, [])
     return (
         <>
             <div className='grid-2'>
@@ -225,6 +228,11 @@ const DropoutStudents = () => {
                 </div>
                 <button className='text-2xl p-3 bg-[var(--primary-bg)] text-white rounded-full'>
                     <IoSearch />
+                </button>
+                <button type='button' onClick={() => {
+                    setFilterBy({})
+                }} className='text-2xl p-[10px] bg-[red] text-white rounded-full'>
+                    <RxCross2 />
                 </button>
             </form>
             <div id='allStudent' className='bg-[var(--third-color)] my-8 rounded-md '>
