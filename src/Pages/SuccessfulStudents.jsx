@@ -80,7 +80,8 @@ const SuccessfulStudents = () => {
             render: (_, record) => <div>
                 <div className='flex justify-start items-center rounded-md gap-2 text-white font-semibold px-3 py-1 bg-green-500 w-fit'>
                     <FaCheck />
-                    <p className={``}>{record?.['status']}</p>
+                    {/* <p className={``}>{record?.['status']}</p> */}
+                    <p className={``}>completed</p>
                 </div>
             </div>,
             key: 'Payment status'

@@ -37,9 +37,8 @@ const TeacherStudentsAttendance = () => {
             "phone": item?.student?.phone_number,
             "email": item?.student?.user?.email,
             "batch": item?.batch?.batch_name,
-            "status": "Absent",
             "date": item?.date,
-            "img": `${imageUrl}/${item?.student?.image}` || "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
+            "img": item?.student?.image ? `${imageUrl}/${item?.student?.image}` : "https://i.ibb.co/7zZrVjJ/Ellipse-1-1.png",
             "status": item?.is_present
         }
     })

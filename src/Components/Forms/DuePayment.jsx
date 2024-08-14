@@ -9,26 +9,22 @@ import UpdateInput from '../Input/UpdateInput';
 import usePostRequest from '../../Hooks/usePostRequest';
 import useGetRequest from '../../Hooks/useGetRequest';
 const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
+    console.log(AdmitValues)
     const [requestingPayment, Payment, PaymentError,] = useGetRequest('paymentStatus', `/show-student-payment?student_id=${AdmitValues?._id}&batch_id=${AdmitValues?.order[0]?.batch_id}`)
     const { mutate, isLoading, data, error } = usePostRequest('admitStudent', '/student-payment');
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [totalPayment, setTotalPayment] = useState(Payment?.data[Payment?.data.length - 1]?.due || 0)
-    // useEffect(() => {
-    //     setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
-    // }, [AdmitValues])
-    // console.log(AdmitValues?.order)
-    // console.log(Payment)
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
         const paymentData = {
             student_id: AdmitValues?._id,
-            batch_id: AdmitValues?.order[0]?.batch_id,
-            course_fee: Payment?.data[0]?.course_fee,
+            batch_id: AdmitValues?.order[0]?.batch_id || AdmitValues?.id,
+            course_fee: Payment?.data[0]?.course_fee || AdmitValues?.course?.price,
             discount_price: Payment?.data[0]?.discount_price || 0,
             amount: firstInstallment,
-            gateway_name: Payment?.data[0]?.gateway_name,
+            gateway_name: Payment?.data[0]?.gateway_name || '',
             discount_reference: Payment?.data[0]?.discount_reference || "",
             installment_date: JSON.stringify([{ first_installment: new Date().toISOString().split('T')[0] }, { second_installment: data?.secondDate }, { third_installment: data?.thirdDate }]),
             payment_type: 'installment',
@@ -72,12 +68,11 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
         }
     }
     useEffect(() => {
-        setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
-        setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due)
-    }, [Payment])
+        setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due || AdmitValues?.course?.price)
+        setFirstInstallment(Payment?.data[Payment?.data.length - 1]?.due || AdmitValues?.course?.price)
+    }, [Payment, AdmitValues])
     useEffect(() => {
         if (!error && data) refetch(); reset(); setOpenPaymentModal(false)
-
     }, [data, error])
     return (
         <div>
@@ -203,7 +198,7 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
                                 <div className='col-span-2'>
                                     <p className='text-[var(--primary-bg)] -mt-8'>3rd installment</p>
                                 </div>
-                                <div className={`col-span-4 w-full ${Payment?.data?.length == 2 ? '' : 'pointer-events-none'}`}>
+                                <div className={`col-span-4 w-full ${Payment?.data?.length == 2 ? '' : ''} pointer-events-none`}>
                                     <UpdateInput handler={(e, name) => {
                                         if (Number(Payment?.data[0]?.course_fee) < Number(e.target.value)) {
                                             toast.error("discount price can't be larger then course price")

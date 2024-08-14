@@ -127,15 +127,7 @@ const Overview = () => {
     const [requestingDashboardOverview, DashboardOverview, DashboardOverviewError,] = useGetRequest('Dashboard', `/dashboard`)
     const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/students?page=1`)
     const [requestingStudentRatio, StudentRatio, StudentRatioError] = useGetRequest('Ratio', `/student-ratio?year=${new Date().getFullYear()}`)
-
     const [requestingBatchStudents, BatchStudents, BatchStudentsError] = useGetRequest('batchStudents', `/show-admit-student`)
-
-
-
-
-
-
-
     useEffect(() => {
         const result = [];
         BatchStudents?.data.forEach(batch => {
@@ -186,7 +178,6 @@ const Overview = () => {
             course_name: item?.course_name
         }
     })
-
 
 
     const overviewData = [
@@ -268,16 +259,16 @@ const Overview = () => {
             dataIndex: 'batch_id',
             key: 'batch_id'
         },
-        {
-            title: 'Course Name',
-            dataIndex: 'course_name',
-            key: 'course_name'
-        },
-        {
-            title: 'Course Type',
-            dataIndex: 'course_type',
-            key: 'course_type'
-        },
+        // {
+        //     title: 'Course Name',
+        //     dataIndex: 'course_name',
+        //     key: 'course_name'
+        // },
+        // {
+        //     title: 'Course Type',
+        //     dataIndex: 'course_type',
+        //     key: 'course_type'
+        // },
        
         
     ];

@@ -14,7 +14,7 @@ import usePatchRequest from "../Hooks/usePatchRequest"
 import useDeleteRequest from "../Hooks/useDeleteRequest"
 import toast from "react-hot-toast"
 const CreateMentors = () => {
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const navigate = useNavigate()
     const [OpenAddModal, setOpenAddModal] = useState(false)
@@ -25,7 +25,7 @@ const CreateMentors = () => {
     const { mutate: updateAdmin, isLoading: updateLoading, data: updateData, } = usePatchRequest('mentors', `/teachers/${filterdData?._id}`);
     const { mutate: DeleteAdmin, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('mentors', `/teachers/${filterdData?._id}`);
     const [requestingUser, Admins, adminError, refetch, isError] = useGetRequest('mentors', `/teachers?page=${page}`)
-    const CategoryOptions = Category?.data?.data?.map(item => {
+    const CategoryOptions = Category?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
     })
     const AdminData = Admins?.teacher?.data?.map((item) => {

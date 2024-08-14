@@ -64,7 +64,7 @@ const AdmittedStudents = () => {
             order: item?.order,
             messages: item?.messages,
             course_name: item?.course_name,
-            id:item?.id
+            id: item?.id
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {
@@ -296,7 +296,6 @@ const AdmittedStudents = () => {
     }, [errorAdmit, AdmitData, isAdmitLoading])
     useEffect(() => {
         const result = [];
-        // console.log(BatchStudents)
         BatchStudents?.data.forEach(batch => {
             batch.students.forEach(student => {
                 result.push({

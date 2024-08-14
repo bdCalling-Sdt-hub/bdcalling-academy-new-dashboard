@@ -33,9 +33,8 @@ const AllTrainer = () => {
             "date": item?.payment_date,
             "totalPayment": item?.amount
         }
-    })
+    });
     const AdminData = Teacher?.teacher?.data?.map(item => {
-        console.log(item)
         return {
             _id: item?.id,
             profile: item?.image,
@@ -165,9 +164,9 @@ const AllTrainer = () => {
                                 <p className='text-base font-normal text-[#333333] my-[2px]'>{filterdData?.email}</p>
                             </div>
                         </div>
-                        <button type='button' className=' text-center text-[#2BA24C] text-2xl font-semibold rounded-md hover:scale-105 active:scale-95 transition-all'>
+                        {/* <button type='button' className=' text-center text-[#2BA24C] text-2xl font-semibold rounded-md hover:scale-105 active:scale-95 transition-all'>
                             <AiOutlinePrinter />
-                        </button>
+                        </button> */}
                     </div>
                     <Table dataSource={data} pagination={{
                         showSizeChanger: false,

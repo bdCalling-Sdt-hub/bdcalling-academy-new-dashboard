@@ -5,14 +5,14 @@ import usePostRequest from '../../Hooks/usePostRequest';
 import { useLocation } from 'react-router-dom';
 const ClassRoutineForm = ({ refetch }) => {
     const location = useLocation()
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `${location?.pathname === '/create-routine' ? '/phoenix-batches' : '/batches'}`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `${location?.pathname === '/create-routine' ? '/phoenix-batches?no_pagination=1' : '/batches?no_pagination=1'}`)
     const [batchID, setBatchID] = useState(undefined)
     const [requestingSingleBatch, SingleBatch, SingleBatchError,] = useGetRequest('singleBatch', `/batches/${batchID}`)
     const [requestingModule, Module, ModuleError,] = useGetRequest('module', `/show-module?course_id=${SingleBatch?.data?.course_id}`)
     const { mutate, isLoading, data, error } = usePostRequest('routines', '/routines');
     const [time, setTime] = useState([])
     const [date, setDate] = useState(undefined)
-    const BatchOptions = Batch?.data?.data?.map(item => {
+    const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.id }
     }) || []
     const ModulesOptions = Module?.data?.data?.[0]?.course_module?.map((item) => {

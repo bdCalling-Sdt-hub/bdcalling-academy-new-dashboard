@@ -18,7 +18,7 @@ const SalseStudentBatch = () => {
     const [page, setPage] = useState(new URLSearchParams(window.location.search).get('page') || 1);
     const [requestingBatch, Batch, BatchError,] = useGetRequest('batch', `/phoenix-batches?page=${page}${filterBy?.batch && `&batch_name=${filterBy?.batch}`}`)
 
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
     const onSubmitFilter = data => { setFilterBy({ ...data, }) };
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
