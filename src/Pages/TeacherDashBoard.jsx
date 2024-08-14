@@ -11,44 +11,6 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import { CiCircleInfo } from "react-icons/ci";
 import useGetRequest from "../Hooks/useGetRequest";
 import { imageUrl } from "../AxiosConfig/useAxiosConfig";
-const overviewData = [
-    {
-        title: 'Total Amount',
-        icon: 'https://i.ibb.co/dpsm0bv/Black.png',
-        text: `10% Higher Then Last Years`,
-        total: `100k`,
-    },
-    {
-        title: 'Amount Per Class',
-        icon: 'https://i.ibb.co/g3DH8Hw/image-2-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `15k`,
-    },
-    {
-        title: 'Amount Per Batch',
-        icon: 'https://i.ibb.co/VYh2PT6/image-3-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `25k`,
-    },
-    {
-        title: 'All Students',
-        icon: 'https://i.ibb.co/yQbns7G/image-4-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `45`,
-    },
-    {
-        title: 'Withdrawal Amount',
-        icon: 'https://i.ibb.co/mNyQ7Rb/Black-1.png',
-        text: `10% Higher Then Last Years`,
-        total: `500k`,
-    },
-    {
-        title: 'Completed Class Amount',
-        icon: 'https://i.ibb.co/cX87vQq/image-6-traced.png',
-        text: `10% Higher Then Last Years`,
-        total: `1200k`,
-    },
-]
 const chartData = [
     {
         name: 'Sat',
@@ -95,13 +57,11 @@ const chartData = [
 
 ];
 
-
-
 const TeacherDashBoard = () => {
-
-
     const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/routines`)
     const [requestingStudents, Students, StudentsError, isError] = useGetRequest('AuthStudents', `/students`);
+    const [requestingOverview, Overview, OverviewError] = useGetRequest('teacher-dashboard', `/teacher-dashboard`);
+    console.log('Overview', Overview)
     const TableData = Students?.data?.map((item, index) => {
         return {
             key: index + 1,
@@ -121,8 +81,125 @@ const TeacherDashBoard = () => {
             messages: item?.messages
         }
     })
+    // 'Overview'
+    //  Overview:
 
+    //   {
+    //     total_batch: 0,
+    //     total_amount: 0,
+    //     total_class: 0,
+    //     total_student: 0,
+    //     amount_per_class_or_per_month: {
+    //       id: 25,
+    //       user_id: 102,
+    //       course_category_id: 6,
+    //       phone_number: '411',
+    //       designation: 'Provident expedita',
+    //       expert: 'Quidem culpa cillum',
+    //       image: null,
+    //       created_by: null,
+    //       status: 'active',
+    //       payment_type: 'monthly',
+    //       payment_method: 'Nagad',
+    //       payment: '63',
+    //       created_at: '2024-08-14T09:58:18.000000Z',
+    //       updated_at: '2024-08-14T09:58:18.000000Z'
+    //     },
+    //     total_attendance: 3,
+    //     attendance_comparison: {
+    //       Saturday: { this_week: 0, last_week: 0 },
+    //       Sunday: { this_week: 0, last_week: 0 },
+    //       Monday: { this_week: 0, last_week: 0 },
+    //       Tuesday: { this_week: 0, last_week: 0 },
+    //       Wednesday: { this_week: 0, last_week: 0 },
+    //       Thursday: { this_week: 0, last_week: 0 },
+    //       Friday: { this_week: 0, last_week: 0 }
+    //     }
+    //   }
+    // const chartData = [
+    //     {
+    //         name: 'Sat',
+    //         uv:  Overview?.attendance_comparison?.Saturday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Saturday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'San',
+    //         uv:  Overview?.attendance_comparison?.Sunday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Sunday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'Mon',
+    //         uv:  Overview?.attendance_comparison?.Monday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Monday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'Tue',
+    //         uv:  Overview?.attendance_comparison?.Tuesday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Tuesday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'Wen',
+    //         uv:  Overview?.attendance_comparison?.Wednesday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Wednesday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'Thu',
+    //         uv:  Overview?.attendance_comparison?.Thursday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Thursday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
+    //     {
+    //         name: 'Fry',
+    //         uv:  Overview?.attendance_comparison?.Friday?.last_week,
+    //         pv: Overview?.attendance_comparison?.Friday?.this_week,
+    //         amt: Overview?.total_student,
+    //     },
 
+    // ];
+
+    const overviewData = [
+        {
+            title: 'Total Amount',
+            icon: 'https://i.ibb.co/dpsm0bv/Black.png',
+            // text: `10% Higher Then Last Years`,
+            total: `${Overview?.total_amount}`,
+        },
+        {
+            title: 'Amount Per Class',
+            icon: 'https://i.ibb.co/g3DH8Hw/image-2-traced.png',
+            // text: `10% Higher Then Last Years`,
+            total: `${Overview?.amount_per_class_or_per_month?.payment}TK`,
+        },
+        {
+            title: 'Total Attendance',
+            icon: 'https://i.ibb.co/VYh2PT6/image-3-traced.png',
+            // text: `10% Higher Then Last Years`,
+            total: `${Overview?.total_attendance}`,
+        },
+        {
+            title: 'All Students',
+            icon: 'https://i.ibb.co/yQbns7G/image-4-traced.png',
+            text: `10% Higher Then Last Years`,
+            total: `${Overview?.total_student}`,
+        },
+        {
+            title: 'Total Batch',
+            icon: 'https://i.ibb.co/mNyQ7Rb/Black-1.png',
+            // text: `10% Higher Then Last Years`,
+            total: `${Overview?.total_batch}`,
+        },
+        {
+            title: 'Total Class',
+            icon: 'https://i.ibb.co/cX87vQq/image-6-traced.png',
+            // text: `10% Higher Then Last Years`,
+            total: `${Overview?.total_class}`,
+        },
+    ]
     const routineData = Routine?.data?.data?.map(item => {
         return { key: item?.id, batch: item?.batch?.batch_name, batchID: item?.batch?.batch_id, time: item?.time, date: item?.date, moduleName: item?.course_module?.module_title }
     })
@@ -243,7 +320,7 @@ const TeacherDashBoard = () => {
                     <p className="section-title">My Classes Routing</p>
                     <Link className="text-[#2492EB]" to={`/teacher/class-routine`}>See All</Link>
                 </div>
-                <Table dataSource={routineData?.slice(0,5)} pagination={false} columns={columns} />
+                <Table dataSource={routineData?.slice(0, 5)} pagination={false} columns={columns} />
             </div>
             <div className="bg-white Student-List my-6 rounded-md">
                 <div className="between-center px-4">
@@ -251,7 +328,7 @@ const TeacherDashBoard = () => {
                 </div>
                 <Table
                     columns={studentColumns}
-                    dataSource={TableData?.slice[0,5] || []}
+                    dataSource={TableData?.slice[0, 5] || []}
                     pagination={false}
                 />
             </div>
