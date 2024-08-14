@@ -41,8 +41,8 @@ const AllSalesStudent = () => {
     const [SendMessageTo, setSendMessage] = useState([])
     // query 
 
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('Students', '/students');
     const { mutate: mutateAdmit, isLoading: isAdmitLoading, data: AdmitData, error: errorAdmit } = usePostRequest('admitStudents', '/admit-student');
     const { mutate: followUpMessage, isLoading: messageLoading, data: MessageData, error: MessageError } = usePostRequest('follow', '/follow-up-message');
@@ -51,11 +51,11 @@ const AllSalesStudent = () => {
     const [filterBy, setFilterBy] = useState({})
     const [dob, setdob] = useState('')
     const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('Students', `/show-phoenix-students?page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
-    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses`)
+    const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
     const CourseOptions = Course?.data?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
-    const BatchOptions = Batch?.data?.data?.map(item => {
+    const BatchOptions = Batch?.data?.map(item => {
         return { name: item?.batch_name, value: item?.id }
     }) || []
     const TableData = Students?.data?.map((item, index) => {
@@ -233,10 +233,10 @@ const AllSalesStudent = () => {
     const inputHandeler = (e, name) => {
         setFilterData({ ...filterData, [name]: e.target.value })
     }
-    const CategoryOptions = Category?.data?.data?.map(item => {
+    const CategoryOptions = Category?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
     })
-    const CategoryOptions2 = Category?.data?.data?.map(item => {
+    const CategoryOptions2 = Category?.data?.map(item => {
         return { name: item?.category_name, value: item?.category_name }
     })
     useEffect(() => {

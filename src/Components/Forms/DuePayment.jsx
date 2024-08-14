@@ -16,40 +16,6 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
     const { register: FullPaymentRegister, handleSubmit: HandleFullPaymentSubmit, formState: { errors: FullPaymentError }, reset: fullPaymentReset } = useForm();
     const [fullpaymentType, setFullPaymentType] = useState(true)
     const [totalPayment, setTotalPayment] = useState(Payment?.data[Payment?.data.length - 1]?.due || 0)
-    // useEffect(() => {
-    //     setTotalPayment(Payment?.data[Payment?.data.length - 1]?.due)
-    // }, [AdmitValues])
-    // console.log(AdmitValues?.order)
-    // console.log(Payment)
-    // {
-    //     id: 6,
-    //     course_category_id: 2,
-    //     course_name: 'Camille Gordon',
-    //     language: 'Voluptas iste ipsa',
-    //     course_details: 'Obcaecati non sunt a',
-    //     course_time_length: 'Modi veniam eius eo',
-    //     price: '599',
-    //     max_student_length: null,
-    //     skill_Level: 'Iste nihil eligendi',
-    //     address: 'Dolores Nam dolore i',
-    //     thumbnail: 'adminAsset/image/123663338.jpg',
-    //     career_opportunities: [ 'Expedita qui autem c' ],
-    //     curriculum: [ 'Eveniet in assumend' ],
-    //     tools: [ 'Consequuntur sed vel' ],
-    //     job_position: [ 'Enim et consectetur' ],
-    //     popular_section: 0,
-    //     status: 'pending',
-    //     course_type: 'video',
-    //     created_at: '2024-08-12T09:53:51.000000Z',
-    //     updated_at: '2024-08-12T09:53:51.000000Z',
-    //     course_category: {
-    //       id: 2,
-    //       category_name: 'app developer',
-    //       created_at: '2024-08-08T04:04:51.000000Z',
-    //       updated_at: '2024-08-08T04:04:51.000000Z'
-    //     }
-    //   }
-
     const [firstInstallment, setFirstInstallment] = useState(totalPayment)
     const onSubmit = data => {
         const paymentData = {
@@ -232,7 +198,7 @@ const DuePayment = ({ setOpenPaymentModal, AdmitValues, refetch }) => {
                                 <div className='col-span-2'>
                                     <p className='text-[var(--primary-bg)] -mt-8'>3rd installment</p>
                                 </div>
-                                <div className={`col-span-4 w-full ${Payment?.data?.length == 2 ? '' : 'pointer-events-none'}`}>
+                                <div className={`col-span-4 w-full ${Payment?.data?.length == 2 ? '' : ''} pointer-events-none`}>
                                     <UpdateInput handler={(e, name) => {
                                         if (Number(Payment?.data[0]?.course_fee) < Number(e.target.value)) {
                                             toast.error("discount price can't be larger then course price")

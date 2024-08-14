@@ -5,10 +5,10 @@ import useGetRequest from '../../Hooks/useGetRequest'
 import usePostRequest from '../../Hooks/usePostRequest';
 import usePatchRequest from '../../Hooks/usePatchRequest';
 const TrainerAddForm = ({ filteredData, image, setImage, setOpenAddModal, formFor, refetch }) => {
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('TeacherAdd', '/teachers');
     const { mutate: updateTeacher, isLoading: updateLoading, data: updateData, error: updateError } = usePatchRequest('TeacherAdd', `/teachers/${filteredData?._id}`);
-    const CourseOptions = Category?.data?.data?.map(item => {
+    const CourseOptions = Category?.data?.map(item => {
         return { label: item?.category_name, value: item?.id }
     }) || []
     const [form] = Form.useForm();

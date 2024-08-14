@@ -6,8 +6,8 @@ import { imageUrl } from "../AxiosConfig/useAxiosConfig";
 const StudentsAttendance = () => {
     const [Page, setPage] = useState(1)
     const { useData, loading, isError } = useUserData();
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches`)
-    const BatchOptions = Batch?.data?.data?.map(item => {
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/batches?no_pagination=1`)
+    const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.batch_id }
     }) || []
     const [batchId, setBatchId] = useState()

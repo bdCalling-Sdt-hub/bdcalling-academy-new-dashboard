@@ -8,13 +8,13 @@ import { useUserData } from '../../Providers/UserProviders/UserProvider';
 const SalseStudentAddForm = ({ setOpenAdmitStudentModal, refetch, filteredData, image, setImage, formFor }) => {
     const { useData } = useUserData()
     const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/phoenix-batches`)
-    const BatchOptions = Batch?.data?.data?.map(item => {
+    const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.id }
     }) || []
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('AdmitStudents', '/admit-phoenix-student');
     const { mutate: updateTeacher, isLoading: updateLoading, data: updateData, error: updateError } = usePatchRequest('updateStudent', `/update-phoenix-student/${filteredData?._id}`);
-    const CourseOptions = Category?.data?.data?.map(item => {
+    const CourseOptions = Category?.data?.map(item => {
         return { label: item?.category_name, value: item?.id }
     }) || []
     const [form] = Form.useForm();

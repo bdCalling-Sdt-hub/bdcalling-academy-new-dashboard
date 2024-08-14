@@ -11,51 +11,51 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import { CiCircleInfo } from "react-icons/ci";
 import useGetRequest from "../Hooks/useGetRequest";
 import { imageUrl } from "../AxiosConfig/useAxiosConfig";
-const chartData = [
-    {
-        name: 'Sat',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'San',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Mon',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Tue',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: 'Wen',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: 'Thu',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: 'Fry',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
+// const chartData = [
+//     {
+//         name: 'Sat',
+//         uv: 4000,
+//         pv: 2400,
+//         amt: 2400,
+//     },
+//     {
+//         name: 'San',
+//         uv: 4000,
+//         pv: 2400,
+//         amt: 2400,
+//     },
+//     {
+//         name: 'Mon',
+//         uv: 4000,
+//         pv: 2400,
+//         amt: 2400,
+//     },
+//     {
+//         name: 'Tue',
+//         uv: 3000,
+//         pv: 1398,
+//         amt: 2210,
+//     },
+//     {
+//         name: 'Wen',
+//         uv: 2000,
+//         pv: 9800,
+//         amt: 2290,
+//     },
+//     {
+//         name: 'Thu',
+//         uv: 2780,
+//         pv: 3908,
+//         amt: 2000,
+//     },
+//     {
+//         name: 'Fry',
+//         uv: 1890,
+//         pv: 4800,
+//         amt: 2181,
+//     },
 
-];
+// ];
 
 const TeacherDashBoard = () => {
     const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/routines`)
@@ -116,51 +116,51 @@ const TeacherDashBoard = () => {
     //       Friday: { this_week: 0, last_week: 0 }
     //     }
     //   }
-    // const chartData = [
-    //     {
-    //         name: 'Sat',
-    //         uv:  Overview?.attendance_comparison?.Saturday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Saturday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'San',
-    //         uv:  Overview?.attendance_comparison?.Sunday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Sunday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'Mon',
-    //         uv:  Overview?.attendance_comparison?.Monday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Monday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'Tue',
-    //         uv:  Overview?.attendance_comparison?.Tuesday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Tuesday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'Wen',
-    //         uv:  Overview?.attendance_comparison?.Wednesday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Wednesday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'Thu',
-    //         uv:  Overview?.attendance_comparison?.Thursday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Thursday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
-    //     {
-    //         name: 'Fry',
-    //         uv:  Overview?.attendance_comparison?.Friday?.last_week,
-    //         pv: Overview?.attendance_comparison?.Friday?.this_week,
-    //         amt: Overview?.total_student,
-    //     },
+    const chartData = [
+        {
+            name: 'Sat',
+            uv:  Overview?.attendance_comparison?.Saturday?.last_week,
+            pv: Overview?.attendance_comparison?.Saturday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'San',
+            uv:  Overview?.attendance_comparison?.Sunday?.last_week,
+            pv: Overview?.attendance_comparison?.Sunday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'Mon',
+            uv:  Overview?.attendance_comparison?.Monday?.last_week,
+            pv: Overview?.attendance_comparison?.Monday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'Tue',
+            uv:  Overview?.attendance_comparison?.Tuesday?.last_week,
+            pv: Overview?.attendance_comparison?.Tuesday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'Wen',
+            uv:  Overview?.attendance_comparison?.Wednesday?.last_week,
+            pv: Overview?.attendance_comparison?.Wednesday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'Thu',
+            uv:  Overview?.attendance_comparison?.Thursday?.last_week,
+            pv: Overview?.attendance_comparison?.Thursday?.this_week,
+            amt: Overview?.total_student,
+        },
+        {
+            name: 'Fry',
+            uv:  Overview?.attendance_comparison?.Friday?.last_week,
+            pv: Overview?.attendance_comparison?.Friday?.this_week,
+            amt: Overview?.total_student,
+        },
 
-    // ];
+    ];
 
     const overviewData = [
         {
@@ -299,16 +299,16 @@ const TeacherDashBoard = () => {
                         <div className="card-shadow px-4  py-1 mb-1 rounded-md">
                             <div className="flex justify-center items-center gap-3 w-fit">
                                 <span className="w-3 h-3 bg-[#2492EB] rounded-full"></span>
-                                <p className="text-[#979699] text-sm">new students</p>
+                                <p className="text-[#979699] text-sm">Absent students</p>
                             </div>
-                            <p className="text-base font-bold text-center">100 Students</p>
+                            {/* <p className="text-base font-bold text-center">100 Students</p> */}
                         </div>
                         <div className="card-shadow px-4  py-1 mb-1 rounded-md">
                             <div className="flex justify-center items-center gap-3 w-fit">
                                 <span className="w-3 h-3 bg-[#FA1131] rounded-full"></span>
-                                <p className="text-[#979699] text-sm">old students</p>
+                                <p className="text-[#979699] text-sm">present students</p>
                             </div>
-                            <p className="text-base font-bold text-center">10 Students</p>
+                            {/* <p className="text-base font-bold text-center">10 Students</p> */}
                         </div>
                     </div>
                 </div>

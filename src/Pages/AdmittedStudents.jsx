@@ -64,7 +64,7 @@ const AdmittedStudents = () => {
             order: item?.order,
             messages: item?.messages,
             course_name: item?.course_name,
-            id:item?.id
+            id: item?.id
         }
     })
     const onSelectChange = (newSelectedRowKeys) => {

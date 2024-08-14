@@ -14,11 +14,13 @@ import useGetRequest from '../Hooks/useGetRequest'
 
 
 const AddCategory = () => {
+    const [page,setPage]=useState(1)
     const [filterData, setFilterData] = useState({})
     const { mutate, isLoading, data, error } = usePostRequest('Category', '/categories');
     const { mutate: updateCategory, isLoading: updateLoading, data: updateData, } = usePatchRequest('Category', `/categories/${filterData?.id}`);
     const { mutate: DeleteCategory, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('Category', `/categories/${filterData?.id}`);
-    const [requestingCategory, Category, CategoryError, refetch, isError] = useGetRequest('Category', `/categories`)
+    const [requestingCategory, Category, CategoryError, refetch, isError] = useGetRequest('Category', `/categories?page=${page}`)
+    console.log(Category)
     const [creatingCategory, setCreatingCategory] = useState(true)
     const [openAddCategoryModal, setopenAddCategoryModal] = useState(false)
     const [openDropModal, setOpenDropModal] = useState(false)
@@ -101,6 +103,12 @@ const AddCategory = () => {
                     <Table
                         columns={columns}
                         dataSource={Category?.data?.data || []}
+                        pagination={{
+                            total:Category?.data?.total || 0 ,
+                            pageSize:Category?.data?.per_page || 9,
+                            showSizeChanger:false,
+                            onChange:(page)=>setPage(page)
+                        }}
                     />
                 </div>
             </div>

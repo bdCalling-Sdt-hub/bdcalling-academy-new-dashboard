@@ -31,9 +31,9 @@ const  CourseUpdateForm = ({ formFor }) => {
     const [filterData, setFilterData] = useState({})
     const [image, setImage] = useState(null);
     const [query, setQuery] = useState(new URLSearchParams(window.location.search));
-    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories`)
+    const [requestingCategory, Category, CategoryError,] = useGetRequest('Category', `/categories?no_pagination=1`)
     const { mutate: updateCourse, isLoading: updateLoading, data: updateData, } = usePatchRequest('courses', `/courses/${id}`);
-    const CategoryOptions = Category?.data?.data?.map(item => {
+    const CategoryOptions = Category?.data?.map(item => {
         return { name: item?.category_name, value: item?.id }
     })
     const navigate = useNavigate()
