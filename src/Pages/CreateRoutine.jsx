@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeading from '../Components/Shared/PageHeading'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import ClassRoutineForm from '../Components/Forms/ClassRoutineForm'
@@ -17,7 +17,7 @@ const CreateRoutine = () => {
     const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const [filterBy, setFilterBy] = useState()
-    const [requestingRoutine, Routine, routineError,refetch] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
+    const [requestingRoutine, Routine, routineError, refetch] = useGetRequest('routines', `/routines?page=${page}${filterBy?.moduleName && `&module_title=${filterBy?.moduleName}`}${filterBy?.batch_id && `&batch_id=${filterBy?.batch_id}`}`)
     const { mutate: updateRoutine, isLoading: updateLoading, data: updateData, } = usePatchRequest('routines', `/routines/${filterData?.key}`);
     const { mutate: DeleteRoutine, isLoading: DeleteLoading, data: DeleteData, } = useDeleteRequest('routines', `/routines/${filterData?.key}`);
     const routineData = Routine?.data?.data?.map(item => {
@@ -113,6 +113,9 @@ const CreateRoutine = () => {
             </div>
         ));
     }
+    useEffect(() => {
+        if (updateData && !updateLoading) refetch();setOpenEditModal(false)
+    }, [updateData, updateLoading])
     return (
         <>
             <PageHeading text={`Class Routine`} />

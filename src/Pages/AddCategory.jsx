@@ -14,7 +14,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 
 
 const AddCategory = () => {
-    const [page,setPage]=useState(1)
+    const [page, setPage] = useState(1)
     const [filterData, setFilterData] = useState({})
     const { mutate, isLoading, data, error } = usePostRequest('Category', '/categories');
     const { mutate: updateCategory, isLoading: updateLoading, data: updateData, } = usePatchRequest('Category', `/categories/${filterData?.id}`);
@@ -29,18 +29,24 @@ const AddCategory = () => {
         if (creatingCategory) {
             mutate({ category_name: filterData?.category_name })
         } else {
-            updateCategory({ category_name: filterData?.category_name , _method:'PUT'})
+            updateCategory({ category_name: filterData?.category_name, _method: 'PUT' })
         }
         // console.log(filterData)
     };
-    const handleDelete = ()=>{
+    const handleDelete = () => {
         DeleteCategory()
     }
+    const CategoryData = Category?.data?.data?.map((item, i) => {
+        return {
+            ...item,
+            key: i + 1
+        }
+    })
     const columns = [
         {
             title: '#Sl',
-            dataIndex: 'id',
-            key: 'id'
+            dataIndex: 'key',
+            key: 'key'
         },
         {
             title: 'Category Name',
@@ -82,7 +88,7 @@ const AddCategory = () => {
     // rerender after update 
     useEffect(() => {
         if (isLoading || updateLoading || DeleteLoading) return
-        if (data || updateData || DeleteData) refetch();setFilterData({});setopenAddCategoryModal(false);setOpenDropModal(false)
+        if (data || updateData || DeleteData) refetch(); setFilterData({}); setopenAddCategoryModal(false); setOpenDropModal(false)
     }, [isLoading, data, updateLoading, updateData, DeleteData, DeleteLoading])
     return (
         <>
@@ -102,12 +108,12 @@ const AddCategory = () => {
                 <div>
                     <Table
                         columns={columns}
-                        dataSource={Category?.data?.data || []}
+                        dataSource={CategoryData || []}
                         pagination={{
-                            total:Category?.data?.total || 0 ,
-                            pageSize:Category?.data?.per_page || 9,
-                            showSizeChanger:false,
-                            onChange:(page)=>setPage(page)
+                            total: Category?.data?.total || 0,
+                            pageSize: Category?.data?.per_page || 9,
+                            showSizeChanger: false,
+                            onChange: (page) => setPage(page)
                         }}
                     />
                 </div>

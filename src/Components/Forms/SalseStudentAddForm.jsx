@@ -7,7 +7,7 @@ import usePatchRequest from '../../Hooks/usePatchRequest';
 import { useUserData } from '../../Providers/UserProviders/UserProvider';
 const SalseStudentAddForm = ({ setOpenAdmitStudentModal, refetch, filteredData, image, setImage, formFor }) => {
     const { useData } = useUserData()
-    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/phoenix-batches`)
+    const [requestingBatch, Batch, BatchError,] = useGetRequest('Batch', `/phoenix-batches?no_pagination=1`)
     const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.id }
     }) || []
