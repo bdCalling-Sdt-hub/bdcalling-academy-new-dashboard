@@ -50,7 +50,7 @@ const EventsBaseStudents = () => {
     const [dob, setdob] = useState('')
     const [requestingStudents, Students, StudentsError, refetch, isError] = useGetRequest('eventBasedStudent', `/students?student_type=event&page=${page}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.category && `&event_name=${filterBy?.category}`}${filterBy?.dob && `&dob=${filterBy?.dob}`}`)//phone_number=01317659523&name=r&category_name=1&
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
-    const CourseOptions = Course?.data?.map(item => {
+    const CourseOptions = Course?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
     const BatchOptions = Batch?.data?.map(item => {
