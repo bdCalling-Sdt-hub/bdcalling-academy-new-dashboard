@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FaPlay, FaStar } from "react-icons/fa";
 import notenrolled from '../assets/notenrolled.png'
 import useGetRequest from "../Hooks/useGetRequest";
+import { imageUrl } from "../AxiosConfig/useAxiosConfig";
 
 const StudentOverview = () => {
     const [requestingOverview, Overview, OverviewError] = useGetRequest('student-counting', `/student-counting`);
