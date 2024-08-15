@@ -89,6 +89,7 @@ const AdmittedStudents = () => {
         setdob(dateString)
     };
     const handleSuccessfulStudent = (id, batchID) => {
+        console.log(id, batchID)
         toast((t) => (
             <div>
                 <p className="text-xs text-red-500 text-center">Are you sure you want to success this student?</p>

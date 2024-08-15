@@ -223,17 +223,17 @@ export const AdminSideberLink = [
         icon: MdDashboard,
         link: '/'
     },
-    {
-        menu: 'User',
-        icon: FaUserGroup,
-        link: false,
-        dropDown: [
-            {
-                menu: 'Create Admin',
-                link: '/create-admin'
-            },
-        ]
-    },
+        // {
+        //     menu: 'User',
+        //     icon: FaUserGroup,
+        //     link: false,
+        //     dropDown: [
+        //         {
+        //             menu: 'Create Admin',
+        //             link: '/create-admin'
+        //         },
+        //     ]
+        // },
     {
         menu: 'All Students Type',
         icon: FaUserGroup,
