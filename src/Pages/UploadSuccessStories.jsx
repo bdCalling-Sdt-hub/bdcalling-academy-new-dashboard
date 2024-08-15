@@ -117,9 +117,9 @@ const UploadSuccessStories = () => {
     const navigate = useNavigate()
     return (
         <div className='mt-4'>
-            <p className='text-2xl text-[#333333]'>Upload Success Stories</p>
+            <p className='text-2xl text-[#333333]'>Upload {type === 'journey' ? 'Student Journey' : `Success Stories`}</p>
             <div className='flex justify-start items-center gap-2 mt-2'>
-                <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>Success Stories</p>
+                <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>{type === 'journey' ? 'Student Journey' : `Success Stories`}</p>
             </div>
             <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
                 <div className='flex justify-between items-center'>

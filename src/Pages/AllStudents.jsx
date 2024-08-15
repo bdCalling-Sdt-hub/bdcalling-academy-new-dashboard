@@ -282,11 +282,11 @@ const AllStudents = () => {
         })
         followUpMessage(formData)
     }
-
     // const handle admit student
     const HandleAdmitStudent = async (value) => {
+
         setAdmitValues({ ...filterData, batchNo: value?.batchNo, method: value?.method })
-        const FilterCourse = Batch?.data?.data?.filter((item) => item.id == value?.batchNo)
+        const FilterCourse = Batch?.data?.filter((item) => item.id == value?.batchNo)
         setSingleCourse(FilterCourse[0])
         const paymentData = {
             student_id: filterData?._id,
