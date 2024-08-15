@@ -20,7 +20,7 @@ const SalseStudentBatch = () => {
 
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
     const onSubmitFilter = data => { setFilterBy({ ...data, }) };
-    const CourseOptions = Course?.data?.map(item => {
+    const CourseOptions = Course?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
     const navigate = useNavigate()

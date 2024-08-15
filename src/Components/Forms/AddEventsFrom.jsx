@@ -18,7 +18,7 @@ const AddEventsFrom = ({ type }) => {
     const [image, setImage] = useState(null);
     const { mutate, isLoading, data, error } = usePostRequest('event', '/event');
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
-    const CourseOptions = Course?.data?.map(item => {
+    const CourseOptions = Course?.map(item => {
         return { name: item?.course_name, value: item?.course_name }
     }) || []
     const navigate = useNavigate()

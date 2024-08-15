@@ -52,7 +52,7 @@ const AuthenticateStudents = () => {
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
 
     console.log(Students)
-    const CourseOptions = Course?.data?.map(item => {
+    const CourseOptions = Course?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
     const BatchOptions = Batch?.data?.map(item => {

@@ -10,7 +10,7 @@ const UpdateSalseBatch = () => {
     const [requestingCourse, Course, CourseError] = useGetRequest('course', `/courses?no_pagination=1`)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers?no_pagination=1`)
     const { mutate: updateBatch, isLoading: updateLoading, data: updateData, } = usePatchRequest('Batch', `/phoenix-batches/${id}`);
-    const CourseOptions = Course?.data?.map((item) => {
+    const CourseOptions = Course?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
     const MentorsOptions = Admins?.teacher?.map((item) => {
