@@ -6,9 +6,10 @@ import usePostRequest from '../../Hooks/usePostRequest';
 const BatchForm = () => {
     const navigate = useNavigate()
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses?no_pagination=1`)
+    console.log(Course)
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('mentors', '/batches');
-    const CourseOptions = Course?.data?.map((item) => {
+    const CourseOptions = Course?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
     const MentorsOptions = Admins?.teacher?.map((item) => {

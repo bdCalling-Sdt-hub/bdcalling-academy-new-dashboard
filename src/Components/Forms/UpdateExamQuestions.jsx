@@ -10,11 +10,13 @@ import PageHeading from '../Shared/PageHeading'
 import { formatQuestions } from '../../Utils/FormateMcq'
 import useGetRequest from '../../Hooks/useGetRequest'
 import usePatchRequest from '../../Hooks/usePatchRequest'
+import usePostRequest from '../../Hooks/usePostRequest'
 
 
 const UpdateExamQuestions = () => {
     const { id } = useParams()
-    const { mutate: updateModule, isLoading: updateLoading, data: updateData, } = usePatchRequest('Module', `/update-module/${id}`);
+    const { mutate: updateModule, isLoading: updateLoading, data: updateData, } = usePostRequest('Module', `/update-quiz/${id}`);
+    console.log(`/update-question/${id}`)
     const [requestingQuestions, Questions, QuestionsError, refetch] = useGetRequest('module', `/show-module/${id}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [totalQuestions, setTotalQuestions] = useState(Questions?.data?.quiz?.questions.map((item, i) => {
@@ -35,8 +37,10 @@ const UpdateExamQuestions = () => {
     const onSubmit = data => {
         const formate = formatQuestions(correctAnswers, data)
         const formData = new FormData()
-        formData.append('questions', formData)
+        formData.append('questions', formate)
+        console.log(data,formate)
         // formData.append('_method', 'PUT')
+        return
         updateModule(formData)
     };
     useEffect(() => {

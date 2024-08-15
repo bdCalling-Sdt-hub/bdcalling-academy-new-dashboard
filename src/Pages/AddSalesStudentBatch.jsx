@@ -9,7 +9,7 @@ const AddSalesStudentBatch = () => {
     const [requestingUser, Admins, adminError, isError] = useGetRequest('mentors', `/teachers?no_pagination=1`)
     const { mutate, isLoading, data, error } = usePostRequest('batch', '/phoenix-batches');
     const navigate = useNavigate()
-    const CourseOptions = Course?.data?.map((item) => {
+    const CourseOptions = Course?.map((item) => {
         return { value: item?.id, label: item?.course_name }
     })
     const MentorsOptions = Admins?.teacher?.map((item) => {
