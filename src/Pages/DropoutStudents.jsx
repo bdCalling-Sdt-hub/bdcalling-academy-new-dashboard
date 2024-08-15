@@ -36,7 +36,7 @@ const DropoutStudents = () => {
     const CategoryOptions = Category?.data?.map(item => {
         return { label: item?.category_name, value: item?.category_name }
     })
-    console.log(`/show-dropout-student?page=${page}${filterBy?.name && `&name=${filterBy?.name}`}${filterBy?.dob && `&registration_date=${filterBy?.dob}`}${filterBy?.number && `&phone_number=${filterBy?.number}`}${filterBy?.category && `&category_name=${filterBy?.category}`}${filterBy?.BatchID && `&batch_id=${filterBy?.BatchID}`}`)
+
     const onSubmit = data => { };
     const BatchOptions = Batch?.data?.map(item => {
         return { label: item?.batch_name, value: item?.id }
@@ -377,7 +377,7 @@ const DropoutStudents = () => {
                                     height: '42px'
                                 }}
                                     onChange={(value) => {
-                                        const selectedBatch = Batch?.data?.data?.filter((item, i) => item.id == value)
+                                        const selectedBatch = Batch?.data?.filter((item, i) => item.id == value)
                                         setExchangeData({ course_id: selectedBatch?.[0]?.course_id, course_name: selectedBatch?.[0]?.course?.course_name, price: selectedBatch?.[0]?.course?.price })
                                     }}
                                     placeholder="please select a batch"
