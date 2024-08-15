@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { useForm } from 'react-hook-form'
 import { RiDeleteBin5Line } from 'react-icons/ri'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 // import { formatQuestions } from '../Utils/FormateMcq'
 import Input from '../Input/Input'
 import { addNewFields, removeNewFields } from '../../Utils/InputPlusActions'
@@ -16,9 +16,9 @@ import usePostRequest from '../../Hooks/usePostRequest'
 const UpdateExamQuestions = () => {
     const { id } = useParams()
     const { mutate: updateModule, isLoading: updateLoading, data: updateData, } = usePostRequest('Module', `/update-quiz/${id}`);
-    console.log(`/update-question/${id}`)
     const [requestingQuestions, Questions, QuestionsError, refetch] = useGetRequest('module', `/show-module/${id}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate()
     const [totalQuestions, setTotalQuestions] = useState(Questions?.data?.quiz?.questions.map((item, i) => {
         return { _id: i + 1, question: item?.question, option: item?.options, correctAnswer: item?.correctAnswer }
     }) || [])
@@ -34,13 +34,10 @@ const UpdateExamQuestions = () => {
         const newAnswers = correctAnswers.filter(item => !(item.hasOwnProperty(questionId)))
         setCorrectAnswer([...newAnswers, { [questionId]: ans }])
     }
-    const onSubmit = data => {
-        const formate = formatQuestions(correctAnswers, data)
+    const onSubmit = async data => {
+        const formate = await formatQuestions(correctAnswers, data)
         const formData = new FormData()
-        formData.append('questions', formate)
-        console.log(data,formate)
-        // formData.append('_method', 'PUT')
-        return
+        formData.append('questions', JSON.stringify(formate))
         updateModule(formData)
     };
     useEffect(() => {
@@ -54,6 +51,10 @@ const UpdateExamQuestions = () => {
         })
         setCorrectAnswer(correctAnswer)
     }, [totalQuestions])
+    useEffect(() => {
+        if (updateLoading) return
+        if (updateData) navigate(-1)
+    }, [updateLoading, updateData])
     return (
         <>
             <PageHeading text={Questions?.data?.module_title} />

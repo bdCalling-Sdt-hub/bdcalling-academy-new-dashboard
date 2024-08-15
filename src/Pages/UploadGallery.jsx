@@ -62,7 +62,12 @@ const UploadGallery = () => {
         const data = new FormData();
         data.append('image', fileObj.file);
 
-        axiosInstance.post('/gallery', data, {
+        axiosInstance.post('/gallery', data,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+            }
+        }, {
             onUploadProgress: (progressEvent) => {
                 const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 setFiles(prevFiles =>
@@ -74,6 +79,7 @@ const UploadGallery = () => {
             cancelToken: fileObj.cancelToken.token,
         })
             .then((response) => {
+                console.log(response)
                 setFiles(prevFiles =>
                     prevFiles.map(f =>
                         f.file.name === fileObj.file.name ? { ...f, uploadStatus: 'completed' } : f
@@ -81,6 +87,7 @@ const UploadGallery = () => {
                 );
             })
             .catch((error) => {
+                console.log(error)
                 if (axios.isCancel(error)) {
                     setFiles(prevFiles =>
                         prevFiles.map(f =>
@@ -116,9 +123,9 @@ const UploadGallery = () => {
     const navigate = useNavigate()
     return (
         <div className='mt-4'>
-            <p className='text-2xl text-[#333333]'>Upload Success Stories</p>
+            <p className='text-2xl text-[#333333]'>Upload Gallery</p>
             <div className='flex justify-start items-center gap-2 mt-2'>
-                <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>Success Stories</p>
+                <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>Gallery</p>
             </div>
             <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
                 <div className='flex justify-between items-center'>
