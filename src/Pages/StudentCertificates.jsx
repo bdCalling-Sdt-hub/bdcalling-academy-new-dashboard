@@ -1,6 +1,10 @@
 import certificate from '../assets/certificate.png'
+import useGetRequest from '../Hooks/useGetRequest'
 
 const StudentCertificates = () => {
+
+    const [loading, data, error] = useGetRequest('certificates', '/show-student-certificate')
+    console.log(data)
     return (
         <div className='flex justify-center items-center gap-6 h-screen flex-col relative'>
             <div className='flex justify-between items-center gap-2 w-full absolute left-0 top-4'>
