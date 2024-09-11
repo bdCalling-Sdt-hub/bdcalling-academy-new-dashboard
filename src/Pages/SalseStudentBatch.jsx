@@ -8,7 +8,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import useGetRequest from '../Hooks/useGetRequest'
 import { Pagination } from 'antd'
 import { RxCross2 } from 'react-icons/rx'
-import { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import useAxiosConfig, { imageUrl } from '../AxiosConfig/useAxiosConfig'
+import { MdDelete } from 'react-icons/md'
+import toast from 'react-hot-toast'
 
 const SalseStudentBatch = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -23,7 +25,37 @@ const SalseStudentBatch = () => {
     const CourseOptions = Course?.map(item => {
         return { name: item?.course_name, value: item?.id }
     }) || []
+    const baseUrl = useAxiosConfig()
     const navigate = useNavigate()
+    const handleDelete = (id) => {
+        toast((t) => (
+            <div>
+                <p className="text-xs text-red-500 text-center">are you sure you want to delete {name}</p>
+                <div className="flex justify-center items-center gap-2 mt-4">
+                    <button className="px-3 py-1 bg-red-500 text-white rounded-md" onClick={() => toast.dismiss(t.id)}>
+                        cancel
+                    </button>
+                    <button onClick={() => {
+                        baseUrl.delete(`batches/${id}`, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                            },
+                        }).then((res) => {
+                            toast.success('batch delete successfully')
+                            toast.dismiss(t.id)
+                        }).catch((err) => {
+                            toast.error('something went wrong')
+                            toast.dismiss(t.id)
+                        })
+                        toast.dismiss(t.id)
+                    }} className="px-3 py-1 bg-blue-500 text-white rounded-md">
+                        sure
+                    </button>
+                </div>
+            </div>
+        ));
+    }
     return (
         <>
             <PageHeading text={`All Batch`} />
@@ -65,6 +97,11 @@ const SalseStudentBatch = () => {
                                 <Link to={`/add-sales-student-batch/update/${item?.id}`} className="btn-secondary">
                                     Edit Batch
                                 </Link>
+                                <button onClick={() => handleDelete(item?.id)} style={{
+                                    backgroundColor: 'red',
+                                }} className="text-2xl text-white rounded-full ">
+                                    <MdDelete />
+                                </button>
                             </div>
                         </div>
                     })
