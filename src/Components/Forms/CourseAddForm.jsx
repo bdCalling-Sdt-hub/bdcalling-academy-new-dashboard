@@ -110,7 +110,7 @@ const CourseAddForm = ({ formFor }) => {
             return
         }
         if (!courseError && courseData) {
-            return navigate(`/${query.get('redirect')}`)
+            return navigate(-1)//${query.get('redirect')}
         }
     }, [courseError, courseLoading, courseData])
     // console.log(query.get('redirect'))
