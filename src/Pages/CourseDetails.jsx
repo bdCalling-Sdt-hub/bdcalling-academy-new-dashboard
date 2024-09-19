@@ -9,6 +9,7 @@ import useGetRequest from '../Hooks/useGetRequest'
 import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import { Modal } from 'antd'
 import { FaFilePen } from 'react-icons/fa6'
+import ReactPlayer from 'react-player'
 
 const CourseDetails = () => {
     const [query, setQuery] = useState(new URLSearchParams(window.location.search));
@@ -76,12 +77,14 @@ const CourseDetails = () => {
                 centered
                 footer={false}
                 open={openVideo}
-                onCancel={() => setOpenVideo(false)}
+                onCancel={() => { setOpenVideo(false); setVideoUrl(''); setPlayingVideo('') }}
                 width={700}
             >
                 <div className='w-full h-full'>
                     <p className='text-xl font-semibold mb-2'>{playingVideo}</p>
-                    <iframe className='w-full h-[400px]' src={videoUrl} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    {/* <video src='https://www.youtube.com/watch?v=ic6SjX-C6DA&ab_channel=JhankarMahbub' controls className="w-full"></video> */}
+                    <ReactPlayer url={videoUrl} controls width='100%' height='400px' className='w-full ' />
+                    {/* <iframe className='w-full h-[400px]' src={videoUrl} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> */}
                 </div>
             </Modal>
         </>

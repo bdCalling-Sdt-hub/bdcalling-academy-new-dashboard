@@ -8,6 +8,7 @@ import { imageUrl } from '../AxiosConfig/useAxiosConfig'
 import toast from 'react-hot-toast'
 import useDeleteRequest from '../Hooks/useDeleteRequest'
 import DynamicVideo from '../Components/DynamicVideo/DynamicVideo'
+import ReactPlayer from 'react-player'
 
 const StudentsJourney = () => {
     const [id, setId] = useState('')
@@ -54,17 +55,26 @@ const StudentsJourney = () => {
             <div className='grid grid-cols-2 gap-8 mt-4'>
                 {
                     Story?.data?.map((item, i) => {
-                        return <div key={item?.id} className='w-full h-[400px] bg-white relative rounded-md overflow-hidden'>
-                            <DynamicVideo key={item?.id} file={`${imageUrl}/${item?.file}`} />
-                            <button onClick={() => { setId(item?.id); handleDelete() }} className='absolute top-2 right-2  text-xl bg-red-500 text-white p-1 rounded-full'>
-                                <MdDelete />
-                            </button>
-                            {/* <div className='flex justify-between items-center gap-2 absolute w-full h-auto bottom-0 left-0 p-2 py-6 pb-5 bg-black bg-opacity-60'>
-                                <button className='bg-white text-blue-400 p-3 py-2 rounded-md'>Delete Students Journey</button>
-                                <button className='bg-blue-400 text-white p-3 py-2 rounded-md'>Delete Students Journey</button>
-                                <button className=' bg-white text-black p-3 rounded-md'><FaEye /></button>top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
-                            </div> */}
-                        </div>
+                        return (
+                            <div key={item?.id} className='w-full h-[360px] bg-white rounded-md overflow-hidden relative'>
+                                <div className='w-full h-full'>
+                                    <ReactPlayer
+                                        url={item?.file}
+                                        playing={false}
+                                        controls
+                                        width='100%'
+                                        height='100%'
+                                        className='react-player'
+                                    />
+                                </div>
+                                <button
+                                    onClick={() => { setId(item?.id); handleDelete(); }}
+                                    className='absolute top-2 right-2 text-xl bg-red-500 text-white p-1 rounded-full'
+                                >
+                                    <MdDelete />
+                                </button>
+                            </div>
+                        );
                     })
                 }
             </div>

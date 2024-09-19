@@ -188,7 +188,7 @@ const DropoutStudents = () => {
         mutate(formData)
     };
     useEffect(() => {
-        if ((!error && addData) || (AdmitData && !errorAdmit)) refetch(); setopenExchangeUpModal(false); form.resetFields()
+        if ((!error && addData) || (AdmitData && !errorAdmit)) refetch(); setopenExchangeUpModal(false); form.resetFields() ; setopenRefundModal(false)
     }, [error, addData, AdmitData, errorAdmit])
     const onExchange = values => {
         const paymentData = {

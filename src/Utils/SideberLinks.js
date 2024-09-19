@@ -127,11 +127,11 @@ export const SideberLink = [
         icon: IoWalletOutline,
         link: '/cost'
     },
-    {
-        menu: 'Wallet',
-        icon: CiWallet,
-        link: '/wallet'
-    },
+    // {
+    //     menu: 'Wallet',
+    //     icon: CiWallet,
+    //     link: '/wallet'
+    // },
     {
         menu: 'Successful Students',
         icon: FaUsers,
@@ -330,11 +330,11 @@ export const AdminSideberLink = [
         icon: IoWalletOutline,
         link: '/cost'
     },
-    {
-        menu: 'Wallet',
-        icon: CiWallet,
-        link: '/wallet'
-    },
+    // {
+    //     menu: 'Wallet',
+    //     icon: CiWallet,
+    //     link: '/wallet'
+    // },
     {
         menu: 'Successful Students',
         icon: FaUsers,

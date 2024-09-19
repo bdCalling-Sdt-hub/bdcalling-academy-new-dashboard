@@ -13,14 +13,15 @@ const AddEvents = () => {
     const navigate = useNavigate()
     const [requestingEvents, Events, EventsError, refetch, isError] = useGetRequest('Events', `/event?page=${page}`)
     const EventData = Events?.data?.data?.map(item => {
+        console.log(item?.status)
         return {
             "id": item?.id,
             "img": `${imageUrl}/${item?.image}`,
             "date": item?.date,
             "time": item?.time,
             "end_time": item?.end_time,
-            "status": item?.status == 1 ? "Online" : "Offline",
-            "location": item?.locations,
+            "status": item?.status,
+            "location": item?.locations || "N/A",
             "courseName": item?.course_name
         }
     })

@@ -15,6 +15,7 @@ const StudentsInformation = () => {
     const [requestingPayment, Payment, PaymentError, refetch] = useGetRequest('payment', `/show-student-payment?student_id=${id}&batch_id=${batch}`)
     const [AdmitValues, setAdmitValue] = useState({ _id: id, order: [{ batch_id: batch }] })
     const [openPaymentModal, setOpenPaymentModal] = useState(false)
+    console.log(Payment)
     return (
         <>
             <div className='start-center gap-2'>

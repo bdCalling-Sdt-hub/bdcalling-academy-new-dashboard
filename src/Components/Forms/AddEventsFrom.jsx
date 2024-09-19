@@ -47,14 +47,14 @@ const AddEventsFrom = ({ type }) => {
         Object.keys(data).map(key => {
             formData.append(key, data[key])
         })
-        if(image){
+        if (image) {
             formData.append('image', image)
         }
         mutate(formData)
     };
     useEffect(() => {
         if (data) navigate(-1)
-    }, [data])
+    }, [data, navigate])
     return (
         <form className='py-8 pt-4' onSubmit={handleSubmit(onSubmit)}>
             <div className='start-center gap-2 '>
@@ -73,7 +73,7 @@ const AddEventsFrom = ({ type }) => {
                 <Input lebel={`Start Time`} type={`time`} classNames={`border`} status={errors} rules={{ ...register("start_time", { required: true }) }} />
                 <Input lebel={`End Time`} type={`time`} classNames={`border`} status={errors} rules={{ ...register("end_time", { required: true }) }} />
                 <SelectInput lebel={`Status`} classNames={`border`} status={errors} options={EventTypeOptions} rules={{ ...register("status", { required: true }) }} />
-                <Input lebel={`Offline Location`} classNames={`border`} status={errors} placeholder={`dhaka `} rules={{ ...register("location", { required: true }) }} />
+                <Input lebel={`Offline Location`} classNames={`border`} status={errors} placeholder={`dhaka `} rules={{ ...register("location", { required: false }) }} />
             </div>
             <div className='mt-4'>
                 <TextArea lebel={`Description`} handler={inputHandler} defaultValue={filterData?.description} type={`text`} classNames={`border h-32`} status={errors} placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`} rules={{ ...register("description", { required: true }) }} />

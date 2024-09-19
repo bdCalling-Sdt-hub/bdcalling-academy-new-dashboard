@@ -252,10 +252,10 @@ export const router = createBrowserRouter([
                 path: '/cost',
                 element: <Cost />
             },
-            {
-                path: '/wallet',
-                element: <Wallet />
-            },
+            // {
+            //     path: '/wallet',
+            //     element: <Wallet />
+            // },
             {
                 path: '/success-stories',
                 element: <SuccessStories />

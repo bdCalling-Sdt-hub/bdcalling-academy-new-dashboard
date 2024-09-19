@@ -9,6 +9,7 @@ import useAxiosConfig from '../AxiosConfig/useAxiosConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
+import { Form, Input } from 'antd';
 
 const UploadSuccessStories = () => {
     const [type, SetType] = useState(new URLSearchParams(window.location.search).get('for'))
@@ -58,7 +59,8 @@ const UploadSuccessStories = () => {
             setFiles(prevFiles => [...prevFiles, ...updatedFiles]);
         }
     };
-
+    // data.append('file', fileObj.file);
+    // data.append('type', type);
     const uploadFile = (fileObj) => {
         const data = new FormData();
         data.append('file', fileObj.file);
@@ -115,13 +117,25 @@ const UploadSuccessStories = () => {
         });
     };
     const navigate = useNavigate()
+    const onFinish = (values) => {
+        const data = new FormData()
+        data.append('file', values?.url);
+        data.append('type', type);
+        axiosInstance.post('/success/story', data).then((response) => {
+            if (response?.data) {
+                return navigate(-1)
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     return (
         <div className='mt-4'>
             <p className='text-2xl text-[#333333]'>Upload {type === 'journey' ? 'Student Journey' : `Success Stories`}</p>
             <div className='flex justify-start items-center gap-2 mt-2'>
                 <p>Home</p> <MdKeyboardArrowRight className='text-blue-400' /> <p className='text-blue-400'>{type === 'journey' ? 'Student Journey' : `Success Stories`}</p>
             </div>
-            <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
+            {/* <div style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }} className='mt-16 max-w-2xl mx-auto p-4 mb-10 rounded-md'>
                 <div className='flex justify-between items-center'>
                     <div className='flex justify-start items-center gap-2'>
                         <button onClick={() => {
@@ -206,7 +220,32 @@ const UploadSuccessStories = () => {
                     </div>
                 </div>
                 <Toaster position="top-center" />
-            </div>
+            </div> */}
+            <Form
+                onFinish={onFinish}
+                layout='vertical'
+                className='mt-10 w-[50%] mx-auto'
+            >
+                <p className='font-semibold text-2xl mb-4'>Please insert your video url</p>
+                <Form.Item
+                    name="url"
+                    label="URL"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please enter URL',
+                        },
+                    ]}
+                >
+                    <Input type='url'
+                        placeholder="Enter URL"
+                    />
+                </Form.Item>
+                <div className='flex justify-between items-center gap-2 my-3 mt-6'>
+                    <button onClick={() => { navigate(-1) }} className='text-blue-500 bg-white border-blue-400 border px-12 py-2 rounded-md'>Cancel</button>
+                    <button className='text-white bg-blue-500 px-12 py-2 rounded-md border border-blue-400'>Submit</button>
+                </div>
+            </Form>
         </div>
     );
 };

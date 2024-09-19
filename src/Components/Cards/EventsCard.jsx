@@ -33,7 +33,7 @@ const EventsCard = ({ item, refetch }) => {
     return (
         <div className='p-4 bg-white rounded-md card-shadow'>
             <div className='w-full h-[250px] rounded-md overflow-hidden'>
-                <img src={img} className='w-full h-full object-cover' alt="" />
+                <img src={img} className='w-full h-full object-contain' alt="" />
             </div>
             <div className='between-center my-4'>
                 <p className='start-center gap-2 text-sm'><CiCalendarDate className='text-xl text-[var(--primary-bg)]' /> {date}</p>

@@ -4,9 +4,11 @@ import flag from '../../assets/flag.png'
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "../../Providers/UserProviders/UserProvider";
 import { imageUrl } from "../../AxiosConfig/useAxiosConfig";
+import useGetRequest from "../../Hooks/useGetRequest";
 const Navber = () => {
     const { useData, loading, isError } = useUserData();
     const { register } = useForm();
+    const [requestingNotification, Notification, NotificationError,] = useGetRequest('notification', `${(useData?.role === 'SUPER ADMIN' || useData?.role === 'ADMIN') ? '/admin-notification' : '/notification'}?page=1`)
     const inputHandeler = (e) => {
         // console.log(e.target.value)
     }
@@ -23,7 +25,7 @@ const Navber = () => {
                 <div onClick={() => navigate('/notification')} className="relative cursor-pointer">
                     <MdOutlineNotificationsActive className="text-3xl" />
                     <span className="rounded-full bg-[#E91E63] p-[2px] px-[4px] text-white absolute top-0 right-0 text-[10px]" >
-                        12
+                        {Notification?.notifications?.data?.length}
                     </span>
                 </div>
                 <div className="justify-end flex items-center w-fit gap-3">
