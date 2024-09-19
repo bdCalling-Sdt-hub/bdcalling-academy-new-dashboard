@@ -295,7 +295,7 @@ const TeacherBaseStudents = () => {
     // const handle admit student
     const HandleAdmitStudent = async (value) => {
         setAdmitValues(value)
-        const filterCourse = Course?.data?.filter(item => item?.id == value.courseName)
+        const filterCourse = Course?.filter(item => item?.id == value.courseName)
         setSingleCourse(filterCourse[0])
         const paymentData = {
             student_id: value?.studentID,
