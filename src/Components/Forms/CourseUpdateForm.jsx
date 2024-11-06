@@ -19,8 +19,8 @@ import toast from 'react-hot-toast';
 import { imageUrl } from '../../AxiosConfig/useAxiosConfig';
 const popularityOptions = [{ name: 'true', value: '1' }, { name: 'false', value: '0' }]
 // const CategoryOptions = [{ name: 'App Development', value: 'App Development' }, { name: 'web Development', value: 'web Development' },]
-const CourseTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' },{ name: 'video', value: 'video' }]
-const  CourseUpdateForm = ({ formFor }) => {
+const CourseTypeOptions = [{ name: 'online', value: 'online' }, { name: 'offline', value: 'offline' }, { name: 'video', value: 'video' }]
+const CourseUpdateForm = ({ formFor }) => {
     const { id } = useParams()
     const [requestingCourse, Course, CourseError, refetch] = useGetRequest('course', `/courses/${id}`)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -161,10 +161,14 @@ const  CourseUpdateForm = ({ formFor }) => {
                 }
             </div>
             <div className='mt-4'>
-                <TextArea defaultValue={Course?.data?.course_details} handler={inputHandeler} lebel={`Enter Course Details`} type={`text`} classNames={`border h-32`} status={errors} placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`} rules={{ ...register("details", { required: true }) }} />
+                <TextArea defaultValue={filterData?.details || Course?.data?.course_details} handler={inputHandeler} lebel={`Enter Course Details`} type={`text`} classNames={`border h-32`} status={errors} placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`} rules={{ ...register("details", { required: true }) }} />
+                {/* <p>Enter Course Details</p>
+                <textarea {...register("details", { required: true })} defaultValue={Course?.data?.course_details} className='w-full h-[200px] border-2 resize-none p-2'
+                    placeholder={`The bdCalling Academy's Flutter course focuses on creating apps from the ground up. The learner will receive step-by-step instruction on building an app from our Flutter expert. You will be able to develop deeply into the features of Flutter and dart with this training.`}
+                /> */}
             </div>
             <div className='mt-4'>
-                <TextArea defaultValue={Course?.data?.address} handler={inputHandeler} lebel={`Enter Address`} type={`text`} classNames={`border h-20`} status={errors} placeholder={`bdCalling IT Ltd - Corporate Office House - 14, Main Road, Block - A, Banasree, Rampura, Dhaka - 1219`} rules={{ ...register("address", { required: true }) }} />
+                <TextArea defaultValue={filterData?.address || Course?.data?.address} handler={inputHandeler} lebel={`Enter Address`} type={`text`} classNames={`border h-20`} status={errors} placeholder={`bdCalling IT Ltd - Corporate Office House - 14, Main Road, Block - A, Banasree, Rampura, Dhaka - 1219`} rules={{ ...register("address", { required: true }) }} />
             </div>
             <div className='md:grid md:grid-cols-2 flex flex-col justify-start items-start md:items-start lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4'>
                 <div className='w-full flex justify-start items-start gap-2'>
